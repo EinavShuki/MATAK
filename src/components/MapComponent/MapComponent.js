@@ -9,8 +9,9 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import "./MapComponent.css";
-import PolyLine from "../PolyLine.js/PolyLine";
-import MapPolygon from "../MapPolygon/MapPolygon";
+import PolyLine from "./components/PolyLine";
+import MapPolygon from "./components/MapPolygon";
+
 //note:opacity: 0.2, pointerEvents: "none"
 
 // sets marker icon
@@ -27,6 +28,7 @@ function MapComponent() {
   const [position, setPosition] = useState([]);
   const [polyLine, setpolyLine] = useState([]);
   const [polyGon, setpolyGon] = useState([]);
+
   //sets the latlng to position of the point we pressed on
   function getPosition(e) {
     if (isPoly) {
@@ -49,6 +51,33 @@ function MapComponent() {
       polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
     );
   }
+  //removes the mark we pressed on
+  function removePosition(e) {
+    const pos = e.latlng;
+    setPosition(
+      position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyLine(
+      polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyGon(
+      polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+  }
+
+  // //removes the last line we made
+  // function deleteLast() {
+  //   const len = polyLine.length;
+  //   if (len > 1) {
+  //     const pos = polyLine[len - 1];
+  //     setpolyLine(
+  //       polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+  //     );
+  //     setPosition(
+  //       position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+  //     );
+  //   }
+  // }
 
   // //removes the last line we made
   // function deleteLast() {
@@ -102,7 +131,7 @@ function MapComponent() {
       <Map
         zoomControl={false}
         onclick={getPosition}
-        center={[31.96193073350435, 34.8060607910156]}
+        center={[31.477632, 34.511871]}
         zoom={11}
       >
         <TileLayer
