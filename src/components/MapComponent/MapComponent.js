@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import {
   Map,
@@ -6,9 +6,10 @@ import {
   Popup,
   TileLayer,
   Tooltip,
-  Polyline,
+  ZoomControl,
 } from "react-leaflet";
 import "./MapComponent.css";
+import PolyLine from "../PolyLine.js/PolyLine";
 //note:opacity: 0.2, pointerEvents: "none"
 
 // sets marker icon
@@ -20,52 +21,100 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapComponent() {
-  const [position, setPosition] = useState();
-  const [line, setLine] = useState({
-    from_lat: 32.03078166500877,
-    from_long: 34.91118800517516,
-    id: "123",
-    to_lat: 32.03544120111271,
-    to_long: 34.867294857250265,
-  });
-  //returns the latlng of the point we pressed on
+  const [isLine, setIsLine] = useState(false);
+  const [position, setPosition] = useState([]);
+  const [polyLine, setpolyLine] = useState([]);
+  //sets the latlng to position of the point we pressed on
   function getPosition(e) {
-    setPosition(e.latlng);
-    console.log(e.latlng);
+    if (isLine) {
+      setpolyLine((prev) => [...prev, e.latlng]);
+    }
+    setPosition((prev) => [...prev, e.latlng]);
+    // setIsLine(false);
   }
+  //removes the mark we pressed on
+  function removePosition(e) {
+    const pos = e.latlng;
+    setPosition(
+      position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+  }
+  //removes the last line we made
+  function deleteLast() {
+    const len=polyLine.length
+    if (len>1) {
+      const pos = polyLine[len-1];
+      setpolyLine(
+        polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+      );
+      setPosition(
+        position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+      );
+      }
+    }
+  
   return (
     <>
-      <h1 className="map-title">My firsy map</h1>
+      <button
+        onClick={() => {
+          setpolyLine([]);
+          setPosition([]);
+        }}
+        id="clear"
+      >
+        Clear all
+      </button>
+      <button
+        onClick={() => {
+          setIsLine(true);
+        }}
+        id="create-line"
+      >
+        create Line
+      </button>
+      <button onClick={deleteLast} id="delete-last-line">
+        Delete last line
+      </button>
       {/*center-where the map is loacted , zoom-what is the zoom out we are from the location
     the more zoom number is lower the more we get far from the location */}
       <Map
+        zoomControl={false}
         onclick={getPosition}
-        center={[31.96102, 34.80162]}
-        zoom={10}
-        provider
+        center={[31.96193073350435, 34.8060607910156]}
+        zoom={11}
       >
         <TileLayer
           //correct attribution for osm
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
+        <ZoomControl position="topright"></ZoomControl>
+        {position &&
+          position.map((pos, index) => {
+            return (
+              <Marker
+                key={pos.lat + pos.lng + index}
+                position={pos}
+                draggable={true}
+                ondrag={getPosition}
+                onClick={removePosition}
+                onmouseover={(e) => {
+                  e.target.openPopup();
+                }}
+                onmouseout={(e) => {
+                  e.target.closePopup();
+                }}
+              >
+                <Popup closeOnClick={true}>
+                  <div>
+                    <h3>{JSON.stringify(pos, null, 2)}</h3>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
 
-        {position && (
-          <Marker position={position} draggable={true} ondrag={getPosition}>
-            <Popup>
-              <div>
-                <h3>{JSON.stringify(position, null, 2)}</h3>
-              </div>
-            </Popup>
-          </Marker>
-        )}
-        <Tooltip>somthing</Tooltip>
-        <Polyline
-          color="blue"
-          positions={
-            ([line.from_lat, line.from_long], [line.to_lat, line.to_long])
-          }
-        />
+        {polyLine && <PolyLine polyLine={polyLine} />}
       </Map>
     </>
   );
