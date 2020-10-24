@@ -26,3 +26,6 @@
   padding: 2px;
   text-shadow: 2px 1px 7px rgb(182, 88, 88);
 }
+.sr-only {
+  display: none;
+}
