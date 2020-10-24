@@ -1,0 +1,73 @@
+.nav-menu {
+  position: fixed;
+  z-index: 5001;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  width: 23rem;
+  height: 100%;
+  left: -100%;
+  transition: 0.7s;
+}
+.nav-menu.active {
+  transition: 0.45s;
+  left: 0;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+}
+
+#menu-div {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#close-button {
+  font-size: 3rem;
+  color: white;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+#close-button:hover {
+  transform: scale(1.2);
+}
+
+ul {
+  padding: 0 0;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  padding: 0.8rem 2rem;
+  font-size: 1.4rem;
+  color: white;
+  width: 22rem;
+  cursor: pointer;
+  transition: 100ms;
+  align-items: center;
+}
+
+.list-item:hover {
+  background-color: white;
+  color: rgb(59, 59, 59);
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 29px -10px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 29px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 29px -10px rgba(0, 0, 0, 0.75);
+}
+.list-item li {
+  text-align: center;
+}
+.list-item svg {
+  margin-bottom: 6px;
+  margin-right: 10px;
+}
