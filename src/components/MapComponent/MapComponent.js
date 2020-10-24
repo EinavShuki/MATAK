@@ -1,9 +1,17 @@
-import React, { useState } from "react";
-import L from "leaflet";
-import { Map, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import L, { polygon } from "leaflet";
+import {
+  Map,
+  Marker,
+  Popup,
+  TileLayer,
+  Tooltip,
+  ZoomControl,
+} from "react-leaflet";
 import "./MapComponent.css";
 import PolyLine from "./components/PolyLine";
 import MapPolygon from "./components/MapPolygon";
+
 //note:opacity: 0.2, pointerEvents: "none"
 
 // sets marker icon
@@ -43,6 +51,33 @@ function MapComponent() {
       polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
     );
   }
+  //removes the mark we pressed on
+  function removePosition(e) {
+    const pos = e.latlng;
+    setPosition(
+      position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyLine(
+      polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyGon(
+      polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+  }
+
+  // //removes the last line we made
+  // function deleteLast() {
+  //   const len = polyLine.length;
+  //   if (len > 1) {
+  //     const pos = polyLine[len - 1];
+  //     setpolyLine(
+  //       polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+  //     );
+  //     setPosition(
+  //       position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+  //     );
+  //   }
+  // }
 
   // //removes the last line we made
   // function deleteLast() {
