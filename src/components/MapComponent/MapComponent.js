@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import L from "leaflet";
+import L, { polygon } from "leaflet";
 import {
   Map,
   Marker,
@@ -10,6 +10,7 @@ import {
 } from "react-leaflet";
 import "./MapComponent.css";
 import PolyLine from "../PolyLine.js/PolyLine";
+import MapPolygon from "../MapPolygon/MapPolygon";
 //note:opacity: 0.2, pointerEvents: "none"
 
 // sets marker icon
@@ -22,15 +23,18 @@ L.Icon.Default.mergeOptions({
 
 function MapComponent() {
   const [isLine, setIsLine] = useState(false);
+  const [isPoly, setIsPoly] = useState(false);
   const [position, setPosition] = useState([]);
   const [polyLine, setpolyLine] = useState([]);
+  const [polyGon, setpolyGon] = useState([]);
   //sets the latlng to position of the point we pressed on
   function getPosition(e) {
-    if (isLine) {
+    if (isPoly) {
+      setpolyGon((prev) => [...prev, e.latlng]);
+    } else if (isLine) {
       setpolyLine((prev) => [...prev, e.latlng]);
     }
     setPosition((prev) => [...prev, e.latlng]);
-    // setIsLine(false);
   }
   //removes the mark we pressed on
   function removePosition(e) {
@@ -38,27 +42,35 @@ function MapComponent() {
     setPosition(
       position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
     );
+    setpolyLine(
+      polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyGon(
+      polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
   }
-  //removes the last line we made
-  function deleteLast() {
-    const len=polyLine.length
-    if (len>1) {
-      const pos = polyLine[len-1];
-      setpolyLine(
-        polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-      );
-      setPosition(
-        position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-      );
-      }
-    }
-  
+
+  // //removes the last line we made
+  // function deleteLast() {
+  //   const len = polyLine.length;
+  //   if (len > 1) {
+  //     const pos = polyLine[len - 1];
+  //     setpolyLine(
+  //       polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+  //     );
+  //     setPosition(
+  //       position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+  //     );
+  //   }
+  // }
+
   return (
     <>
       <button
         onClick={() => {
           setpolyLine([]);
           setPosition([]);
+          setpolyGon([]);
         }}
         id="clear"
       >
@@ -66,14 +78,24 @@ function MapComponent() {
       </button>
       <button
         onClick={() => {
+          setIsPoly(false);
           setIsLine(true);
         }}
         id="create-line"
       >
         create Line
       </button>
-      <button onClick={deleteLast} id="delete-last-line">
+      {/* <button onClick={deleteLast} id="delete-last-line">
         Delete last line
+      </button> */}
+      <button
+        onClick={() => {
+          setIsLine(false);
+          setIsPoly(true);
+        }}
+        id="create-polygon"
+      >
+        create Polygon
       </button>
       {/*center-where the map is loacted , zoom-what is the zoom out we are from the location
     the more zoom number is lower the more we get far from the location */}
@@ -95,8 +117,6 @@ function MapComponent() {
               <Marker
                 key={pos.lat + pos.lng + index}
                 position={pos}
-                draggable={true}
-                ondrag={getPosition}
                 onClick={removePosition}
                 onmouseover={(e) => {
                   e.target.openPopup();
@@ -115,6 +135,7 @@ function MapComponent() {
           })}
 
         {polyLine && <PolyLine polyLine={polyLine} />}
+        {polyGon && <MapPolygon polyGon={polyGon} />}
       </Map>
     </>
   );
