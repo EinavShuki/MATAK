@@ -8,6 +8,7 @@ import {
   Tooltip,
   ZoomControl,
 } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import "./MapComponent.css";
 import PolyLine from "./components/PolyLine";
 import MapPolygon from "./components/MapPolygon";
@@ -64,20 +65,6 @@ function MapComponent() {
       polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
     );
   }
-
-  // //removes the last line we made
-  // function deleteLast() {
-  //   const len = polyLine.length;
-  //   if (len > 1) {
-  //     const pos = polyLine[len - 1];
-  //     setpolyLine(
-  //       polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-  //     );
-  //     setPosition(
-  //       position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-  //     );
-  //   }
-  // }
 
   // //removes the last line we made
   // function deleteLast() {
