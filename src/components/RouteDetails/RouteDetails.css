@@ -1,0 +1,52 @@
+.route-details-window {
+  width: 26rem;
+  height: 100%;
+  transition: 0.7s;
+}
+
+.permanent-btn {
+  margin: 0.5rem 0;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 0.4rem 0rem;
+  font-size: 1.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid white;
+  transition: all 0.2s;
+}
+.permanent-btn:hover {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.permanent-btn.active {
+  color: black;
+  background-color: rgba(255, 255, 255, 1);
+}
+#routeDetails-div {
+  display: flex;
+  flex-direction: column;
+  margin: 5rem 1rem;
+}
+
+.routeD-btn {
+  background-color: white;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  font-size: 1.3rem;
+  border-radius: 5px;
+}
+.routeD-next {
+  color: white;
+  margin-top: 4rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+.routeD-next:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.routeD-label {
+  padding-top: 0;
+}

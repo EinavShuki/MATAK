@@ -4,7 +4,7 @@ import { CgCloseO } from "react-icons/cg";
 import { ImAppleinc } from "react-icons/im";
 function SideMenu({ isOpen, closeSideMenu }) {
   return (
-    <nav className={isOpen ? "nav-menu active" : "nav-menu"}>
+    <nav className={isOpen ? "frosted nav-menu active" : "frosted nav-menu"}>
       <div id="menu-div">
         <span id="close-button" onClick={() => closeSideMenu(false)}>
           <CgCloseO />
