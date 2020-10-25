@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext} from "react";
 import L, { polygon } from "leaflet";
 import {
   Map,
@@ -13,6 +13,8 @@ import "./MapComponent.css";
 import PolyLine from "./components/PolyLine";
 import MapPolygon from "./components/MapPolygon";
 //note:opacity: 0.2, pointerEvents: "none"
+import DispatchContext from "../MapContext/DispatchContext";
+import StateContext from "../MapContext/StateContext";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,69 +25,66 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapComponent() {
-  const [isLine, setIsLine] = useState(false);
-  const [isPoly, setIsPoly] = useState(false);
-  const [position, setPosition] = useState([]);
-  const [polyLine, setpolyLine] = useState([]);
-  const [polyGon, setpolyGon] = useState([]);
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   //sets the latlng to position of the point we pressed on
   function getPosition(e) {
-    if (isPoly) {
-      setpolyGon((prev) => [...prev, e.latlng]);
-    } else if (isLine) {
-      setpolyLine((prev) => [...prev, e.latlng]);
+    if (appState.isPoly) {
+      appDispatch({
+        type: "polyGon",
+        value: e.latlng,
+      });
+    } else if (appState.isLine) {
+      appDispatch({
+        type: "polyLine",
+        value: e.latlng,
+      });
     }
-    setPosition((prev) => [...prev, e.latlng]);
+    appDispatch({
+      type: "position",
+      value: e.latlng,
+    });
   }
   //removes the mark we pressed on
   function removePosition(e) {
     const pos = e.latlng;
-    setPosition(
-      position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-    );
-    setpolyLine(
-      polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-    );
-    setpolyGon(
-      polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-    );
+    appDispatch({
+      type: "position-trans",
+      value: appState.position.filter(
+        (item) => item.lat !== pos.lat && item.lng !== pos.lng
+      ),
+    });
+    appDispatch({
+      type: "polyLine-trans",
+      value: appState.polyLine.filter(
+        (item) => item.lat !== pos.lat && item.lng !== pos.lng
+      ),
+    });
+    appDispatch({
+      type: "polyGon-trans",
+      value: appState.polyGon.filter(
+        (item) => item.lat !== pos.lat && item.lng !== pos.lng
+      ),
+    });
   }
-  //removes the mark we pressed on
-  function removePosition(e) {
-    const pos = e.latlng;
-    setPosition(
-      position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-    );
-    setpolyLine(
-      polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-    );
-    setpolyGon(
-      polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-    );
-  }
-
-  // //removes the last line we made
-  // function deleteLast() {
-  //   const len = polyLine.length;
-  //   if (len > 1) {
-  //     const pos = polyLine[len - 1];
-  //     setpolyLine(
-  //       polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-  //     );
-  //     setPosition(
-  //       position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
-  //     );
-  //   }
-  // }
 
   return (
     <>
       <button
         onClick={() => {
-          setpolyLine([]);
-          setPosition([]);
-          setpolyGon([]);
+          appDispatch({
+            type: "polyGon-trans",
+            value: [],
+          });
+          appDispatch({
+            type: "polyLine-trans",
+            value: [],
+          });
+          appDispatch({
+            type: "position-trans",
+            value: [],
+          });
         }}
         id="clear"
       >
@@ -93,20 +92,18 @@ function MapComponent() {
       </button>
       <button
         onClick={() => {
-          setIsPoly(false);
-          setIsLine(true);
+          appDispatch({ type: "isPolyOff" });
+          appDispatch({ type: "isLineOn" });
         }}
         id="create-line"
       >
         create Line
       </button>
-      {/* <button onClick={deleteLast} id="delete-last-line">
-        Delete last line
-      </button> */}
+
       <button
         onClick={() => {
-          setIsLine(false);
-          setIsPoly(true);
+          appDispatch({ type: "isPolyOn" });
+          appDispatch({ type: "isLineOff" });
         }}
         id="create-polygon"
       >
@@ -118,7 +115,7 @@ function MapComponent() {
         zoomControl={false}
         onclick={getPosition}
         center={[31.477632, 34.511871]}
-        zoom={11}
+        zoom={10}
       >
         <TileLayer
           //correct attribution for osm
@@ -126,8 +123,8 @@ function MapComponent() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
         <ZoomControl position="topright"></ZoomControl>
-        {position &&
-          position.map((pos, index) => {
+        {appState.position &&
+          appState.position.map((pos, index) => {
             return (
               <Marker
                 key={pos.lat + pos.lng + index}
@@ -149,8 +146,8 @@ function MapComponent() {
             );
           })}
 
-        {polyLine && <PolyLine polyLine={polyLine} />}
-        {polyGon && <MapPolygon polyGon={polyGon} />}
+        {appState.polyLine && <PolyLine polyLine={appState.polyLine} />}
+        {appState.polyGon && <MapPolygon polyGon={appState.polyGon} />}
       </Map>
     </>
   );
