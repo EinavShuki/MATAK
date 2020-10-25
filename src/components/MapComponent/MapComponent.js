@@ -9,8 +9,8 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import "./MapComponent.css";
-import PolyLine from "../PolyLine.js/PolyLine";
-import MapPolygon from "../MapPolygon/MapPolygon";
+import PolyLine from "./components/PolyLine";
+import MapPolygon from "./components/MapPolygon";
 //note:opacity: 0.2, pointerEvents: "none"
 
 // sets marker icon
