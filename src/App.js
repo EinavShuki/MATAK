@@ -8,7 +8,6 @@ function App() {
   return (
     <Router>
       <Route path="/" component={LoginScreen} exact />
-
       <Route path="/home" component={HomeScreen} exact />
     </Router>
   );
