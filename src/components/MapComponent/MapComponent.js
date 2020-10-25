@@ -8,6 +8,7 @@ import {
   Tooltip,
   ZoomControl,
 } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import "./MapComponent.css";
 import PolyLine from "./components/PolyLine";
 import MapPolygon from "./components/MapPolygon";
@@ -27,6 +28,7 @@ function MapComponent() {
   const [position, setPosition] = useState([]);
   const [polyLine, setpolyLine] = useState([]);
   const [polyGon, setpolyGon] = useState([]);
+
   //sets the latlng to position of the point we pressed on
   function getPosition(e) {
     if (isPoly) {
@@ -35,6 +37,19 @@ function MapComponent() {
       setpolyLine((prev) => [...prev, e.latlng]);
     }
     setPosition((prev) => [...prev, e.latlng]);
+  }
+  //removes the mark we pressed on
+  function removePosition(e) {
+    const pos = e.latlng;
+    setPosition(
+      position.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyLine(
+      polyLine.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
+    setpolyGon(
+      polyGon.filter((item) => item.lat !== pos.lat && item.lng !== pos.lng)
+    );
   }
   //removes the mark we pressed on
   function removePosition(e) {
@@ -102,7 +117,7 @@ function MapComponent() {
       <Map
         zoomControl={false}
         onclick={getPosition}
-        center={[31.96193073350435, 34.8060607910156]}
+        center={[31.477632, 34.511871]}
         zoom={11}
       >
         <TileLayer
