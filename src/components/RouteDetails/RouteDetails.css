@@ -2,6 +2,7 @@
   width: 26rem;
   height: 100%;
   transition: 0.7s;
+  overflow-y: scroll;
 }
 
 .permanent-btn {
