@@ -66,6 +66,7 @@ function HomeScreen() {
       <FiMenu id="add-icon" onClick={() => setsideMenu(true)} />
       <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
       <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} />
+      <RouteDetails />
       <MapComponent />
       </DispatchContext.Provider>
     </StateContext.Provider>
