@@ -10,7 +10,6 @@ import { FiMenu } from "react-icons/fi";
 //components area
 import MapComponent from "../components/MapComponent/MapComponent";
 import SideMenu from "../components/SideMenu";
-import RouteDetails from "../components/RouteDetails";
 
 function HomeScreen() {
   const initialState = {
