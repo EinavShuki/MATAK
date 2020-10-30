@@ -63,8 +63,8 @@ function HomeScreen() {
       <DispatchContext.Provider value={dispatch}>
         <FiMenu id="add-icon" onClick={() => setsideMenu(true)} />
         <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
+        {/* {sideMenu && <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} />} */}
         <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} />
-        <RouteDetails />
         <MapComponent />
       </DispatchContext.Provider>
     </StateContext.Provider>

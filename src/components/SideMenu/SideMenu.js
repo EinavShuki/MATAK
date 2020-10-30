@@ -1,41 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SideMenu.css";
 import { CgCloseO } from "react-icons/cg";
-import { ImAppleinc } from "react-icons/im";
+import {
+  OPTIONS_PAGE,
+  ROUTE_DETAILS_PAGE,
+} from "../../constants/pageConstants";
+import Options from "./components/Options";
+import RouteDetails from "./components/RouteDetails";
+
 function SideMenu({ isOpen, closeSideMenu }) {
+  const [page, setPage] = useState({
+    open: OPTIONS_PAGE,
+  });
+
   return (
-    <nav className={isOpen ? "frosted nav-menu active" : "frosted nav-menu"}>
+    <div className={isOpen ? "frosted nav-menu active" : "frosted nav-menu"}>
+      <span id="close-button" onClick={() => closeSideMenu(false)}>
+        <CgCloseO />
+      </span>
       <div id="menu-div">
-        <span id="close-button" onClick={() => closeSideMenu(false)}>
-          <CgCloseO />
-        </span>
-
-        <ul style={{ listStyleType: "none" }}>
-          <div onClick={() => closeSideMenu(false)} className="list-item">
-            <ImAppleinc />
-            <li>New Route Request</li>
-          </div>
-
-          <div onClick={() => closeSideMenu(false)} className="list-item">
-            <ImAppleinc />
-            <li>New Parmament Route</li>
-          </div>
-
-          <div onClick={() => closeSideMenu(false)} className="list-item">
-            <ImAppleinc />
-            <li>Show Reports</li>
-          </div>
-          <div onClick={() => closeSideMenu(false)} className="list-item">
-            <ImAppleinc />
-            <li>Routes History</li>
-          </div>
-          <div onClick={() => closeSideMenu(false)} className="list-item">
-            <ImAppleinc />
-            <li>Status</li>
-          </div>
-        </ul>
+        {page.open === OPTIONS_PAGE && <Options setPage={setPage} />}
+        {page.open === ROUTE_DETAILS_PAGE && <RouteDetails />}
       </div>
-    </nav>
+    </div>
   );
 }
 
