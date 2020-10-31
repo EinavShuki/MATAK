@@ -9,7 +9,7 @@ function Login({ history }) {
   return (
     <div id="login">
       <form>
-        <h1>Login</h1>
+        <h1 id="login-h1">Login</h1>
         <div id="form-div">
           <label htmlFor="username">Username</label>
           <div className="inner">

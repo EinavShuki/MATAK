@@ -1,0 +1,2 @@
+export const OPTIONS_PAGE = "OPTIONS_PAGE";
+export const ROUTE_DETAILS_PAGE = "ROUTE_DETAILS_PAGE";
