@@ -1,0 +1,119 @@
+.nav-menu {
+  width: 27rem;
+  height: 100%;
+  left: -100%;
+  transition: 0.7s;
+  overflow-y: scroll;
+}
+.nav-menu.active {
+  transition: 0.45s;
+  left: 0rem;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+}
+#close-button {
+  font-size: 3rem;
+  color: white;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+#close-button:hover {
+  transform: scale(1.2);
+}
+#menu-div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Options */
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+  color: white;
+
+  cursor: pointer;
+  transition: 100ms;
+  align-items: center;
+  padding: 1rem 2rem;
+  margin: 0.1rem 0;
+}
+
+.list-item:hover {
+  background-color: white;
+  color: rgb(59, 59, 59);
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 29px -10px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 29px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 29px -10px rgba(0, 0, 0, 0.75);
+}
+
+.list-item svg {
+  margin-bottom: 5.5px;
+  margin-right: 10px;
+}
+
+/* Route Details  */
+.permanent-btn {
+  margin: 0.5rem 0;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 0.4rem 0rem;
+  font-size: 1.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid white;
+  transition: all 0.2s;
+}
+.permanent-btn:hover {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.permanent-btn.active {
+  color: black;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+#routeDetails-div {
+  display: flex;
+  flex-direction: column;
+  margin: 5rem 1rem;
+}
+
+.routeD-btn {
+  background-color: white;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  font-size: 1.3rem;
+  border-radius: 5px;
+}
+.routeD-next {
+  color: white;
+  margin-top: 4rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+.routeD-next:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.routeD-label {
+  padding-top: 0;
+}
+
+@media screen and (max-width: 440px) {
+  .nav-menu {
+    width: 100%;
+  }
+}
