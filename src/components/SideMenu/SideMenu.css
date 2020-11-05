@@ -1,5 +1,5 @@
 .nav-menu {
-  width: 27rem;
+  min-width: 27rem;
   height: 100%;
   left: -100%;
   transition: 0.7s;
