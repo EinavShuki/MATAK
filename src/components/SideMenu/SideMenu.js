@@ -5,14 +5,14 @@ import {
   OPTIONS_PAGE,
   ROUTE_DETAILS_PAGE,
 } from "../../constants/pageConstants";
-import Options from "./components/Options";
-import RouteDetails from "./components/RouteDetails";
+import Options from "./SideMenuComponents/Options";
+import RouteDetails from "./SideMenuComponents/RouteDetails";
 
 function SideMenu({ isOpen, closeSideMenu }) {
   const [page, setPage] = useState({
     open: OPTIONS_PAGE,
   });
-
+console.log("hi");
   return (
     <div className={isOpen ? "frosted nav-menu active" : "frosted nav-menu"}>
       <span id="close-button" onClick={() => closeSideMenu(false)}>

@@ -24,3 +24,6 @@
 .sr-only {
   display: none;
 }
+button {
+  cursor: pointer;
+}

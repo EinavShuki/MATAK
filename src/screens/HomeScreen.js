@@ -1,6 +1,6 @@
 //context area
-import StateContext from "../components/MapContext/StateContext";
-import DispatchContext from "../components/MapContext/DispatchContext";
+import StateContext from "../MapContext/StateContext";
+import DispatchContext from "../MapContext/DispatchContext";
 
 import React, { useState, useContext } from "react";
 import { useImmerReducer } from "use-immer";
@@ -52,6 +52,7 @@ function HomeScreen() {
       case "polyGon-trans":
         draft.polyGon = action.value;
         return;
+
     }
   }
 
