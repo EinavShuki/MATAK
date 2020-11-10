@@ -4,9 +4,13 @@ import { CgCloseO } from "react-icons/cg";
 import {
   OPTIONS_PAGE,
   ROUTE_DETAILS_PAGE,
+  REPORTING_PAGE,
 } from "../../constants/pageConstants";
-import Options from "./components/Options";
-import RouteDetails from "./components/RouteDetails";
+
+//INITIAL COMPONENTS
+import Options from "./SideMenuComponents/Options";
+import RouteDetails from "./SideMenuComponents/RouteDetails";
+import Reporting from "./SideMenuComponents/Reporting"
 
 function SideMenu({ isOpen, closeSideMenu }) {
   const [page, setPage] = useState({
@@ -21,6 +25,7 @@ function SideMenu({ isOpen, closeSideMenu }) {
       <div id="menu-div">
         {page.open === OPTIONS_PAGE && <Options setPage={setPage} />}
         {page.open === ROUTE_DETAILS_PAGE && <RouteDetails />}
+        {page.open === REPORTING_PAGE && <Reporting />}
       </div>
     </div>
   );
