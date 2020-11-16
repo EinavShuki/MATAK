@@ -10,7 +10,7 @@ import {
 //INITIAL COMPONENTS
 import Options from "./components/Options";
 import RouteDetails from "./components/RouteDetails";
-import Reporting from "./components/Options";
+import Reporting from "./components/Reporting";
 
 function SideMenu({ isOpen, closeSideMenu }) {
   const [page, setPage] = useState({

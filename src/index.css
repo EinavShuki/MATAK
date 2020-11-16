@@ -65,3 +65,8 @@ body {
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
 }
+
+/* for date picker */
+.MuiPopover-root {
+  z-index: 5003 !important;
+}

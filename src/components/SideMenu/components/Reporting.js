@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
-import { Button } from "@material-ui/core";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+import Grid from "@material-ui/core/Grid";
 
 function Reporting() {
   const statusList = [
@@ -59,14 +65,15 @@ function Reporting() {
   ];
 
   const useStyles = makeStyles((theme) => ({
-    container: {
-      display: "flex",
-      flexWrap: "wrap",
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200,
+    ulStyle: {
+      border: "1px solid rgba(0, 0, 0, 0.1)",
+      borderRadius: "5px",
+      height: "200px",
+      overflow: "scroll",
+      overflowX: "hidden",
+      flexWrap: "nowrap",
+      padding: "0 0.5rem",
+      maxWidth: "20rem",
     },
   }));
   const classes = useStyles();
@@ -136,34 +143,57 @@ function Reporting() {
     setEscort({ ...escort, [event.target.name]: event.target.checked });
   };
 
+  const [startingDate, setStartingDate] = useState(new Date());
+  const [endingDate, setEndingDate] = useState(new Date());
+
+  const handleStartingDate = (date) => {
+    setStartingDate(date);
+    if (date >= endingDate) setEndingDate(date);
+  };
+
+  const handleEndingDate = (date) => {
+    if (date >= startingDate) setEndingDate(date);
+  };
+
   return (
-    <>
-      <form className={classes.container} noValidate>
-        <TextField
-          id="startDate"
-          label="Pick a Starting Date"
-          type="date"
-          defaultValue="2020-11-09"
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="endDate"
-          label="Pick an Ending Date"
-          type="date"
-          defaultValue="2020-11-09"
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </form>
-      <div className="checkboxArea">
-        <div className="statusDiv">
+    <div style={{ padding: "6rem 0" }}>
+      <h1>Find Routes</h1>
+      <Grid container spacing={3}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Grid item md={6} xs={12}>
+            <KeyboardDatePicker
+              style={{ marginRight: "1rem" }}
+              disableToolbar
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
+              label="Pick Starting Date"
+              value={startingDate}
+              onChange={handleStartingDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
+              label="Pick Ending Date"
+              value={endingDate}
+              onChange={handleEndingDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </Grid>
+        </MuiPickersUtilsProvider>
+
+        <Grid item md={6} xs={12}>
           <label>Status</label>
-          <ul>
+          <FormGroup className={classes.ulStyle}>
             {statusList.map((stat, index) => {
               return (
                 <FormControlLabel
@@ -174,18 +204,19 @@ function Reporting() {
                       checked={status[stat]}
                       onChange={handleChangeStatus}
                       name={stat}
-                      color="primary"
+                      color="secondary"
                     />
                   }
                   label={stat}
                 />
               );
             })}
-          </ul>
-        </div>
-        <div className="organizationDiv">
+          </FormGroup>
+        </Grid>
+
+        <Grid item md={6} xs={12}>
           <label>Involved Organizations</label>
-          <ul>
+          <FormGroup className={classes.ulStyle}>
             {organizationList.map((org, index) => {
               return (
                 <FormControlLabel
@@ -196,19 +227,19 @@ function Reporting() {
                       checked={organization[org]}
                       onChange={handleChangeOrg}
                       name={org}
-                      color="primary"
+                      color="secondary"
                     />
                   }
                   label={org}
                 />
               );
             })}
-          </ul>
-        </div>
+          </FormGroup>
+        </Grid>
 
-        <div className="reasonsDiv">
+        <Grid item md={6} xs={12}>
           <label>Reason For Coordination</label>
-          <ul>
+          <FormGroup className={classes.ulStyle}>
             {reasonsList.map((reas, index) => {
               return (
                 <FormControlLabel
@@ -219,18 +250,18 @@ function Reporting() {
                       checked={reasons[reas]}
                       onChange={handleChangeReas}
                       name={reas}
-                      color="primary"
+                      color="secondary"
                     />
                   }
                   label={reas}
                 />
               );
             })}
-          </ul>
-        </div>
-        <div className="escortsDiv">
+          </FormGroup>
+        </Grid>
+        <Grid item md={6} xs={12}>
           <label>Escorting Organization</label>
-          <ul>
+          <FormGroup className={classes.ulStyle}>
             {escortsList.map((esc, index) => {
               return (
                 <FormControlLabel
@@ -241,19 +272,28 @@ function Reporting() {
                       checked={escort[esc]}
                       onChange={handleChangeEsc}
                       name={esc}
-                      color="primary"
+                      color="secondary"
                     />
                   }
                   label={esc}
                 />
               );
             })}
-          </ul>
-        </div>
-      </div>
-      <button id="cancal_btn">Cancel</button>
-      <button id="find_btn">Find</button>
-    </>
+          </FormGroup>
+        </Grid>
+      </Grid>
+      <button
+        style={{
+          position: "absolute",
+          bottom: "1rem",
+          right: "2rem",
+          padding: "0.5rem 2rem",
+        }}
+        className="frosted-btn"
+      >
+        Find
+      </button>
+    </div>
   );
 }
 

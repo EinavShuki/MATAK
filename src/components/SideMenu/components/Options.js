@@ -18,11 +18,6 @@ function Options({ setPage }) {
         <li>New Route Request</li>
       </div>
 
-      <div className="list-item">
-        <ImAppleinc />
-        <li>New Parmament Route</li>
-      </div>
-
       <div
         onClick={() =>
           setPage({
@@ -34,10 +29,12 @@ function Options({ setPage }) {
         <ImAppleinc />
         <li>Show Reports</li>
       </div>
+
       <div className="list-item">
         <ImAppleinc />
         <li>Routes History</li>
       </div>
+
       <div className="list-item">
         <ImAppleinc />
         <li>Status</li>
