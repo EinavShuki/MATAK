@@ -71,7 +71,7 @@ function MapComponent() {
 
   return (
     <>
-      <button
+      {/* <button
         onClick={() => {
           appDispatch({
             type: "polyGon-trans",
@@ -108,7 +108,7 @@ function MapComponent() {
         id="create-polygon"
       >
         create Polygon
-      </button>
+      </button> */}
       {/*center-where the map is loacted , zoom-what is the zoom out we are from the location
     the more zoom number is lower the more we get far from the location */}
       <Map
