@@ -21,3 +21,9 @@
 .leaflet-container a.leaflet-popup-close-button {
   display: none;
 }
+.sr-only {
+  display: none;
+}
+button {
+  cursor: pointer;
+}

@@ -13,8 +13,8 @@ import "./MapComponent.css";
 import PolyLine from "./components/PolyLine";
 import MapPolygon from "./components/MapPolygon";
 //note:opacity: 0.2, pointerEvents: "none"
-import DispatchContext from "../MapContext/DispatchContext";
-import StateContext from "../MapContext/StateContext";
+import DispatchContext from "../../MapContext/DispatchContext";
+import StateContext from "../../MapContext/StateContext";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -87,8 +87,7 @@ function MapComponent() {
           });
         }}
         id="clear"
-      >
-        Clear all
+      >Clear all
       </button>
       <button
         onClick={() => {

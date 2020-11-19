@@ -8,9 +8,9 @@ import {
 } from "../../constants/pageConstants";
 
 //INITIAL COMPONENTS
-import Options from "./components/Options";
-import RouteDetails from "./components/RouteDetails";
-import Reporting from "./components/Reporting";
+import Options from "./SideMenuComponents/Options";
+import RouteDetails from "./SideMenuComponents/RouteDetails";
+import Reporting from "./SideMenuComponents/Reporting";
 
 function SideMenu({ isOpen, closeSideMenu }) {
   const [page, setPage] = useState({
