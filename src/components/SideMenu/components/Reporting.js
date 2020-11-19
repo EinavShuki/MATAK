@@ -69,11 +69,9 @@ function Reporting() {
       border: "1px solid rgba(0, 0, 0, 0.1)",
       borderRadius: "5px",
       height: "200px",
-      overflow: "scroll",
-      overflowX: "hidden",
+      overflowY: "scroll",
       flexWrap: "nowrap",
       padding: "0 0.5rem",
-      maxWidth: "20rem",
     },
   }));
   const classes = useStyles();
@@ -156,7 +154,7 @@ function Reporting() {
   };
 
   return (
-    <div style={{ padding: "6rem 0" }}>
+    <div>
       <h1>Find Routes</h1>
       <Grid container spacing={3}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
