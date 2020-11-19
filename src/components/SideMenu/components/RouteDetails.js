@@ -57,10 +57,9 @@ function RouteDetails() {
       </div>
       <button
         style={{
-          position: "absolute",
-          bottom: "1rem",
-          right: "2rem",
+          alignSelf: "flex-end",
           padding: "0.5rem 2rem",
+          margin: "2rem 0",
         }}
         className="frosted-btn"
       >

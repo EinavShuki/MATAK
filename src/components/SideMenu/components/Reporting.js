@@ -154,7 +154,7 @@ function Reporting() {
   };
 
   return (
-    <div>
+    <>
       <h1>Find Routes</h1>
       <Grid container spacing={3}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -282,16 +282,15 @@ function Reporting() {
       </Grid>
       <button
         style={{
-          position: "absolute",
-          bottom: "1rem",
-          right: "2rem",
+          alignSelf: "flex-end",
           padding: "0.5rem 2rem",
+          margin: "2rem 0",
         }}
         className="frosted-btn"
       >
         Find
       </button>
-    </div>
+    </>
   );
 }
 
