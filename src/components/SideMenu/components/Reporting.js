@@ -68,7 +68,7 @@ function Reporting() {
     ulStyle: {
       border: "1px solid rgba(0, 0, 0, 0.1)",
       borderRadius: "5px",
-      height: "200px",
+      height: "150px",
       overflowY: "scroll",
       flexWrap: "nowrap",
       padding: "0 0.5rem",
