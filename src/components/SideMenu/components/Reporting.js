@@ -11,6 +11,7 @@ import {
 } from "@material-ui/pickers";
 
 import Grid from "@material-ui/core/Grid";
+import { Button } from "@material-ui/core";
 
 function Reporting() {
   const statusList = [
@@ -280,16 +281,17 @@ function Reporting() {
           </FormGroup>
         </Grid>
       </Grid>
-      <button
+      <Button
+        variant="contained"
+        color="secondary"
         style={{
           alignSelf: "flex-end",
           padding: "0.5rem 2rem",
           margin: "2rem 0",
         }}
-        className="frosted-btn"
       >
         Find
-      </button>
+      </Button>
     </>
   );
 }
