@@ -68,7 +68,7 @@ function RouteAdditionalDetails() {
 
   const handleEndingHour = (e) => {
     const [hours, minutes] = e.target.value.split(":");
-    const today = new Date();
+
     const newDate = new Date(endingDate);
     newDate.setHours(hours);
     newDate.setMinutes(minutes);
