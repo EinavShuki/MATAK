@@ -41,19 +41,9 @@ body {
   backdrop-filter: blur(5px);
 }
 
-.frosted-btn {
-  cursor: pointer;
-  border: none;
-  font-size: 1.3rem;
-  border-radius: 5px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.3);
-  transition: all 0.2s;
+.MuiButton-containedSecondary:hover {
+  background-color: rgba(0, 0, 0, 0.7) !important;
 }
-.frosted-btn:hover {
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
 ::-webkit-scrollbar {
   width: 2px;
   height: 2px;
