@@ -10,6 +10,7 @@ import { FiMenu } from "react-icons/fi";
 //components area
 import MapComponent from "../components/MapComponent/MapComponent";
 import SideMenu from "../components/SideMenu";
+import StatusInfo from "../components/StatusInfo/StatusInfo";
 
 function HomeScreen() {
   const initialState = {
@@ -52,7 +53,6 @@ function HomeScreen() {
       case "polyGon-trans":
         draft.polyGon = action.value;
         return;
-
     }
   }
 
@@ -65,6 +65,7 @@ function HomeScreen() {
         <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
         {sideMenu && <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} />}
         {/* <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} /> */}
+        <StatusInfo />
         <MapComponent />
       </DispatchContext.Provider>
     </StateContext.Provider>
