@@ -1,5 +1,7 @@
 import React from "react";
 import { ImAppleinc } from "react-icons/im";
+import { FaSearch, FaMapMarked, FaHistory } from "react-icons/fa";
+import { MdHistory } from "react-icons/md";
 import { ROUTE_DETAILS_PAGE } from "../../../constants/pageConstants";
 import { REPORTING_PAGE } from "../../../constants/pageConstants";
 
@@ -14,7 +16,7 @@ function Options({ setPage }) {
         }
         className="list-item"
       >
-        <ImAppleinc />
+        <FaMapMarked />
         <li>New Route Request</li>
       </div>
 
@@ -26,12 +28,12 @@ function Options({ setPage }) {
         }
         className="list-item"
       >
-        <ImAppleinc />
-        <li>Show Reports</li>
+        <FaSearch />
+        <li>Search Routes</li>
       </div>
 
       <div className="list-item">
-        <ImAppleinc />
+        <FaHistory />
         <li>Routes History</li>
       </div>
 

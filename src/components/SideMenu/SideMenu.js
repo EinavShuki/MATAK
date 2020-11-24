@@ -20,7 +20,6 @@ function SideMenu({ isOpen, closeSideMenu }) {
   });
 
   return (
-    // <div className={isOpen ? "frosted nav-menu active" : "frosted nav-menu"}>
     <div className={"frosted nav-menu"}>
       <span id="close-button" onClick={() => closeSideMenu(false)}>
         <CgCloseO />

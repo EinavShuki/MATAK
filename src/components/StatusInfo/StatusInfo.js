@@ -1,11 +1,10 @@
-import { Button, Fab, Tooltip } from "@material-ui/core";
+import { Fab, Tooltip } from "@material-ui/core";
 import React, { useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { makeStyles } from "@material-ui/core/styles";
 import "./StatusInfo.css";
 import { STATUSES } from "../../constants/statusConstants";
 import StatusElement from "./components/StatusElement";
-import { CSSTransition } from "react-transition-group";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -30,9 +29,6 @@ function StatusInfo() {
           />
         </Fab>
       </Tooltip>
-      {/* <CSSTransition unmountOnExit in={open} timeout={300} classNames="item">
-        <div>{"I'll receive my-node-* classes"}</div>
-      </CSSTransition> */}
 
       <div className="statuses">
         {Object.keys(STATUSES).map((key) => (

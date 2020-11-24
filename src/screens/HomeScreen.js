@@ -67,7 +67,7 @@ function HomeScreen() {
 
         <CSSTransition
           in={sideMenu}
-          timeout={330}
+          timeout={230}
           classNames="menu-transition"
           unmountOnExit
         >

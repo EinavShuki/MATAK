@@ -5,10 +5,11 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TextField from "@material-ui/core/TextField";
 import { ROUTE_ADDITIONAL_DETAILS } from "../../../constants/pageConstants";
+import { Switch } from "@material-ui/core";
 
 function RouteDetails({ setPage }) {
   const [permanent, setPermanent] = useState(false);
-
+  const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });
   };
@@ -24,6 +25,18 @@ function RouteDetails({ setPage }) {
           />
         }
         label="Create a Permanent Route"
+      />
+      <FormControlLabel
+        style={{ marginTop: "1.33em" }}
+        control={
+          <Switch
+            checked={hideRoutes}
+            onChange={() => setHideRoutes((prev) => !prev)}
+            name="hide-routes"
+            color="secondary"
+          />
+        }
+        label="Hide Routes"
       />
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
