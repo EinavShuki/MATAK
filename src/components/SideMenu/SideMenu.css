@@ -1,18 +1,12 @@
 .nav-menu {
+  position: fixed;
+  z-index: 5001;
   min-width: 27rem;
   height: 100%;
-  left: -100%;
-  transition: 0.7s;
   overflow-y: scroll;
   max-width: 35rem;
 }
-.nav-menu.active {
-  transition: 0.45s;
-  left: 0rem;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-}
+
 #close-button {
   z-index: 5003;
   font-size: 3rem;
