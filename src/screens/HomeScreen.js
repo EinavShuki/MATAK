@@ -11,6 +11,7 @@ import { FiMenu } from "react-icons/fi";
 import MapComponent from "../components/MapComponent/MapComponent";
 import SideMenu from "../components/SideMenu";
 import StatusInfo from "../components/StatusInfo/StatusInfo";
+import { CSSTransition } from "react-transition-group";
 
 function HomeScreen() {
   const initialState = {
@@ -63,8 +64,16 @@ function HomeScreen() {
       <DispatchContext.Provider value={dispatch}>
         <FiMenu id="add-icon" onClick={() => setsideMenu(true)} />
         <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
-        {sideMenu && <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} />}
-        {/* <SideMenu isOpen={sideMenu} closeSideMenu={setsideMenu} /> */}
+
+        <CSSTransition
+          in={sideMenu}
+          timeout={330}
+          classNames="menu-transition"
+          unmountOnExit
+        >
+          <SideMenu closeSideMenu={setsideMenu} />
+        </CSSTransition>
+
         <StatusInfo />
         <MapComponent />
       </DispatchContext.Provider>
