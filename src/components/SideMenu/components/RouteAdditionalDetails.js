@@ -168,13 +168,14 @@ function RouteAdditionalDetails() {
 
       <TextField
         color="secondary"
-        style={{ margin: "1rem 0" }}
+        style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
         id="outlined-helperText"
         label="Driver's Full Name"
         variant="outlined"
       />
 
       <TextField
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
         color="secondary"
         id="outlined-multiline-static"
         label="Notes"

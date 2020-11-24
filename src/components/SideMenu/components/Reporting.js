@@ -72,6 +72,7 @@ function Reporting() {
       overflowY: "scroll",
       flexWrap: "nowrap",
       padding: "0 0.5rem",
+      backgroundColor: "rgba(0, 0, 0, 0.06)",
     },
   }));
   const classes = useStyles();
