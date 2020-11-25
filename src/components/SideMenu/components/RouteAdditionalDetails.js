@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  NativeSelect,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -40,10 +41,25 @@ function RouteAdditionalDetails() {
     "Civil defence",
     "UXO",
   ];
+
+  const phonePrefixes = [
+    "050",
+    "051",
+    "052",
+    "053",
+    "054",
+    "055",
+    "056",
+    "058",
+    "059",
+  ];
+
   const classes = useStyles();
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
   const [reason, setReason] = useState(reasonsArray[0]);
+  const [phonePrefix, setPhonePrefix] = useState("050");
+  const [phonePostfix, setPhonePostfix] = useState("");
 
   const handleStartingDate = (date) => {
     const today = new Date();
@@ -75,6 +91,14 @@ function RouteAdditionalDetails() {
     if (newDate >= startingDate) setEndingDate(newDate);
   };
 
+  function handlePhoneNumber(e) {
+    if (!Number.isInteger(parseInt(e.target.value))) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      setPhonePostfix(e.target.value);
+    }
+  }
   return (
     <>
       <h1>Additional Information</h1>
@@ -95,7 +119,7 @@ function RouteAdditionalDetails() {
           />
           <TextField
             color="secondary"
-            style={{ marginTop: "16px", width: "100px", paddingLeft: "0.5rem" }}
+            style={{ marginTop: "16px", width: "100px" }}
             label="Starting Hour"
             type="time"
             value={`${
@@ -117,7 +141,7 @@ function RouteAdditionalDetails() {
             }}
           />
         </div>
-        <div style={{ paddingTop: "1rem" }}>
+        <div style={{ marginTop: "1rem" }}>
           <KeyboardDatePicker
             color="secondary"
             disableToolbar
@@ -133,7 +157,7 @@ function RouteAdditionalDetails() {
           />
           <TextField
             color="secondary"
-            style={{ marginTop: "16px", width: "100px", paddingLeft: "0.5rem" }}
+            style={{ marginTop: "16px", width: "100px" }}
             label="Ending Hour"
             type="time"
             value={`${
@@ -156,7 +180,6 @@ function RouteAdditionalDetails() {
           />
         </div>
       </MuiPickersUtilsProvider>
-
       <FormControl style={{ margin: "1rem 0" }} color="secondary">
         <InputLabel id="reason-for-coordination">
           Reason For Coordination
@@ -173,17 +196,49 @@ function RouteAdditionalDetails() {
           ))}
         </Select>
       </FormControl>
-
       <TextField
         color="secondary"
         style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        id="outlined-helperText"
         label="Driver's Full Name"
         variant="outlined"
       />
+      <InputLabel style={{ margin: "1rem 0 0.5rem 0" }}>
+        Driver's Phone Number
+      </InputLabel>
+      <div style={{ display: "flex", marginBottom: "1rem" }}>
+        <FormControl
+          variant="outlined"
+          color="secondary"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
+            marginRight: "0.5rem",
+          }}
+        >
+          <Select
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={phonePrefix}
+            onChange={(e) => setPhonePrefix(e.target.value)}
+          >
+            {phonePrefixes.map((prefix, i) => (
+              <MenuItem key={prefix + i} value={prefix}>
+                {prefix}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <TextField
+          color="secondary"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", flexGrow: "1" }}
+          variant="outlined"
+          value={phonePostfix}
+          onChange={handlePhoneNumber}
+          inputProps={{ maxLength: 7 }}
+        />
+      </div>
 
       <TextField
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", marginTop: "1rem" }}
         color="secondary"
         id="outlined-multiline-static"
         label="Notes"
@@ -191,7 +246,6 @@ function RouteAdditionalDetails() {
         rows={3}
         variant="outlined"
       />
-
       <Button
         variant="contained"
         color="secondary"
