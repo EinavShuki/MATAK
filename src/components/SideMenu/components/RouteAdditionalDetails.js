@@ -77,7 +77,7 @@ function RouteAdditionalDetails() {
 
   return (
     <>
-      <h1>Additional information</h1>
+      <h1>Additional Information</h1>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <div>
           <KeyboardDatePicker
@@ -98,7 +98,11 @@ function RouteAdditionalDetails() {
             style={{ marginTop: "16px", width: "100px", paddingLeft: "0.5rem" }}
             label="Starting Hour"
             type="time"
-            value={`${startingDate.getHours()}:${
+            value={`${
+              startingDate.getHours() < 10
+                ? "0" + startingDate.getHours()
+                : startingDate.getHours()
+            }:${
               startingDate.getMinutes() < 10
                 ? "0" + startingDate.getMinutes()
                 : startingDate.getMinutes()
@@ -132,7 +136,11 @@ function RouteAdditionalDetails() {
             style={{ marginTop: "16px", width: "100px", paddingLeft: "0.5rem" }}
             label="Ending Hour"
             type="time"
-            value={`${endingDate.getHours()}:${
+            value={`${
+              endingDate.getHours() < 10
+                ? "0" + endingDate.getHours()
+                : endingDate.getHours()
+            }:${
               endingDate.getMinutes() < 10
                 ? "0" + endingDate.getMinutes()
                 : endingDate.getMinutes()
