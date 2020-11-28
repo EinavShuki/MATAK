@@ -6,7 +6,6 @@ import {
   MenuItem,
   Select,
   TextField,
-  NativeSelect,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
