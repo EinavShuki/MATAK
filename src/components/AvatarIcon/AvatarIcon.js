@@ -52,7 +52,7 @@ function AvatarIcon({ letter }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Link to={`/personal-area`} className="personal-area-link">
+        <Link to={`/my-account`} className="personal-area-link">
           <MenuItem>
             <MdAccountCircle className={classes.icon} />
             My Account
