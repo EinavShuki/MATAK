@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MatakModal({text, show}) {
     const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle);
+    const [modalStyle] = useState(getModalStyle);
 
     return (
         <div>
