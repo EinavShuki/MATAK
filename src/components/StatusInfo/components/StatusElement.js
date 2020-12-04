@@ -9,6 +9,8 @@ function StatusElement({ color, name, open }) {
       style={{
         backgroundColor: `${color}CC`,
         boxShadow: `0px 0px 6px 0px ${color}`,
+        flexShrink: 0,
+        fontSize: "0.9rem",
       }}
       className={"status-item " + (open ? "active" : "")}
     >

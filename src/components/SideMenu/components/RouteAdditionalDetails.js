@@ -91,10 +91,11 @@ function RouteAdditionalDetails() {
   };
 
   function handlePhoneNumber(e) {
-    if (!Number.isInteger(parseInt(e.target.value))) {
-      e.preventDefault();
-      e.stopPropagation();
-    } else {
+    const re = /^[0-9\b]+$/;
+
+    // if value is not blank, then test the regex
+
+    if (e.target.value === "" || re.test(e.target.value)) {
       setPhonePostfix(e.target.value);
     }
   }

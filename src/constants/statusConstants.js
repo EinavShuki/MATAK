@@ -7,6 +7,7 @@ import {
   grey,
   blue,
   green,
+  blueGrey,
 } from "@material-ui/core/colors/";
 
 export const STATUSES = {
@@ -41,5 +42,9 @@ export const STATUSES = {
   suspended: {
     name: "Suspended",
     color: pink[500],
+  },
+  permanent: {
+    name: "Permanent",
+    color: blueGrey[500],
   },
 };
