@@ -1,7 +1,6 @@
 import React from "react";
 import { ImAppleinc } from "react-icons/im";
 import { FaSearch, FaMapMarked, FaHistory } from "react-icons/fa";
-import { MdHistory } from "react-icons/md";
 import { ROUTE_DETAILS_PAGE } from "../../../constants/pageConstants";
 import { REPORTING_PAGE } from "../../../constants/pageConstants";
 

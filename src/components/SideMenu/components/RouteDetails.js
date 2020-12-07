@@ -6,21 +6,37 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TextField from "@material-ui/core/TextField";
 import { ROUTE_ADDITIONAL_DETAILS } from "../../../constants/pageConstants";
 import { Switch } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  routeType,
+  permanentRoute,
+} from "../../../actions/routeDetailsActions";
 
 function RouteDetails({ setPage }) {
-  const [permanent, setPermanent] = useState(false);
+  const dispatch = useDispatch();
+
+  const routeDetails = useSelector((state) => {
+    return state.routeDetails;
+  });
+
   const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });
   };
+
+  const handleRouteType = (type) => {
+    dispatch(routeType(type));
+  };
+
   return (
     <>
       <h1>Create a New Route</h1>
       <FormControlLabel
         control={
           <Checkbox
-            checked={permanent}
-            onChange={() => setPermanent((prev) => !prev)}
+            checked={routeDetails.isPermanent}
+            onChange={() => dispatch(permanentRoute())}
             name="permanentRoute"
           />
         }
@@ -40,9 +56,27 @@ function RouteDetails({ setPage }) {
       />
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
-        <Button style={{ width: "100%" }}>Line Route</Button>
-        <Button style={{ width: "100%" }}>Area</Button>
-        <Button style={{ width: "100%" }}>Point</Button>
+        <Button
+          onClick={() => handleRouteType("POLYLINE")}
+          variant={routeDetails.routeType === "POLYLINE" ? "contained" : ""}
+          style={{ width: "100%" }}
+        >
+          Line Route
+        </Button>
+        <Button
+          variant={routeDetails.routeType === "POLYGONE" ? "contained" : ""}
+          onClick={() => handleRouteType("POLYGONE")}
+          style={{ width: "100%" }}
+        >
+          Area
+        </Button>
+        <Button
+          variant={routeDetails.routeType === "PINPOINT" ? "contained" : ""}
+          onClick={() => handleRouteType("PINPOINT")}
+          style={{ width: "100%" }}
+        >
+          Point
+        </Button>
       </ButtonGroup>
 
       <h4 className="pt-5">Add Manually:</h4>
@@ -50,6 +84,7 @@ function RouteDetails({ setPage }) {
         <TextField
           style={{
             marginRight: "0.5rem",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
           }}
           color="secondary"
           id="outlined-number"
@@ -64,6 +99,7 @@ function RouteDetails({ setPage }) {
         <TextField
           style={{
             marginRight: "0.5rem",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
           }}
           color="secondary"
           id="outlined-number"
