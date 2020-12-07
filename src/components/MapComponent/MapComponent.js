@@ -1,20 +1,22 @@
-import React, { useContext } from "react";
-import L, { polygon } from "leaflet";
+import React from "react";
+import L from "leaflet";
 import {
   Map,
   Marker,
   Popup,
   TileLayer,
   Tooltip,
+  Polygon,
+  Polyline,
   ZoomControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapComponent.css";
-import PolyLine from "./components/PolyLine";
-import MapPolygon from "./components/MapPolygon";
+import { STATUSES } from "../../constants/statusConstants";
+
 //note:opacity: 0.2, pointerEvents: "none"
-import DispatchContext from "../../MapContext/DispatchContext";
-import StateContext from "../../MapContext/StateContext";
+import { useDispatch, useSelector } from "react-redux";
+import { addPosition } from "../../actions/routeDetailsActions";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -25,96 +27,24 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapComponent() {
-  const appDispatch = useContext(DispatchContext);
-  const appState = useContext(StateContext);
+  const dispatch = useDispatch();
 
-  //sets the latlng to position of the point we pressed on
-  function getPosition(e) {
-    if (appState.isPoly) {
-      appDispatch({
-        type: "polyGon",
-        value: e.latlng,
-      });
-    } else if (appState.isLine) {
-      appDispatch({
-        type: "polyLine",
-        value: e.latlng,
-      });
-    }
-    appDispatch({
-      type: "position",
-      value: e.latlng,
-    });
-  }
-  //removes the mark we pressed on
-  function removePosition(e) {
+  const routeDetails = useSelector((state) => {
+    return state.routeDetails;
+  });
+
+  const handleMapClick = (e) => {
     const pos = e.latlng;
-    appDispatch({
-      type: "position-trans",
-      value: appState.position.filter(
-        (item) => item.lat !== pos.lat && item.lng !== pos.lng
-      ),
-    });
-    appDispatch({
-      type: "polyLine-trans",
-      value: appState.polyLine.filter(
-        (item) => item.lat !== pos.lat && item.lng !== pos.lng
-      ),
-    });
-    appDispatch({
-      type: "polyGon-trans",
-      value: appState.polyGon.filter(
-        (item) => item.lat !== pos.lat && item.lng !== pos.lng
-      ),
-    });
-  }
+    dispatch(addPosition(pos));
+  };
 
   return (
     <>
-      {/* <button
-        onClick={() => {
-          appDispatch({
-            type: "polyGon-trans",
-            value: [],
-          });
-          appDispatch({
-            type: "polyLine-trans",
-            value: [],
-          });
-          appDispatch({
-            type: "position-trans",
-            value: [],
-          });
-        }}
-        id="clear"
-      >Clear all
-      </button>
-      <button
-        onClick={() => {
-          appDispatch({ type: "isPolyOff" });
-          appDispatch({ type: "isLineOn" });
-        }}
-        id="create-line"
-      >
-        create Line
-      </button>
-
-      <button
-        onClick={() => {
-          appDispatch({ type: "isPolyOn" });
-          appDispatch({ type: "isLineOff" });
-        }}
-        id="create-polygon"
-      >
-        create Polygon
-      </button> */}
-      {/*center-where the map is loacted , zoom-what is the zoom out we are from the location
-    the more zoom number is lower the more we get far from the location */}
       <Map
         zoomControl={false}
-        onclick={getPosition}
+        onclick={handleMapClick}
         center={[31.477632, 34.511871]}
-        zoom={10}
+        zoom={10.5}
       >
         <TileLayer
           //correct attribution for osm
@@ -122,13 +52,13 @@ function MapComponent() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
         <ZoomControl position="topright"></ZoomControl>
-        {appState.position &&
-          appState.position.map((pos, index) => {
+        {routeDetails.positions &&
+          routeDetails.positions.map((pos, index) => {
             return (
               <Marker
                 key={pos.lat + pos.lng + index}
                 position={pos}
-                onClick={removePosition}
+                // onClick={removePosition}
                 onmouseover={(e) => {
                   e.target.openPopup();
                 }}
@@ -145,8 +75,18 @@ function MapComponent() {
             );
           })}
 
-        {appState.polyLine && <PolyLine polyLine={appState.polyLine} />}
-        {appState.polyGon && <MapPolygon polyGon={appState.polyGon} />}
+        {routeDetails.routeType === "POLYLINE" && (
+          <Polyline
+            color={STATUSES.submmited.color}
+            positions={routeDetails.positions}
+          />
+        )}
+        {routeDetails.routeType === "POLYGONE" && (
+          <Polygon
+            color={STATUSES.submmited.color}
+            positions={routeDetails.positions}
+          />
+        )}
       </Map>
     </>
   );

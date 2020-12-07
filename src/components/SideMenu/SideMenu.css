@@ -43,7 +43,7 @@
   transition: 100ms;
   align-items: center;
   padding: 1rem 2rem;
-  margin: 0.1rem 0;
+  margin: 1rem 0;
 }
 
 .list-item:hover {
