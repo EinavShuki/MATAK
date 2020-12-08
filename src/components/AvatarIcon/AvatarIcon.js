@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import "./AvatarIcon.css";
 import { makeStyles, Menu, MenuItem } from "@material-ui/core";
-
 import {
   MdPowerSettingsNew,
   MdSettings,
   MdAccountCircle,
 } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -51,10 +51,13 @@ function AvatarIcon({ letter }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          <MdAccountCircle className={classes.icon} />
-          My Account
-        </MenuItem>
+        <Link to={`/my-account`}>
+          <MenuItem>
+            <MdAccountCircle className={classes.icon} />
+            My Account
+          </MenuItem>
+        </Link>
+
         {/* check for admin */}
         <MenuItem onClick={handleClose}>
           <MdSettings className={classes.icon} />
