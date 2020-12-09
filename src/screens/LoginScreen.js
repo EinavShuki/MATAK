@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const usernameRegex = /^[a-zA-Z0-9]{6,}[a-zA-Z]+[0-9]*$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+const usernameRegex = /^(?=.{1,15}$)[a-zA-Z]+[a-zA-Z0-9]*/;
+const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[a-zA-Z]).{8,30}$/;
 
 export default function LoginScreen({history}) {
     const [isUsernameValid, setIsUsernameValid] = useState(false);
