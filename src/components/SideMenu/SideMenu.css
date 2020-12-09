@@ -20,6 +20,11 @@
 #close-button:hover {
   transform: scale(1.2);
 }
+
+#close-button:active {
+  transform: scale(0.9);
+}
+
 #menu-div {
   min-height: 100%;
   display: flex;
