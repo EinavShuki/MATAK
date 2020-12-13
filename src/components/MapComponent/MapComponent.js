@@ -16,7 +16,7 @@ import { STATUSES } from "../../constants/statusConstants";
 
 //note:opacity: 0.2, pointerEvents: "none"
 import { useDispatch, useSelector } from "react-redux";
-import { addPosition } from "../../actions/routeDetailsActions";
+import { addPosition, removePosition } from "../../actions/routeDetailsActions";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -36,6 +36,11 @@ function MapComponent() {
   const handleMapClick = (e) => {
     const pos = e.latlng;
     dispatch(addPosition(pos));
+  };
+
+  const handleRemovePosition = (e) => {
+    const pos = e.latlng;
+    dispatch(removePosition(pos));
   };
 
   return (
@@ -58,7 +63,7 @@ function MapComponent() {
               <Marker
                 key={pos.lat + pos.lng + index}
                 position={pos}
-                // onClick={removePosition}
+                onClick={handleRemovePosition}
                 onmouseover={(e) => {
                   e.target.openPopup();
                 }}

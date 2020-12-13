@@ -4,6 +4,7 @@ import {
   PINPOINT_ROUTE,
   TOGGLE_PERMANENT_ROUTE,
   ADD_POSITION,
+  REMOVE_POSITION,
 } from "../constants/routeDetailsConstants";
 
 export const routeDetailsReducer = (state = {}, action) => {
@@ -18,6 +19,8 @@ export const routeDetailsReducer = (state = {}, action) => {
       return { ...state, isPermanent: !state.isPermanent };
     case ADD_POSITION:
       return { ...state, positions: [...state.positions, action.payload] };
+    case REMOVE_POSITION:
+      return { ...state, positions: action.payload }
     default:
       return state;
   }
