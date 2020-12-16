@@ -3,19 +3,20 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { routeDetailsReducer } from "./reducers/routeDetailsReducers";
+import { userReducer } from "./reducers/userReducer";
 
-const reducer = combineReducers({
-  routeDetails: routeDetailsReducer,
-});
+// const reducer = combineReducers({
+//   routeDetails: routeDetailsReducer,0
+//   userInfo: userReducer,
+// });
 
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
 const initialState = {
-  // userLogin: {
-  //   userInfo: userInfoFromLocalStorage,
-  // },
+  userInfo: { userInfoFromLocalStorage },
+
   routeDetails: {
     routeType: "",
     isPermanent: false,
