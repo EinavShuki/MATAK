@@ -252,7 +252,7 @@ function RouteAdditionalDetails() {
         style={{
           alignSelf: "flex-end",
           padding: "0.5rem 2rem",
-          margin: "4rem 0",
+          margin: "1rem 0",
         }}
       >
         Send
