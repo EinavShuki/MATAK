@@ -5,10 +5,10 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { routeDetailsReducer } from "./reducers/routeDetailsReducers";
 import { userReducer } from "./reducers/userReducer";
 
-// const reducer = combineReducers({
-//   routeDetails: routeDetailsReducer,0
-//   userInfo: userReducer,
-// });
+const reducer = combineReducers({
+  routeDetails: routeDetailsReducer,
+  userInfo: userReducer,
+});
 
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))

@@ -16,10 +16,14 @@ export const permanentRoute = () => (dispatch) => {
   });
 };
 
-export const addPosition = (position) => (dispatch) => {
+export const addPosition = (position) => (dispatch, getState) => {
+  const {
+    routeDetails: { positions },
+  } = getState();
+  const addedPositions = [...positions, position];
   dispatch({
     type: ADD_POSITION,
-    payload: position,
+    payload: addedPositions,
   });
 };
 

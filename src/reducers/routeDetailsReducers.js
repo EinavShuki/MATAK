@@ -18,9 +18,9 @@ export const routeDetailsReducer = (state = {}, action) => {
     case TOGGLE_PERMANENT_ROUTE:
       return { ...state, isPermanent: !state.isPermanent };
     case ADD_POSITION:
-      return { ...state, positions: [...state.positions, action.payload] };
+      return { ...state, positions: action.payload };
     case REMOVE_POSITION:
-      return { ...state, positions: action.payload }
+      return { ...state, positions: action.payload };
     default:
       return state;
   }
