@@ -5,23 +5,20 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
+import Avatar from "@material-ui/core/Avatar";
+
+import NavBar from "../components/NavBar";
 import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
 
 function MyAccountScreen() {
   function enableChnage() {}
   return (
     <>
+      <NavBar />
       <div className="container emp-profile">
         <form method="post">
           <div className="profile-img">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-              alt=""
-            />
-            <div className="file">
-              Change Photo
-              <input type="file" name="file" />
-            </div>
+            <Avatar style={{ transform: "scale(1.2)" }}>H</Avatar>
             <div className="user-details">
               <h1 className="name">Einav Shpigel</h1>
               <h3 className="organization-name">
