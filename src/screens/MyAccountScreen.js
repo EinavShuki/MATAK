@@ -15,60 +15,56 @@ function MyAccountScreen() {
   return (
     <>
       <NavBar />
-      <div className="container emp-profile">
-        <form method="post">
-          <div className="profile-img">
-            <Avatar style={{ transform: "scale(1.2)" }}>H</Avatar>
-            <div className="user-details">
-              <h1 className="name">Einav Shpigel</h1>
-              <h3 className="organization-name">
-                here we put the organization name
-              </h3>
-              <List component="nav" aria-label="main mailbox folders">
-                <ListItem button>
-                  <ListItemIcon>
-                    <MdEmail />
-                  </ListItemIcon>
-                  <ListItemText primary="User Email" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <MdLocalPhone />
-                  </ListItemIcon>
-                  <ListItemText primary="User Phone" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <MdVpnKey />
-                  </ListItemIcon>
-                  <ListItemText primary="Change password" />
-                </ListItem>
-              </List>
-              {/* SHOULD BE ENABLED ONLY IF  chang password BUTTON WAS PRESSED*/}
-              <div className="change-password">
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="off"
-                  autoFocus
-                />{" "}
-                <TextField
-                  variant="outlined"
-                  type="password"
-                  margin="normal"
-                  id="confirm-password"
-                  label="Confirm Password"
-                  name="confirm-password"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
+      <div className="frame">
+        <div className="user-details">
+          <h1 className="name">Einav Shpigel</h1>
+          <Avatar className="avatar_name" >ES</Avatar>
+          <h3 className="organization-name">
+            here we put the organization name
+          </h3>
+          <List component="nav" aria-label="main mailbox folders">
+            <ListItem button>
+              <ListItemIcon>
+                <MdEmail />
+              </ListItemIcon>
+              <ListItemText primary="User Email" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <MdLocalPhone />
+              </ListItemIcon>
+              <ListItemText primary="User Phone" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <MdVpnKey />
+              </ListItemIcon>
+              <ListItemText primary="Change password" />
+            </ListItem>
+          </List>
+          {/* SHOULD BE ENABLED ONLY IF  chang password BUTTON WAS PRESSED*/}
+          <div className="change-password">
+            <TextField
+              variant="outlined"
+              margin="normal"
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="off"
+              autoFocus
+            />{" "}
+            <TextField
+              variant="outlined"
+              type="password"
+              margin="normal"
+              id="confirm-password"
+              label="Confirm Password"
+              name="confirm-password"
+              autoComplete="off"
+            />
           </div>
-        </form>
+        </div>
       </div>
     </>
   );
