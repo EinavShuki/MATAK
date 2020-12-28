@@ -19,18 +19,21 @@ function MyAccountScreen() {
     <>
       <NavBar />
       <div className="frame">
-        <div className="user-details">
-          <h1 className="name">Einav Shpigel</h1>
-          <Avatar className="avatar_name">ES</Avatar>
-          <h3 className="organization-name">
-            here we put the organization name
-          </h3>
+        <h1 className="name">Einav Shpigel</h1>
+        <Avatar className="avatar_name">ES</Avatar>
+        <h3 className="organization-name" style={{ marginLeft: "6rem" }}>
+          here we put the organization name
+        </h3>
+        <div className="details">
           <List component="nav" aria-label="main mailbox folders">
             {selctedMail ? (
-              <ListItem input onFocus={() => {setSelctedPhone(false);setSelctedPassword(false);}}>
-                <ListItemIcon>
-                  <MdEmail />
-                </ListItemIcon>
+              <ListItem
+                input
+                onFocus={() => {
+                  setSelctedPhone(false);
+                  setSelctedPassword(false);
+                }}
+              >
                 <TextField
                   id="standard-basic"
                   label="Standard"
@@ -47,7 +50,7 @@ function MyAccountScreen() {
                   style={{
                     alignSelf: "flex-end",
                     padding: "0.5rem 0.5rem",
-                    margin: "0.5rem 0",
+                    margin: "0.5rem 0.5rem",
                   }}
                   onClick={() => setSelctedMail(false)}
                 >
@@ -71,10 +74,13 @@ function MyAccountScreen() {
                 <ListItemText primary="User Phone" />
               </ListItem>
             ) : (
-              <ListItem input onFocus={() => {setSelctedMail(false);setSelctedPassword(false);}}>
-                <ListItemIcon>
-                  <MdLocalPhone />
-                </ListItemIcon>
+              <ListItem
+                input
+                onFocus={() => {
+                  setSelctedMail(false);
+                  setSelctedPassword(false);
+                }}
+              >
                 <TextField
                   id="standard-basic"
                   label="Standard"
@@ -91,7 +97,7 @@ function MyAccountScreen() {
                   style={{
                     alignSelf: "flex-end",
                     padding: "0.5rem 0.5rem",
-                    margin: "0.5rem 0",
+                    margin: "0.5rem 0.5rem",
                   }}
                   onClick={() => setSelctedPhone(false)}
                 >
@@ -107,10 +113,18 @@ function MyAccountScreen() {
                 <ListItemText primary="Change Password" />
               </ListItem>
             ) : (
-              <ListItem input onFocus={() => {setSelctedPhone(false);setSelctedMail(false);}}>
-                <ListItemIcon>
-                  <MdVpnKey />
-                </ListItemIcon>
+              <ListItem
+                input
+                onFocus={() => {
+                  setSelctedPhone(false);
+                  setSelctedMail(false);
+                }}
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  marginLeft: "inherit",
+                }}
+              >
                 <TextField
                   id="standard-basic"
                   label="Standard"
@@ -127,18 +141,18 @@ function MyAccountScreen() {
                   label="Standard"
                   margin="normal"
                   name="Mail"
-                  label="Conform Password"
+                  label="Confirm Password"
                   type="password"
                   autoComplete="off"
                   autoFocus
-                />
+                />{" "}
                 <Button
                   variant="contained"
                   color="primary"
                   style={{
                     alignSelf: "flex-end",
                     padding: "0.5rem 0.5rem",
-                    margin: "0.5rem 0",
+                    margin: "0.5rem 0.5rem",
                   }}
                   onClick={() => setSelctedPassword(false)}
                 >
