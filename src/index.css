@@ -87,7 +87,8 @@ a {
   display: block;
   padding: 2rem 0.3rem;
   margin: auto;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   align-content: center;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-radius: 15px;
@@ -103,9 +104,9 @@ a {
   float: left;
   transform: scale(1.2);
 }
-.details {
+/* .details {
   margin-left: auto;
   width: 83%;
   position: relative;
 
-}
+} */

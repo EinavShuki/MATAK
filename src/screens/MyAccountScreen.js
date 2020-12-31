@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 
 import Avatar from "@material-ui/core/Avatar";
 
@@ -12,9 +11,6 @@ import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
 import { Button } from "@material-ui/core";
 
 function MyAccountScreen() {
-  const [selctedPhone, setSelctedPhone] = useState(false);
-  const [selctedMail, setSelctedMail] = useState(false);
-  const [selctedPassword, setSelctedPassword] = useState(false);
   return (
     <>
       <NavBar />
@@ -25,142 +21,85 @@ function MyAccountScreen() {
           here we put the organization name
         </h3>
         <div className="details">
-          <List component="nav" aria-label="main mailbox folders">
-            {selctedMail ? (
-              <ListItem
-                input
-                onFocus={() => {
-                  setSelctedPhone(false);
-                  setSelctedPassword(false);
-                }}
-              >
-                <TextField
-                  id="standard-basic"
-                  label="Standard"
-                  margin="normal"
-                  name="Mail"
-                  label="User Email"
-                  type="email"
-                  autoComplete="off"
-                  autoFocus
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    alignSelf: "flex-end",
-                    padding: "0.5rem 0.5rem",
-                    margin: "0.5rem 0.5rem",
-                  }}
-                  onClick={() => setSelctedMail(false)}
-                >
-                  Done
-                </Button>
-              </ListItem>
-            ) : (
-              <ListItem button onClick={() => setSelctedMail(true)}>
-                <ListItemIcon>
-                  <MdEmail />
-                </ListItemIcon>
-                <ListItemText primary="User Email" />
-              </ListItem>
-            )}
-
-            {!selctedPhone ? (
-              <ListItem button onClick={() => setSelctedPhone(true)}>
-                <ListItemIcon>
-                  <MdLocalPhone />
-                </ListItemIcon>
-                <ListItemText primary="User Phone" />
-              </ListItem>
-            ) : (
-              <ListItem
-                input
-                onFocus={() => {
-                  setSelctedMail(false);
-                  setSelctedPassword(false);
-                }}
-              >
-                <TextField
-                  id="standard-basic"
-                  label="Standard"
-                  margin="normal"
-                  name="Mail"
-                  label="User Phone"
-                  type="tel"
-                  autoComplete="off"
-                  autoFocus
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    alignSelf: "flex-end",
-                    padding: "0.5rem 0.5rem",
-                    margin: "0.5rem 0.5rem",
-                  }}
-                  onClick={() => setSelctedPhone(false)}
-                >
-                  Done
-                </Button>
-              </ListItem>
-            )}
-            {!selctedPassword ? (
-              <ListItem button onClick={() => setSelctedPassword(true)}>
-                <ListItemIcon>
-                  <MdVpnKey />
-                </ListItemIcon>
-                <ListItemText primary="Change Password" />
-              </ListItem>
-            ) : (
-              <ListItem
-                input
-                onFocus={() => {
-                  setSelctedPhone(false);
-                  setSelctedMail(false);
-                }}
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  marginLeft: "inherit",
-                }}
-              >
-                <TextField
-                  id="standard-basic"
-                  label="Standard"
-                  margin="normal"
-                  name="Mail"
-                  label="Password"
-                  type="password"
-                  autoComplete="off"
-                  autoFocus
-                />
-                {"  "}
-                <TextField
-                  id="standard-basic"
-                  label="Standard"
-                  margin="normal"
-                  name="Mail"
-                  label="Confirm Password"
-                  type="password"
-                  autoComplete="off"
-                  autoFocus
-                />{" "}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    alignSelf: "flex-end",
-                    padding: "0.5rem 0.5rem",
-                    margin: "0.5rem 0.5rem",
-                  }}
-                  onClick={() => setSelctedPassword(false)}
-                >
-                  Done
-                </Button>
-              </ListItem>
-            )}
+          <List
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              padding: "0 2rem",
+            }}
+          >
+            <ListItem>
+              <ListItemIcon>
+                <MdEmail />
+              </ListItemIcon>
+              <TextField
+                fullWidth
+                id="standard-basic"
+                margin="dense"
+                name="Mail"
+                label="User Email"
+                type="email"
+                autoComplete="off"
+                autoFocus
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <MdLocalPhone />
+              </ListItemIcon>
+              <TextField
+                fullWidth
+                id="standard-basic"
+                margin="normal"
+                name="Mail"
+                label="User Phone"
+                type="tel"
+                autoComplete="off"
+                autoFocus
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <MdVpnKey />
+              </ListItemIcon>
+              <TextField
+                fullWidth
+                id="standard-basic"
+                margin="normal"
+                name="Mail"
+                label="Password"
+                type="password"
+                autoComplete="off"
+                autoFocus
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon> </ListItemIcon>
+              <TextField
+                fullWidth
+                id="standard-basic"
+                margin="normal"
+                name="Mail"
+                label="Confirm Password"
+                type="password"
+                autoComplete="off"
+                autoFocus
+              />{" "}
+            </ListItem>
           </List>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{
+              alignSelf: "center",
+              width: "60%",
+              padding: "0.5rem 0.5rem",
+              marginLeft: "6.3rem",
+              marginTop: "1rem",
+            }}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     </>
