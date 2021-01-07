@@ -185,7 +185,7 @@ function RouteAdditionalDetails() {
           Reason For Coordination
         </InputLabel>
         <Select
-          labelId="dreason-for-coordination"
+          labelId="reason-for-coordination"
           value={reason}
           onChange={(e) => setReason(e.target.value)}
         >
@@ -196,6 +196,22 @@ function RouteAdditionalDetails() {
           ))}
         </Select>
       </FormControl>
+
+      <FormControl style={{ margin: "1rem 0" }} color="secondary">
+        <InputLabel id="car">Car</InputLabel>
+        <Select
+          labelId="car"
+          // value={reason}
+          // onChange={(e) => setReason(e.target.value)}
+        >
+          {[].map((car) => (
+            <MenuItem key={car} value={car}>
+              {car}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <TextField
         color="secondary"
         style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
@@ -246,6 +262,7 @@ function RouteAdditionalDetails() {
         rows={3}
         variant="outlined"
       />
+      <input style={{ marginTop: "1rem" }} type="file" />
       <Button
         variant="contained"
         color="secondary"
