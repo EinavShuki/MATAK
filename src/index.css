@@ -105,3 +105,10 @@ a {
   position: relative;
 
 } */
+
+/* admin-panel */
+.table-container {
+  width: 80%;
+  height: 400px;
+  margin: 0 auto;
+}
