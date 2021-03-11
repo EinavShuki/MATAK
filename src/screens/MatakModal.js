@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MatakModal({text, show}) {
+export default function MatakModal({children, text, show, handleClose}) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
 
@@ -33,11 +33,13 @@ export default function MatakModal({text, show}) {
         <div>
             <Modal
                 open={show}
+                onClose={handleClose}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
             >
                 <div style={modalStyle} className={classes.paper}>
                     <p id="simple-modal-title">{text}</p>
+                    {children}
                 </div>
             </Modal>
         </div>

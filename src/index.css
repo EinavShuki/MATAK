@@ -109,6 +109,22 @@ a {
 /* admin-panel */
 .table-container {
   width: 80%;
-  height: 400px;
+  height: 500px;
   margin: 0 auto;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.positive-btn {
+  background-color: "#00c853";
+  color: '#fff'
+}
+
+
+.negative-btn {
+  background-color: "#f44336";
+  color: '#fff'
 }
