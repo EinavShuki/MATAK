@@ -12,6 +12,7 @@ export const routesSlice = createSlice({
   reducers: {
     positionsReceived: (state, action) => {
       state.positions = action.payload
+      state.loading = "idle";
     },
     setRouteType: (state, action) => {
       state.routeType = `${action.payload}_ROUTE`;

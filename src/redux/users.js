@@ -12,9 +12,11 @@ export const usersSlice = createSlice({
   reducers: {
     currentUserReceived: (state, action) => {
       state.currentUser = action.payload;
+      state.loading = 'idle'
     },
     usersReceived: (state, action) => {
       state.users = action.payload;
+      state.loading = "idle";
     },
     userLoading: (state, action) => {
       state.loading = "pending";
