@@ -16,7 +16,7 @@ import { STATUSES } from "../../constants/statusConstants";
 
 //note:opacity: 0.2, pointerEvents: "none"
 import { useDispatch, useSelector } from "react-redux";
-import { addPosition, removePosition } from "../../actions/routeDetailsActions";
+import { addPosition, removePosition } from "../../redux/routes";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -29,9 +29,7 @@ L.Icon.Default.mergeOptions({
 function MapComponent() {
   const dispatch = useDispatch();
 
-  const routeDetails = useSelector((state) => {
-    return state.routeDetails;
-  });
+  const { positions, routeType } = useSelector((state) =>  state.routes);
 
   const handleMapClick = (e) => {
     const pos = e.latlng;
@@ -57,8 +55,8 @@ function MapComponent() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
         <ZoomControl position="topright"></ZoomControl>
-        {routeDetails.positions &&
-          routeDetails.positions.map((pos, index) => {
+        {positions &&
+          positions.map((pos, index) => {
             return (
               <Marker
                 key={pos.lat + pos.lng + index}
@@ -80,16 +78,16 @@ function MapComponent() {
             );
           })}
 
-        {routeDetails.routeType === "POLYLINE" && (
+        {routeType === "POLYLINE" && (
           <Polyline
             color={STATUSES.submmited.color}
-            positions={routeDetails.positions}
+            positions={positions}
           />
         )}
-        {routeDetails.routeType === "POLYGONE" && (
+        {routeType === "POLYGONE" && (
           <Polygon
             color={STATUSES.submmited.color}
-            positions={routeDetails.positions}
+            positions={positions}
           />
         )}
       </Map>
