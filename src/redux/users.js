@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { USERS } from "../api";
+import { CURRENT_USER, USERS } from "../api";
 
 export const usersSlice = createSlice({
   name: "users",
@@ -42,7 +42,7 @@ export const fetchCurrentUser = () => async (dispatch) => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
-    dispatch(currentUserReceived({ id: "123" }));
+    dispatch(currentUserReceived(CURRENT_USER));
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
   }

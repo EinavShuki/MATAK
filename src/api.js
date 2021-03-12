@@ -1,3 +1,5 @@
+export const CURRENT_USER = {id: '123456'} 
+
 export const USERS = [
   {
     id: 1,
