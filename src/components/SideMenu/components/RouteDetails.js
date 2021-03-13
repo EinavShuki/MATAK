@@ -7,16 +7,16 @@ import TextField from "@material-ui/core/TextField";
 import { ROUTE_ADDITIONAL_DETAILS } from "../../../constants/pageConstants";
 import { Switch } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-  setRouteType,
-  setPermanentRoute,
-} from "../../../redux/routes";
+import { routeType, permanentRoute } from "../../../redux/createdRouteReducer";
 
 function RouteDetails({ setPage }) {
-  const dispatch = useDispatch();
+  const [isBeingCreated, setIsBeingCreated] = useState(false);
+  const [isAddedRoute, setIsAddedRoute] = useState(false);
 
-  const { isPermanent, routeType } = useSelector((state) => state.routes);
+  const dispatch = useDispatch();
+  const createdRoute = useSelector((state) => {
+    return state.createdRoute;
+  });
 
   const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
@@ -24,7 +24,13 @@ function RouteDetails({ setPage }) {
   };
 
   const handleRouteType = (type) => {
-    dispatch(setRouteType(type));
+    setIsBeingCreated(true);
+    setIsAddedRoute(false);
+    dispatch(routeType(type));
+  };
+  const handleAddRoute = () => {
+    setIsBeingCreated(false);
+    setIsAddedRoute(true);
   };
 
   return (
@@ -33,9 +39,10 @@ function RouteDetails({ setPage }) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={isPermanent}
-            onChange={() => dispatch(setPermanentRoute())}
+            checked={Boolean(createdRoute[0] && createdRoute[0].isPermanent)}
+            onChange={() => dispatch(permanentRoute())}
             name="permanentRoute"
+            disabled={!createdRoute.length}
           />
         }
         label="Create a Permanent Route"
@@ -55,27 +62,57 @@ function RouteDetails({ setPage }) {
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
         <Button
-          onClick={() => handleRouteType("POLYLINE")}
-          variant={routeType === "POLYLINE" ? "contained" : ""}
+          onClick={() => handleRouteType("LineString")}
+          variant={
+            !isAddedRoute &&
+            createdRoute[0] &&
+            createdRoute[0].routeType === "LineString"
+              ? "contained"
+              : ""
+          }
           style={{ width: "100%" }}
+          disabled={isBeingCreated}
         >
           Line Route
         </Button>
         <Button
-          variant={routeType === "POLYGONE" ? "contained" : ""}
-          onClick={() => handleRouteType("POLYGONE")}
+          variant={
+            !isAddedRoute &&
+            createdRoute[0] &&
+            createdRoute[0].routeType === "Polygon"
+              ? "contained"
+              : ""
+          }
+          onClick={() => handleRouteType("Polygon")}
           style={{ width: "100%" }}
+          disabled={isBeingCreated}
         >
           Area
         </Button>
         <Button
-          variant={routeType === "PINPOINT" ? "contained" : ""}
-          onClick={() => handleRouteType("PINPOINT")}
+          variant={
+            !isAddedRoute &&
+            createdRoute[0] &&
+            createdRoute[0].routeType === "Point"
+              ? "contained"
+              : ""
+          }
+          onClick={() => handleRouteType("Point")}
           style={{ width: "100%" }}
+          disabled={isBeingCreated}
         >
           Point
         </Button>
       </ButtonGroup>
+      <Button
+        style={{ marginTop: "1.33em" }}
+        variant="contained"
+        color="secondary"
+        disabled={!createdRoute.length}
+        onClick={handleAddRoute}
+      >
+        Add Another Route Type
+      </Button>
 
       <h4 className="pt-5">Add Manually:</h4>
       <div>
