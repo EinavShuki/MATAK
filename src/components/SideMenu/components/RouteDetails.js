@@ -9,16 +9,14 @@ import { Switch } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  routeType,
-  permanentRoute,
-} from "../../../actions/routeDetailsActions";
+  setRouteType,
+  setPermanentRoute,
+} from "../../../redux/routes";
 
 function RouteDetails({ setPage }) {
   const dispatch = useDispatch();
 
-  const routeDetails = useSelector((state) => {
-    return state.routeDetails;
-  });
+  const { isPermanent, routeType } = useSelector((state) => state.routes);
 
   const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
@@ -26,7 +24,7 @@ function RouteDetails({ setPage }) {
   };
 
   const handleRouteType = (type) => {
-    dispatch(routeType(type));
+    dispatch(setRouteType(type));
   };
 
   return (
@@ -35,8 +33,8 @@ function RouteDetails({ setPage }) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={routeDetails.isPermanent}
-            onChange={() => dispatch(permanentRoute())}
+            checked={isPermanent}
+            onChange={() => dispatch(setPermanentRoute())}
             name="permanentRoute"
           />
         }
@@ -58,20 +56,20 @@ function RouteDetails({ setPage }) {
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
         <Button
           onClick={() => handleRouteType("POLYLINE")}
-          variant={routeDetails.routeType === "POLYLINE" ? "contained" : ""}
+          variant={routeType === "POLYLINE" ? "contained" : ""}
           style={{ width: "100%" }}
         >
           Line Route
         </Button>
         <Button
-          variant={routeDetails.routeType === "POLYGONE" ? "contained" : ""}
+          variant={routeType === "POLYGONE" ? "contained" : ""}
           onClick={() => handleRouteType("POLYGONE")}
           style={{ width: "100%" }}
         >
           Area
         </Button>
         <Button
-          variant={routeDetails.routeType === "PINPOINT" ? "contained" : ""}
+          variant={routeType === "PINPOINT" ? "contained" : ""}
           onClick={() => handleRouteType("PINPOINT")}
           style={{ width: "100%" }}
         >

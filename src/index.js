@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "leaflet/dist/leaflet.css";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./redux/store";
 import App from "./App";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
