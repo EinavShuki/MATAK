@@ -7,7 +7,11 @@ import TextField from "@material-ui/core/TextField";
 import { ROUTE_ADDITIONAL_DETAILS } from "../../../constants/pageConstants";
 import { Switch } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { routeType, permanentRoute } from "../../../redux/createdRouteReducer";
+import {
+  createNewRoute,
+  togglePermanentRoute,
+  removeLastRoute,
+} from "../../../redux/createdRouteReducer";
 
 function RouteDetails({ setPage }) {
   const [isBeingCreated, setIsBeingCreated] = useState(false);
@@ -26,11 +30,15 @@ function RouteDetails({ setPage }) {
   const handleRouteType = (type) => {
     setIsBeingCreated(true);
     setIsAddedRoute(false);
-    dispatch(routeType(type));
+    dispatch(createNewRoute(type));
   };
   const handleAddRoute = () => {
     setIsBeingCreated(false);
     setIsAddedRoute(true);
+  };
+  const handleRemoveLastRoute = () => {
+    dispatch(removeLastRoute());
+    setIsBeingCreated(false);
   };
 
   return (
@@ -40,7 +48,7 @@ function RouteDetails({ setPage }) {
         control={
           <Checkbox
             checked={Boolean(createdRoute[0] && createdRoute[0].isPermanent)}
-            onChange={() => dispatch(permanentRoute())}
+            onChange={() => dispatch(togglePermanentRoute())}
             name="permanentRoute"
             disabled={!createdRoute.length}
           />
@@ -112,6 +120,15 @@ function RouteDetails({ setPage }) {
         onClick={handleAddRoute}
       >
         Add Another Route Type
+      </Button>
+      <Button
+        style={{ marginTop: "1.33em" }}
+        variant="contained"
+        color="secondary"
+        onClick={handleRemoveLastRoute}
+        disabled={!createdRoute.length}
+      >
+        Delete Last Route
       </Button>
 
       <h4 className="pt-5">Add Manually:</h4>

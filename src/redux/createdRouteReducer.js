@@ -21,7 +21,9 @@ export const createdRouteSlice = createSlice({
         currentRoute.positions = [payload];
       }
     },
-    removePosition: (state, action) => {},
+    removeLastRoute: (state, action) => {
+      state.pop();
+    },
   },
 });
 
@@ -29,18 +31,15 @@ export const {
   createRoute,
   togglePermanentRoute,
   addPosition,
-  removePosition,
+  removeLastRoute,
 } = createdRouteSlice.actions;
 
 export default createdRouteSlice.reducer;
 
-export const routeType = (type) => (dispatch) => {
+export const createNewRoute = (type) => (dispatch) => {
   dispatch(createRoute({ routeType: type, permanent: false, positions: [] }));
 };
 
-export const permanentRoute = () => (dispatch) => {
-  dispatch(togglePermanentRoute());
-};
 export const addPositionToCurrent = (position) => (dispatch) => {
   dispatch(addPosition(position));
 };

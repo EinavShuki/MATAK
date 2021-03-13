@@ -18,11 +18,7 @@ import { STATUSES } from "../../constants/statusConstants";
 //note:opacity: 0.2, pointerEvents: "none"
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  routeType,
-  permanentRoute,
-  addPositionToCurrent,
-} from "../../redux/createdRouteReducer";
+import { addPositionToCurrent } from "../../redux/createdRouteReducer";
 
 import { info, InfoArray } from "../../constants/fakegeojson";
 
