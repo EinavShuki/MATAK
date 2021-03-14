@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from '../redux/users'
+import { fetchUsers } from "../redux/users";
 
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import Button from "@material-ui/core/Button";
 import NavBar from "../components/NavBar";
 import Modal from "./MatakModal";
+import ActionButtons from "../components/AdminScreen/ActionButtons";
+import UserEditForm from "../components/AdminScreen/UserEditForm";
 
 const ManagementScreen = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users } = useSelector((state) => state.users);
+  const { users, loading } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUsers())
-  }, [dispatch])
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -108,66 +110,28 @@ const ManagementScreen = () => {
           columns={columns}
           pageSize={10}
           checkboxSelection
+          loading={loading === "pending"}
         />
       </div>
-      {showEditModal ? (
+      {showEditModal && (
         <Modal
           text={"Edit User Details"}
           show
           handleClose={() => setShowEditModal(false)}
         >
-          <p>{`id: ${selectedRow.id}`}</p>
-          <p>{`first name: ${selectedRow.firstName}`}</p>
-          <p>{`last name: ${selectedRow.lastName}`}</p>
-          <div className="confirm-buttons">
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "#00c853",
-                color: "#fff",
-                marginRight: "3px",
-              }}
-            >
-              Confirm
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#f44336", color: "#fff" }}
-            >
-              Cancel
-            </Button>
-          </div>
+          <UserEditForm user={selectedRow} />
+          <ActionButtons />
         </Modal>
-      ) : null}
-      {showDeleteModal ? (
+      )}
+      {showDeleteModal && (
         <Modal
           text={"Are you sure you to delete this user?"}
           show
           handleClose={() => setShowDeleteModal(false)}
         >
-          <p>{`id: ${selectedRow.id}`}</p>
-          <p>{`first name: ${selectedRow.firstName}`}</p>
-          <p>{`last name: ${selectedRow.lastName}`}</p>
-          <div className="confirm-buttons">
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "#00c853",
-                color: "#fff",
-                marginRight: "3px",
-              }}
-            >
-              Yes
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#f44336", color: "#fff" }}
-            >
-              Cancel
-            </Button>
-          </div>
+          <ActionButtons />
         </Modal>
-      ) : null}
+      )}
     </>
   );
 };
