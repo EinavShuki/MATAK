@@ -2,14 +2,14 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
-import { Button, InputAdornment } from "@material-ui/core";
+import { MdVpnKey, MdEmail, MdLocalPhone, MdAccountCircle, MdCardTravel, MdPieChart } from "react-icons/md";
+import {InputAdornment } from "@material-ui/core";
 
 function UserEditForm({
   user: { id, firstName, lastName, email, mobile, organization, usertype },
 }) {
   return (
-    <div>
+    <form>
       <List
         style={{
           display: "flex",
@@ -30,7 +30,7 @@ function UserEditForm({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <MdEmail />
+                  <MdAccountCircle />
                 </InputAdornment>
               ),
             }}
@@ -49,7 +49,7 @@ function UserEditForm({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <MdEmail />
+                  <MdAccountCircle />
                 </InputAdornment>
               ),
             }}
@@ -106,7 +106,7 @@ function UserEditForm({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <MdVpnKey />
+                  <MdCardTravel />
                 </InputAdornment>
               ),
             }}
@@ -125,14 +125,14 @@ function UserEditForm({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <MdVpnKey />
+                  <MdPieChart />
                 </InputAdornment>
               ),
             }}
           />
         </ListItem>
       </List>
-    </div>
+    </form>
   );
 }
 
