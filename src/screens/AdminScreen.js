@@ -120,7 +120,10 @@ const ManagementScreen = () => {
           handleClose={() => setShowEditModal(false)}
         >
           <UserEditForm user={selectedRow} />
-          <ActionButtons />
+          <ActionButtons
+            onOk={() => console.log("ok")}
+            onCancel={() => setShowEditModal(false)}
+          />
         </Modal>
       )}
       {showDeleteModal && (
@@ -129,7 +132,10 @@ const ManagementScreen = () => {
           show
           handleClose={() => setShowDeleteModal(false)}
         >
-          <ActionButtons />
+          <ActionButtons
+            onOk={() => console.log("ok")}
+            onCancel={() => setShowDeleteModal(false)}
+          />
         </Modal>
       )}
     </>
