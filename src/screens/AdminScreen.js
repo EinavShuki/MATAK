@@ -119,9 +119,9 @@ const ManagementScreen = () => {
           show
           handleClose={() => setShowEditModal(false)}
         >
-          <UserEditForm user={selectedRow} />
-          <ActionButtons
-            onOk={() => console.log("ok")}
+          <UserEditForm
+            user={selectedRow}
+            onFormSubmit={(user) => console.log(user)}
             onCancel={() => setShowEditModal(false)}
           />
         </Modal>

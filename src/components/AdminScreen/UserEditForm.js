@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { MdVpnKey, MdEmail, MdLocalPhone, MdAccountCircle, MdCardTravel, MdPieChart } from "react-icons/md";
-import {InputAdornment } from "@material-ui/core";
+import ActionButtons from "./ActionButtons";
+import {
+  MdEmail,
+  MdLocalPhone,
+  MdAccountCircle,
+  MdCardTravel,
+  MdPieChart,
+} from "react-icons/md";
+import { InputAdornment } from "@material-ui/core";
 
-function UserEditForm({
-  user: { id, firstName, lastName, email, mobile, organization, usertype },
-}) {
+function UserEditForm({ user, onFormSubmit, onCancel }) {
+  const [userDetails, setUserDetails] = useState(user);
+
+  const handleChange = ({ target }) => {
+    setUserDetails((prevUser) => ({
+      ...prevUser,
+      [target.name]: target.value,
+    }));
+  };
+
   return (
     <form>
       <List
@@ -21,12 +35,13 @@ function UserEditForm({
           <TextField
             fullWidth
             margin="dense"
-            name="FirstName"
+            name="firstName"
             label="First Name"
             type="text"
             autoComplete="off"
             autoFocus
-            value={firstName}
+            onChange={handleChange}
+            value={userDetails.firstName}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -40,12 +55,13 @@ function UserEditForm({
           <TextField
             fullWidth
             margin="dense"
-            name="LastName"
+            name="lastName"
             label="Last Name"
             type="text"
             autoComplete="off"
             autoFocus
-            value={lastName}
+            onChange={handleChange}
+            value={userDetails.lastName}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -59,12 +75,13 @@ function UserEditForm({
           <TextField
             fullWidth
             margin="dense"
-            name="Mail"
+            name="email"
             label="User Email"
             type="email"
             autoComplete="off"
             autoFocus
-            value={email}
+            onChange={handleChange}
+            value={userDetails.email}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -78,12 +95,13 @@ function UserEditForm({
           <TextField
             fullWidth
             margin="normal"
-            name="Mobile"
+            name="mobile"
             label="Mobile"
             type="tel"
             autoComplete="off"
             autoFocus
-            value={mobile}
+            onChange={handleChange}
+            value={userDetails.mobile}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -102,7 +120,8 @@ function UserEditForm({
             type="text"
             autoComplete="off"
             autoFocus
-            value={organization}
+            onChange={handleChange}
+            value={userDetails.organization}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -121,7 +140,8 @@ function UserEditForm({
             type="text"
             autoComplete="off"
             autoFocus
-            value={usertype}
+            onChange={handleChange}
+            value={userDetails.usertype}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -132,6 +152,10 @@ function UserEditForm({
           />
         </ListItem>
       </List>
+      <ActionButtons
+        onOk={() => onFormSubmit(userDetails)}
+        onCancel={onCancel}
+      />
     </form>
   );
 }
