@@ -12,7 +12,7 @@ export const usersSlice = createSlice({
   reducers: {
     currentUserReceived: (state, action) => {
       state.currentUser = action.payload;
-      state.loading = 'idle'
+      state.loading = "idle";
     },
     usersReceived: (state, action) => {
       state.users = action.payload;
@@ -38,7 +38,7 @@ export const {
   logoutUser,
 } = usersSlice.actions;
 
-export default usersSlice.reducer
+export default usersSlice.reducer;
 
 export const fetchCurrentUser = () => async (dispatch) => {
   dispatch(userLoading());

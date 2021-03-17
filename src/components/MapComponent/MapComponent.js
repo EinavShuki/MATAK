@@ -9,6 +9,7 @@ import {
   Polygon,
   Polyline,
   ZoomControl,
+  GeoJSON,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapComponent.css";
@@ -16,7 +17,10 @@ import { STATUSES } from "../../constants/statusConstants";
 
 //note:opacity: 0.2, pointerEvents: "none"
 import { useDispatch, useSelector } from "react-redux";
-import { addPosition, removePosition } from "../../redux/routes";
+
+import { addPositionToCurrent } from "../../redux/createdRouteReducer";
+
+import { info, InfoArray } from "../../constants/fakegeojson";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -28,19 +32,70 @@ L.Icon.Default.mergeOptions({
 
 function MapComponent() {
   const dispatch = useDispatch();
-
-  const { positions, routeType } = useSelector((state) =>  state.routes);
+  const createdRoute = useSelector((state) => {
+    return state.createdRoute;
+  });
 
   const handleMapClick = (e) => {
     const pos = e.latlng;
-    dispatch(addPosition(pos));
+    const { lat, lng } = pos;
+    dispatch(addPositionToCurrent({ lat, lng }));
   };
 
   const handleRemovePosition = (e) => {
     const pos = e.latlng;
-    dispatch(removePosition(pos));
+    // dispatch(removePosition(pos));
   };
 
+  function whenClicked(e) {
+    console.log(e);
+  }
+
+  const handleClickOnRoute = (route, layer) => {
+    layer.on({
+      click: whenClicked,
+    });
+  };
+
+  const renderRoutes = () => {
+    const filteredRoutes = createdRoute.filter((route) => {
+      if (route.routeType && route.positions.length) {
+        return route;
+      }
+    });
+    const routesToRender = filteredRoutes.map((route, index) => {
+      switch (route.routeType) {
+        case "Point":
+          return (
+            <Marker index={index} position={route.positions[0]}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          );
+        case "LineString":
+          return (
+            <Polyline
+              index={index}
+              color={STATUSES.submmited.color}
+              positions={[route.positions]}
+            />
+          );
+        case "Polygon":
+          return (
+            <Polygon
+              index={index}
+              color={STATUSES.submmited.color}
+              positions={[route.positions]}
+            />
+          );
+        default:
+          return;
+      }
+    });
+
+    return routesToRender;
+  };
   return (
     <>
       <Map
@@ -54,9 +109,16 @@ function MapComponent() {
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
-        <ZoomControl position="topright"></ZoomControl>
-        {positions &&
-          positions.map((pos, index) => {
+        <ZoomControl position="topright" />
+
+        {/* {InfoArray.map((x, i) => (
+          <GeoJSON key={i} data={x} onEachFeature={handleClickOnRoute} />
+        ))} */}
+
+        {renderRoutes()}
+
+        {/* {routeDetails.positions &&
+          routeDetails.positions.map((pos, index) => {
             return (
               <Marker
                 key={pos.lat + pos.lng + index}
@@ -76,20 +138,72 @@ function MapComponent() {
                 </Popup>
               </Marker>
             );
-          })}
+          })} */}
 
-        {routeType === "POLYLINE" && (
+        {/* 
+        {routeDetails.map((kindOfRoute, index) => {
+          if (
+            kindOfRoute.routeType === "Point" &&
+            kindOfRoute.positions.length
+          ) {
+            return (
+              <Marker index={index} position={kindOfRoute.positions[0]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            );
+          } else if (
+            kindOfRoute.positions.length &&
+            kindOfRoute.routeType === "LineString"
+          ) {
+            console.log("object");
+            return (
+              <Polyline
+                index={index}
+                color={STATUSES.submmited.color}
+                positions={kindOfRoute.positions}
+              />
+            );
+          } else if (
+            kindOfRoute.positions.length &&
+            kindOfRoute.routeType === "Polygon"
+          ) {
+            return (
+              <Polygon
+                index={index}
+                color={STATUSES.submmited.color}
+                positions={kindOfRoute.positions}
+              />
+            );
+          }
+        })} */}
+
+        {/* {routeDetails.routeType === "Point" && routeDetails.positions && (
+          <Marker
+            position={[
+              routeDetails.positions[0].lat,
+              routeDetails.positions[0].lng,
+            ]}
+          >
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        )}
+
+        {routeDetails.routeType === "LineString" && (
           <Polyline
             color={STATUSES.submmited.color}
-            positions={positions}
+            positions={routeDetails.positions}
           />
         )}
-        {routeType === "POLYGONE" && (
+        {routeDetails.routeType === "Polygon" && (
           <Polygon
             color={STATUSES.submmited.color}
-            positions={positions}
+            positions={routeDetails.positions}
           />
-        )}
+        )} */}
       </Map>
     </>
   );
