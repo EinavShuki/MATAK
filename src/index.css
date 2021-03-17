@@ -113,7 +113,7 @@ a {
   margin: 0 auto;
 }
 
-.confirm-buttons {
+.action-buttons {
   display: flex;
   justify-content: flex-end;
 }
