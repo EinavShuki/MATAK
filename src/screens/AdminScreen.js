@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "../redux/users";
 
 import { DataGrid } from "@material-ui/data-grid";
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
 import Button from "@material-ui/core/Button";
 import NavBar from "../components/NavBar";
 import Modal from "./MatakModal";
@@ -13,6 +13,7 @@ import UserEditForm from "../components/AdminScreen/UserEditForm";
 const ManagementScreen = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
   const { users, loading } = useSelector((state) => state.users);
@@ -104,7 +105,12 @@ const ManagementScreen = () => {
     <>
       <NavBar />
       <div className="table-container">
-        <h1>Users</h1>
+        <div className="table-title">
+          <h1>Users</h1>
+          <div className="add-btn" onClick={() => setShowCreateUserModal(true)}>
+            <MdAdd size={40} />
+          </div>
+        </div>
         <DataGrid
           rows={users}
           columns={columns}
@@ -113,6 +119,18 @@ const ManagementScreen = () => {
           loading={loading === "pending"}
         />
       </div>
+      {showCreateUserModal && (
+        <Modal
+          text={"Create new user"}
+          show
+          handleClose={() => setShowCreateUserModal(false)}
+        >
+          <UserEditForm
+            onFormSubmit={user => console.log(user)}
+            onCancel={() => setShowCreateUserModal(false)}
+          />
+        </Modal>
+      )}
       {showEditModal && (
         <Modal
           text={"Edit User Details"}
@@ -121,7 +139,7 @@ const ManagementScreen = () => {
         >
           <UserEditForm
             user={selectedRow}
-            onFormSubmit={(user) => console.log(user)}
+            onFormSubmit={user => console.log(user)}
             onCancel={() => setShowEditModal(false)}
           />
         </Modal>

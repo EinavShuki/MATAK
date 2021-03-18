@@ -113,6 +113,20 @@ a {
   margin: 0 auto;
 }
 
+.table-title {
+  display: flex;
+  align-items: center;
+}
+
+.table-title h1 {
+  margin-right: 10px;
+}
+
+.add-btn{
+  margin-top: 8px;
+  cursor: pointer;
+}
+
 .action-buttons {
   display: flex;
   justify-content: flex-end;
@@ -120,11 +134,10 @@ a {
 
 .positive-btn {
   background-color: "#00c853";
-  color: '#fff'
+  color: "#fff";
 }
-
 
 .negative-btn {
   background-color: "#f44336";
-  color: '#fff'
+  color: "#fff";
 }
