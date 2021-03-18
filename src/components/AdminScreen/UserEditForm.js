@@ -13,10 +13,22 @@ import {
 import { InputAdornment } from "@material-ui/core";
 
 function UserEditForm({ user, onFormSubmit, onCancel }) {
-  const [userDetails, setUserDetails] = useState(user);
+  const [userDetails, setUserDetails] = useState(
+    user |
+      {
+        id: 1,
+        lastName: "last name",
+        firstName: "first name",
+        username: "username",
+        email: "email@example.com",
+        mobile: "mobile",
+        usertype: "user type",
+        organization: "organization",
+      }
+  );
 
   const handleChange = ({ target }) => {
-    setUserDetails((prevUser) => ({
+    setUserDetails(prevUser => ({
       ...prevUser,
       [target.name]: target.value,
     }));
