@@ -14,51 +14,61 @@ function MyAccountScreen() {
   return (
     <>
       <NavBar />
-      <div className="frame">
-        <h1 className="name">Einav Shpigel</h1>
-        <Avatar className="avatar_name">ES</Avatar>
-        <h3 className="organization-name" style={{ marginLeft: "6rem" }}>
-          here we put the organization name
-        </h3>
-        <div className="details">
-          <List
+      <div className="my_account_screen">
+        <div className="frame">
+          <span
             style={{
               display: "flex",
-              flexDirection: "column",
-              padding: "0 2rem",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <ListItem>
-              <ListItemIcon>
-                <MdEmail />
-              </ListItemIcon>
-              <TextField
-                fullWidth
-                id="standard-basic"
-                margin="dense"
-                name="Mail"
-                label="User Email"
-                type="email"
-                autoComplete="off"
-                autoFocus
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <MdLocalPhone />
-              </ListItemIcon>
-              <TextField
-                fullWidth
-                id="standard-basic"
-                margin="normal"
-                name="Mail"
-                label="User Phone"
-                type="tel"
-                autoComplete="off"
-                autoFocus
-              />
-            </ListItem>
-            <ListItem>
+            <Avatar className="avatar_name">ES</Avatar>
+            <h1>Einav Shpigel</h1>
+          </span>
+
+          <h3 className="organization-name">
+            here we put the organization name
+          </h3>
+          <div className="details">
+            <List
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "0 2rem",
+              }}
+            >
+              <ListItem>
+                <ListItemIcon>
+                  <MdEmail />
+                </ListItemIcon>
+                <TextField
+                  fullWidth
+                  id="standard-basic"
+                  margin="dense"
+                  name="Mail"
+                  label="User Email"
+                  type="email"
+                  autoComplete="off"
+                  autoFocus
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <MdLocalPhone />
+                </ListItemIcon>
+                <TextField
+                  fullWidth
+                  id="standard-basic"
+                  margin="normal"
+                  name="Mail"
+                  label="User Phone"
+                  type="tel"
+                  autoComplete="off"
+                  autoFocus
+                />
+              </ListItem>
+              {/* <ListItem>
               <ListItemIcon>
                 <MdVpnKey />
               </ListItemIcon>
@@ -85,21 +95,21 @@ function MyAccountScreen() {
                 autoComplete="off"
                 autoFocus
               />{" "}
-            </ListItem>
-          </List>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{
-              alignSelf: "center",
-              width: "60%",
-              padding: "0.5rem 0.5rem",
-              marginLeft: "6.3rem",
-              marginTop: "1rem",
-            }}
-          >
-            Submit
-          </Button>
+            </ListItem> */}
+            </List>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{
+                alignSelf: "center",
+                marginTop: "1rem",
+                width: "90%",
+                padding: "0.5rem 0.5rem",
+              }}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </div>
     </>
