@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./users";
-import createdRouteReducer from "./createdRouteReducer";
+import createdRouteReducer from "./createdRoute";
 
 export default configureStore({
   reducer: {

@@ -13,15 +13,24 @@ import Options from "./components/Options";
 import RouteDetails from "./components/RouteDetails";
 import Reporting from "./components/Reporting";
 import RouteAdditionalDetails from "./components/RouteAdditionalDetails";
+import { useDispatch } from "react-redux";
+import { resetRoute } from "../../redux/createdRoute";
 
-function SideMenu({ isOpen, closeSideMenu }) {
+function SideMenu({ closeSideMenu }) {
+  const dispatch = useDispatch();
+
   const [page, setPage] = useState({
     open: OPTIONS_PAGE,
   });
 
+  const handleClose = () => {
+    closeSideMenu(false);
+    dispatch(resetRoute());
+  };
+
   return (
     <div className={"frosted nav-menu"}>
-      <span id="close-button" onClick={() => closeSideMenu(false)}>
+      <span id="close-button" onClick={handleClose}>
         <CgCloseO />
       </span>
       <div
