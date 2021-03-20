@@ -1,21 +1,42 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+
+import {
+  FormControl,
+  ListItem,
+  List,
+  TextField,
+  Avatar,
+  Button,
+  InputAdornment,
+} from "@material-ui/core";
+import { UpdateUser } from "../redux/users";
+import { useDispatch, useSelector } from "react-redux";
 
 import MatakIcon from "../images/matak.png";
-import Avatar from "@material-ui/core/Avatar";
 
 import NavBar from "../components/NavBar";
 import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
-import { Button, InputAdornment } from "@material-ui/core";
 
 function MyAccountScreen() {
+  const dispatch = useDispatch();
+
+  // const updateHandler = () => {
+  //   dispatch(UpdateUser(currentUser.email, currentUser.phone));
+  // };
+
+  //taking current user's details
+  const { currentUser } = useSelector(state => state.users);
+
   return (
     <>
       <NavBar />
       <div className="frame">
-        <h1 className="name">Einav Shpigel</h1>
+        <h1
+          // value={currentUser.name}
+          className="name"
+        >
+          Einav Shpigel
+        </h1>
         <Avatar className="avatar_name">ES</Avatar>
         <h3 className="organization-name" style={{ marginLeft: "6rem" }}>
           here we put the organization name
@@ -37,6 +58,7 @@ function MyAccountScreen() {
               type="email"
               autoComplete="off"
               autoFocus
+              // value={currentUser.email}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -50,9 +72,10 @@ function MyAccountScreen() {
             <TextField
               fullWidth
               margin="normal"
-              name="Mail"
+              name="Phone"
               label="User Phone"
               type="tel"
+              // value={currentUser.phone}
               autoComplete="off"
               autoFocus
               InputProps={{
