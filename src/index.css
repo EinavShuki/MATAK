@@ -91,7 +91,7 @@ a {
 .frame {
   margin-top: 10vh;
   text-align: center;
-  min-width: 35%;
+  min-width: 35vw;
   padding: 2rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-radius: 15px;
@@ -100,19 +100,9 @@ a {
 }
 
 .avatar_name {
-  /* margin-left: 6rem; */
-  /* display: inline;
-  float: left; */
-  /* display: inline-block; */
   margin-right: 2rem;
   transform: scale(1.2);
 }
-/* .details {
-  margin-left: auto;
-  width: 83%;
-  position: relative;
-
-} */
 
 /* admin-panel */
 .table-container {
@@ -130,7 +120,7 @@ a {
   margin-right: 10px;
 }
 
-.add-btn{
+.add-btn {
   margin-top: 8px;
   cursor: pointer;
 }
