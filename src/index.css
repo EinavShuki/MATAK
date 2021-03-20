@@ -92,7 +92,6 @@ a {
   margin-top: 10vh;
   text-align: center;
   min-width: 35%;
-
   padding: 2rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-radius: 15px;
@@ -114,3 +113,39 @@ a {
   position: relative;
 
 } */
+
+/* admin-panel */
+.table-container {
+  width: 80%;
+  height: 500px;
+  margin: 0 auto;
+}
+
+.table-title {
+  display: flex;
+  align-items: center;
+}
+
+.table-title h1 {
+  margin-right: 10px;
+}
+
+.add-btn{
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.positive-btn {
+  background-color: "#00c853";
+  color: "#fff";
+}
+
+.negative-btn {
+  background-color: "#f44336";
+  color: "#fff";
+}

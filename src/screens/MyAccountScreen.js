@@ -2,13 +2,13 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 
+import MatakIcon from "../images/matak.png";
 import Avatar from "@material-ui/core/Avatar";
 
 import NavBar from "../components/NavBar";
 import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
-import { Button } from "@material-ui/core";
+import { Button, InputAdornment } from "@material-ui/core";
 
 function MyAccountScreen() {
   return (
@@ -110,7 +110,7 @@ function MyAccountScreen() {
               Submit
             </Button>
           </div>
-        </div>
+        </div>     
       </div>
     </>
   );

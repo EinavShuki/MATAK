@@ -6,6 +6,7 @@ import {
   MdPowerSettingsNew,
   MdSettings,
   MdAccountCircle,
+  MdPhonelinkSetup
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -55,6 +56,13 @@ function AvatarIcon({ letter }) {
           <MenuItem>
             <MdAccountCircle className={classes.icon} />
             My Account
+          </MenuItem>
+        </Link>
+
+        <Link to={`/admin-panel`}>
+          <MenuItem>
+            <MdPhonelinkSetup className={classes.icon} />
+            Admin Panel
           </MenuItem>
         </Link>
 
