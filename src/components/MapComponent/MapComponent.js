@@ -18,7 +18,7 @@ import { STATUSES } from "../../constants/statusConstants";
 //note:opacity: 0.2, pointerEvents: "none"
 import { useDispatch, useSelector } from "react-redux";
 
-import { addPositionToCurrent } from "../../redux/createdRouteReducer";
+import { addPositionToCurrent } from "../../redux/createdRoute";
 
 import { info, InfoArray } from "../../constants/fakegeojson";
 
@@ -32,17 +32,19 @@ L.Icon.Default.mergeOptions({
 
 function MapComponent() {
   const dispatch = useDispatch();
-  const createdRoute = useSelector((state) => {
+  const { currentCreatedRoute, isEditAvailable } = useSelector(state => {
     return state.createdRoute;
   });
 
-  const handleMapClick = (e) => {
-    const pos = e.latlng;
-    const { lat, lng } = pos;
-    dispatch(addPositionToCurrent({ lat, lng }));
+  const handleMapClick = e => {
+    if (isEditAvailable) {
+      const pos = e.latlng;
+      const { lat, lng } = pos;
+      dispatch(addPositionToCurrent({ lat, lng }));
+    }
   };
 
-  const handleRemovePosition = (e) => {
+  const handleRemovePosition = e => {
     const pos = e.latlng;
     // dispatch(removePosition(pos));
   };
@@ -58,7 +60,7 @@ function MapComponent() {
   };
 
   const renderRoutes = () => {
-    const filteredRoutes = createdRoute.filter((route) => {
+    const filteredRoutes = currentCreatedRoute.filter(route => {
       if (route.routeType && route.positions.length) {
         return route;
       }

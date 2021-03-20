@@ -120,15 +120,12 @@ function MyAccountScreen() {
             variant="contained"
             color="primary"
             style={{
-              marginTop: "1rem",
-              width: "100%",
-              padding: "0.5rem 0",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          >
-            Submit
-          </Button>
+          ></Button>
         </List>
-        <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
       </div>
     </>
   );
