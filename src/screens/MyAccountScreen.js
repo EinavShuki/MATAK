@@ -14,98 +14,103 @@ function MyAccountScreen() {
   return (
     <>
       <NavBar />
-      <div className="frame">
-        <h1 className="name">Einav Shpigel</h1>
-        <Avatar className="avatar_name">ES</Avatar>
-        <h3 className="organization-name" style={{ marginLeft: "6rem" }}>
-          here we put the organization name
-        </h3>
-
-        <List
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            padding: "0 2rem",
-          }}
-        >
-          <ListItem>
-            <TextField
-              fullWidth
-              margin="dense"
-              name="Mail"
-              label="User Email"
-              type="email"
-              autoComplete="off"
-              autoFocus
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MdEmail />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              fullWidth
-              margin="normal"
-              name="Mail"
-              label="User Phone"
-              type="tel"
-              autoComplete="off"
-              autoFocus
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MdLocalPhone />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              fullWidth
-              margin="normal"
-              name="password"
-              label="Password"
-              type="password"
-              autoComplete="off"
-              autoFocus
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MdVpnKey />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              fullWidth
-              margin="normal"
-              name="confirm-password"
-              label="Confirm Password"
-              type="password"
-              autoComplete="off"
-              autoFocus
-            />
-          </ListItem>
-          <Button
-            variant="contained"
-            color="primary"
+      <div className="my_account_screen">
+        <div className="frame">
+          <span
             style={{
-              marginTop: "1rem",
-              width: "100%",
-              padding: "0.5rem 0",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Submit
-          </Button>
-        </List>
-        <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
+            <Avatar className="avatar_name">ES</Avatar>
+            <h1>Einav Shpigel</h1>
+          </span>
+
+          <h3 className="organization-name">
+            here we put the organization name
+          </h3>
+          <div className="details">
+            <List
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "0 2rem",
+              }}
+            >
+              <ListItem>
+                <ListItemIcon>
+                  <MdEmail />
+                </ListItemIcon>
+                <TextField
+                  fullWidth
+                  id="standard-basic"
+                  margin="dense"
+                  name="Mail"
+                  label="User Email"
+                  type="email"
+                  autoComplete="off"
+                  autoFocus
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <MdLocalPhone />
+                </ListItemIcon>
+                <TextField
+                  fullWidth
+                  id="standard-basic"
+                  margin="normal"
+                  name="Mail"
+                  label="User Phone"
+                  type="tel"
+                  autoComplete="off"
+                  autoFocus
+                />
+              </ListItem>
+              {/* <ListItem>
+              <ListItemIcon>
+                <MdVpnKey />
+              </ListItemIcon>
+              <TextField
+                fullWidth
+                id="standard-basic"
+                margin="normal"
+                name="Mail"
+                label="Password"
+                type="password"
+                autoComplete="off"
+                autoFocus
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon> </ListItemIcon>
+              <TextField
+                fullWidth
+                id="standard-basic"
+                margin="normal"
+                name="Mail"
+                label="Confirm Password"
+                type="password"
+                autoComplete="off"
+                autoFocus
+              />{" "}
+            </ListItem> */}
+            </List>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{
+                alignSelf: "center",
+                marginTop: "1rem",
+                width: "90%",
+                padding: "0.5rem 0.5rem",
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </div>     
       </div>
     </>
   );
