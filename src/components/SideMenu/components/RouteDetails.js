@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
@@ -11,23 +11,32 @@ import {
   createNewRoute,
   togglePermanentRoute,
   removeLastRoute,
-} from "../../../redux/createdRouteReducer";
+  editAvailableOn,
+  editAvailableOff,
+  removeLastPoint,
+} from "../../../redux/createdRoute";
 
 function RouteDetails({ setPage }) {
   const [isBeingCreated, setIsBeingCreated] = useState(false);
+
+  //are we willing to add a new route. in order to clear the "selection" of route type
   const [isAddedRoute, setIsAddedRoute] = useState(false);
 
+  const [canAddAnotherRoute, setCanAddAnotherRoute] = useState(false);
+
   const dispatch = useDispatch();
-  const createdRoute = useSelector((state) => {
+  const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
 
   const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
+    dispatch(editAvailableOff());
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });
   };
 
-  const handleRouteType = (type) => {
+  const handleRouteType = type => {
+    dispatch(editAvailableOn());
     setIsBeingCreated(true);
     setIsAddedRoute(false);
     dispatch(createNewRoute(type));
@@ -36,10 +45,51 @@ function RouteDetails({ setPage }) {
     setIsBeingCreated(false);
     setIsAddedRoute(true);
   };
-  const handleRemoveLastRoute = () => {
-    dispatch(removeLastRoute());
-    setIsBeingCreated(false);
+
+  const handleRemoveLastPoint = () => {
+    dispatch(removeLastPoint());
   };
+
+  const handleRemoveLastRoute = () => {
+    setIsBeingCreated(false);
+    dispatch(removeLastRoute());
+    if (currentCreatedRoute.length === 0) {
+      dispatch(editAvailableOff());
+    }
+  };
+
+  useEffect(() => {
+    const latestRoute = currentCreatedRoute[0];
+    switch (latestRoute?.routeType) {
+      case "Point":
+        if (latestRoute?.positions.length) {
+          setCanAddAnotherRoute(true);
+          break;
+        } else {
+          setCanAddAnotherRoute(false);
+          break;
+        }
+      case "LineString":
+        if (latestRoute?.positions.length > 1) {
+          setCanAddAnotherRoute(true);
+          break;
+        } else {
+          setCanAddAnotherRoute(false);
+          break;
+        }
+      case "Polygon":
+        if (latestRoute?.positions.length > 2) {
+          setCanAddAnotherRoute(true);
+          break;
+        } else {
+          setCanAddAnotherRoute(false);
+          break;
+        }
+      default:
+        setCanAddAnotherRoute(false);
+        break;
+    }
+  }, [currentCreatedRoute]);
 
   return (
     <>
@@ -47,10 +97,10 @@ function RouteDetails({ setPage }) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={Boolean(createdRoute[0] && createdRoute[0].isPermanent)}
+            checked={isPermanent}
             onChange={() => dispatch(togglePermanentRoute())}
             name="permanentRoute"
-            disabled={!createdRoute.length}
+            disabled={!currentCreatedRoute.length}
           />
         }
         label="Create a Permanent Route"
@@ -60,7 +110,7 @@ function RouteDetails({ setPage }) {
         control={
           <Switch
             checked={hideRoutes}
-            onChange={() => setHideRoutes((prev) => !prev)}
+            onChange={() => setHideRoutes(prev => !prev)}
             name="hide-routes"
             color="secondary"
           />
@@ -72,9 +122,7 @@ function RouteDetails({ setPage }) {
         <Button
           onClick={() => handleRouteType("LineString")}
           variant={
-            !isAddedRoute &&
-            createdRoute[0] &&
-            createdRoute[0].routeType === "LineString"
+            !isAddedRoute && currentCreatedRoute[0]?.routeType === "LineString"
               ? "contained"
               : ""
           }
@@ -85,9 +133,7 @@ function RouteDetails({ setPage }) {
         </Button>
         <Button
           variant={
-            !isAddedRoute &&
-            createdRoute[0] &&
-            createdRoute[0].routeType === "Polygon"
+            !isAddedRoute && currentCreatedRoute[0]?.routeType === "Polygon"
               ? "contained"
               : ""
           }
@@ -99,9 +145,7 @@ function RouteDetails({ setPage }) {
         </Button>
         <Button
           variant={
-            !isAddedRoute &&
-            createdRoute[0] &&
-            createdRoute[0].routeType === "Point"
+            !isAddedRoute && currentCreatedRoute[0]?.routeType === "Point"
               ? "contained"
               : ""
           }
@@ -112,11 +156,12 @@ function RouteDetails({ setPage }) {
           Point
         </Button>
       </ButtonGroup>
+
       <Button
         style={{ marginTop: "1.33em" }}
         variant="contained"
         color="secondary"
-        disabled={!createdRoute.length}
+        disabled={!canAddAnotherRoute}
         onClick={handleAddRoute}
       >
         Add Another Route Type
@@ -125,8 +170,18 @@ function RouteDetails({ setPage }) {
         style={{ marginTop: "1.33em" }}
         variant="contained"
         color="secondary"
+        onClick={handleRemoveLastPoint}
+        disabled={!currentCreatedRoute[0]?.positions.length}
+      >
+        Delete Last Point Added
+      </Button>
+
+      <Button
+        style={{ marginTop: "1.33em" }}
+        variant="contained"
+        color="secondary"
         onClick={handleRemoveLastRoute}
-        disabled={!createdRoute.length}
+        disabled={!currentCreatedRoute[0]?.positions.length}
       >
         Delete Last Route
       </Button>
