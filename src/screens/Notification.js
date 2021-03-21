@@ -6,23 +6,23 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "type", headerName: "Type", width: 130 },
-  { field: "date", headerName: "Date", width: 100, type: "date" },
+  { field: "type", headerName: "Type", width: 160 },
+  { field: "date", headerName: "Date", width: 130, type: "date" },
   {
     field: "sender",
     headerName: "Sender",
-    width: 130,
+    width: 170,
   },
   {
     field: "notes",
     headerName: "Notes",
-    width: 250,
+    width: 350,
   },
   {
     field: "routeDetails",
     headerName: "Route Details",
     description: "Click on square for more information",
-    width: 150,
+    width: 250,
   },
 ];
 
@@ -103,6 +103,7 @@ const rows = [
 
 const Notifications = () => {
   const [selectedRows, setSelectedRows] = useState([]);
+
   //   useEffect(() => {
   //     try {
   //     } catch (err) {}
@@ -114,15 +115,16 @@ const Notifications = () => {
 
   //   }
   // }
-  const CellClickHandle = (e) => {
+
+  const CellClickHandler = e => {
     const tragetRoute = e.row.routeDetails;
     console.log(tragetRoute);
   };
-  const rowSelectedHandler = (e) => {
+  const rowSelectedHandler = e => {
     if (e.isSelected) {
-      setSelectedRows((prev) => [...prev, e]);
+      setSelectedRows(prev => [...prev, e]);
     } else {
-      setSelectedRows((prev) => prev.filter((x) => x.data.id !== e.data.id));
+      setSelectedRows(prev => prev.filter(x => x.data.id !== e.data.id));
     }
   };
 
@@ -133,17 +135,18 @@ const Notifications = () => {
         style={{
           position: "relative",
           margin: "5rem auto",
-          height: 400,
-          width: "80%",
+          height: 450,
+          width: "90%",
         }}
       >
         <IconButton style={{ display: "block", marginLeft: "auto" }}>
-          <RiDeleteBin5Fill />
+          <RiDeleteBin5Fill style={{ color: "#f44336" }} />
         </IconButton>
         <DataGrid
           onRowSelected={rowSelectedHandler}
-          onCellClick={CellClickHandle}
+          onCellClick={CellClickHandler}
           rows={rows}
+          rowHeight="63"
           columns={columns}
           pageSize={5}
           checkboxSelection
