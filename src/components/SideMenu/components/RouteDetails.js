@@ -234,6 +234,7 @@ function RouteDetails({ setPage }) {
           margin: "4rem 0",
         }}
         onClick={handleNext}
+        disabled={!currentCreatedRoute[0]?.positions.length}
       >
         Next
       </Button>
