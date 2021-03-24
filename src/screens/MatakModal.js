@@ -38,7 +38,7 @@ export default function MatakModal({children, text, show, handleClose}) {
                 aria-describedby="simple-modal-description"
             >
                 <div style={modalStyle} className={classes.paper}>
-                    <p id="simple-modal-title">{text}</p>
+                    <h3 id="simple-modal-title">{text}</h3>
                     {children}
                 </div>
             </Modal>

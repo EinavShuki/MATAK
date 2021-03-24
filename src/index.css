@@ -149,3 +149,7 @@ a {
   background-color: "#f44336";
   color: "#fff";
 }
+
+.form-field {
+  width: 100%;
+}
