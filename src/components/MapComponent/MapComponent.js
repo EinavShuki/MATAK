@@ -36,6 +36,10 @@ function MapComponent() {
     return state.createdRoute;
   });
 
+  const { userRoutes } = useSelector(state => {
+    return state;
+  });
+
   const handleMapClick = e => {
     if (isEditAvailable) {
       const pos = e.latlng;
@@ -114,10 +118,14 @@ function MapComponent() {
         />
         <ZoomControl position="topright" />
 
-        {/* {InfoArray.map((x, i) => (
-          <GeoJSON key={i} data={x} onEachFeature={handleClickOnRoute} />
-        ))} */}
-
+        {userRoutes.length &&
+          userRoutes.map((route, i) => (
+            <GeoJSON
+              key={i}
+              data={route["Array_Of_Points"]}
+              onEachFeature={handleClickOnRoute}
+            />
+          ))}
         {renderRoutes()}
 
         {/* {routeDetails.positions &&
