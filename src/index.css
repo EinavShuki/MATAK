@@ -153,3 +153,13 @@ a {
 .form-field {
   width: 100%;
 }
+
+.form-message {
+  display: flex;
+  justify-content: center;
+  padding: 1%;
+  text-align: left;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: green;
+}

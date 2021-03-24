@@ -5,6 +5,7 @@ import { formValueSelector } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import ActionButtons from "./ActionButtons";
 import {
   MdEmail,
@@ -19,6 +20,7 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  Button,
 } from "@material-ui/core";
 
 const renderTextField = ({
@@ -40,7 +42,14 @@ const renderTextField = ({
   />
 );
 
-function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
+function UserEditForm({
+  user,
+  onFormSubmit,
+  onCancel,
+  formValues,
+  pristine,
+  invalid,
+}) {
   const [userDetails, setUserDetails] = useState({
     lastName: user?.lastName || "",
     firstName: user?.firstName || "",
@@ -50,10 +59,11 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
     organization: user?.organization || "",
   });
 
-  const {results} = useSelector(state => state.users)
+  const { results, loading } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {
-    onFormSubmit({...formValues, User_Type: +formValues.User_Type});
+    console.log(formValues);
+    // onFormSubmit({...formValues, User_Type: +formValues.User_Type});
   };
 
   const radioButton = ({ input, ...rest }) => (
@@ -72,7 +82,7 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: "1rem 0 3rem 0",
+          padding: "1rem 0 1rem 0",
         }}
       >
         <ListItem>
@@ -155,9 +165,21 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
             </Field>
           </div>
         </ListItem>
+        <ListItem>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            
+            disabled={pristine || invalid}
+            onClick={handleFormSubmit}
+          >
+            Submit
+          </Button>
+        </ListItem>
       </List>
-      {results && <span>User created successfuly</span>}
-      <ActionButtons onOk={handleFormSubmit} onCancel={onCancel} />
+      {loading === 'pending' && <div className="form-message"><CircularProgress/></div>}
+      {results && <div className="form-message">User created successfuly</div>}
     </form>
   );
 }
