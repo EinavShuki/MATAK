@@ -84,7 +84,7 @@ function MapComponent() {
           return (
             <Polyline
               index={index}
-              color={STATUSES.submmited.color}
+              color={STATUSES.beingCreated.color}
               positions={[route.positions]}
             />
           );
@@ -92,7 +92,7 @@ function MapComponent() {
           return (
             <Polygon
               index={index}
-              color={STATUSES.submmited.color}
+              color={STATUSES.beingCreated.color}
               positions={[route.positions]}
             />
           );
