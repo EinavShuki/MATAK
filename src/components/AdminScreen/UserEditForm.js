@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Field, reduxForm } from "redux-form";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { formValueSelector } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
@@ -13,7 +13,32 @@ import {
   MdCardTravel,
   MdPieChart,
 } from "react-icons/md";
-import { InputAdornment } from "@material-ui/core";
+import {
+  InputAdornment,
+  FormControl,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+} from "@material-ui/core";
+
+const renderTextField = ({
+  label,
+  input,
+  type,
+  meta: { touched, invalid, error },
+  ...custom
+}) => (
+  <TextField
+    label={label}
+    placeholder={label}
+    error={touched && invalid}
+    helperText={touched && error}
+    type={type}
+    fullWidth
+    {...input}
+    {...custom}
+  />
+);
 
 function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
   const [userDetails, setUserDetails] = useState({
@@ -25,25 +50,20 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
     organization: user?.organization || "",
   });
 
+  const {results} = useSelector(state => state.users)
+
   const handleFormSubmit = () => {
-    onFormSubmit(formValues);
+    onFormSubmit({...formValues, User_Type: +formValues.User_Type});
   };
 
-  const renderTextField = ({
-    label,
-    input,
-    meta: { touched, invalid, error },
-    ...custom
-  }) => (
-    <TextField
-      label={label}
-      placeholder={label}
-      error={touched && invalid}
-      helperText={touched && error}
-      fullWidth
-      {...input}
-      {...custom}
-    />
+  const radioButton = ({ input, ...rest }) => (
+    <FormControl>
+      <RadioGroup {...input} {...rest}>
+        <FormControlLabel value="0" control={<Radio />} label="Arbel" />
+        <FormControlLabel value="1" control={<Radio />} label="Matak" />
+        <FormControlLabel value="2" control={<Radio />} label="Admin" />
+      </RadioGroup>
+    </FormControl>
   );
 
   return (
@@ -59,7 +79,8 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
           <div className="form-field">
             <Field
               value
-              name="firstName"
+              type="text"
+              name="First_Name"
               component={renderTextField}
               label="First Name"
             />
@@ -68,7 +89,8 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
         <ListItem>
           <div className="form-field">
             <Field
-              name="lastName"
+              name="Last_Name"
+              type="text"
               component={renderTextField}
               label="Last Name"
             />
@@ -77,7 +99,8 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
         <ListItem>
           <div className="form-field">
             <Field
-              name="username"
+              name="Username"
+              type="text"
               component={renderTextField}
               label="Username"
             />
@@ -85,33 +108,55 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
         </ListItem>
         <ListItem>
           <div className="form-field">
-            <Field name="email" component={renderTextField} label="Email" />
-          </div>
-        </ListItem>
-        <ListItem>
-          <div className="form-field">
-            <Field name="mobile" component={renderTextField} label="Mobile" />
-          </div>
-        </ListItem>
-        <ListItem>
-          <div className="form-field">
             <Field
-              name="organization"
+              name="Password"
+              type="password"
               component={renderTextField}
-              label="Organization"
+              label="Password"
             />
           </div>
         </ListItem>
         <ListItem>
           <div className="form-field">
             <Field
-              name="usertype"
+              name="Email"
+              type="text"
               component={renderTextField}
-              label="User Type"
+              label="Email"
             />
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="form-field">
+            <Field
+              name="Mobile"
+              type="text"
+              component={renderTextField}
+              label="Mobile"
+            />
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="form-field">
+            <Field
+              type="text"
+              name="Organization_Name"
+              component={renderTextField}
+              label="Organization Name"
+            />
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="form-field">
+            <Field name="User_Type" component={radioButton}>
+              <Radio value={0} label="Arbel" />
+              <Radio value={1} label="Matak" />
+              <Radio value={2} label="Admin" />
+            </Field>
           </div>
         </ListItem>
       </List>
+      {results && <span>User created successfuly</span>}
       <ActionButtons onOk={handleFormSubmit} onCancel={onCancel} />
     </form>
   );
@@ -120,13 +165,14 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
 const validate = values => {
   const errors = {};
   const requiredFields = [
-    "firstName",
-    "lastName",
-    "email",
-    "username",
-    "mobile",
-    "usertype",
-    "organization",
+    "First_Name",
+    "Last_Name",
+    "Email",
+    "Username",
+    "Mobile",
+    "User_Type",
+    "Organization_Name",
+    "Password",
   ];
   requiredFields.forEach(field => {
     if (!values[field]) {

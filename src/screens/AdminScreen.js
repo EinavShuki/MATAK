@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, createUser, UpdateUser } from "../redux/users";
+import { fetchUsers, createUser, editUser } from "../redux/users";
 
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
@@ -16,7 +16,7 @@ const ManagementScreen = () => {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading } = useSelector((state) => state.users);
+  const { users, loading, showResultsModal } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,11 +24,11 @@ const ManagementScreen = () => {
   }, [dispatch]);
 
   const handleCreateUser = user => {
-    console.log(user)
-  }
+    dispatch(createUser(user));
+  };
 
   const handleEditUser = user => {
-    console.log(user);
+    dispatch(editUser(user));
   };
 
   const columns = [
@@ -45,16 +45,16 @@ const ManagementScreen = () => {
       headerName: "Edit User",
       width: 130,
       disableClickEventBubbling: true,
-      renderCell: (params) => {
+      renderCell: params => {
         const onClick = () => {
           const api = params.api;
           const fields = api
             .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
           const thisRow = {};
 
-          fields.forEach((f) => {
+          fields.forEach(f => {
             thisRow[f] = params.getValue(f);
           });
 
@@ -79,16 +79,16 @@ const ManagementScreen = () => {
       headerName: "Delete User",
       width: 160,
       disableClickEventBubbling: true,
-      renderCell: (params) => {
+      renderCell: params => {
         const onClick = () => {
           const api = params.api;
           const fields = api
             .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
           const thisRow = {};
 
-          fields.forEach((f) => {
+          fields.forEach(f => {
             thisRow[f] = params.getValue(f);
           });
 

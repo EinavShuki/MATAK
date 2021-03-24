@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { CURRENT_USER, USERS } from "../api";
 
 export const usersSlice = createSlice({
@@ -8,6 +9,7 @@ export const usersSlice = createSlice({
     users: [],
     loading: "idle",
     error: null,
+    results: null,
   },
   reducers: {
     currentUserReceived: (state, action) => {
@@ -21,10 +23,16 @@ export const usersSlice = createSlice({
     userLoading: (state, action) => {
       state.loading = "pending";
     },
-    userUpdateRecieved: state => {
+    userUpdateRecieved: (state, action) => {
       state.loading = "idle";
+      state.results = action.payload;
+    },
+    userCreateRecieved: (state, action) => {
+      state.loading = "idle";
+      state.results = action.payload;
     },
     userError: (state, action) => {
+      state.loading = "idle";
       state.error = action.payload;
     },
     logoutUser: (state, action) => {
@@ -38,6 +46,7 @@ export const {
   usersReceived,
   userLoading,
   userUpdateRecieved,
+  userCreateRecieved,
   userError,
   logoutUser,
 } = usersSlice.actions;
@@ -68,12 +77,27 @@ export const createUser = user => async dispatch => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
+    console.log(user);
+    const res = await axios.post(
+      "https://www.hitprojectscenter.com/matakapinew/api/users/",
+      user
+    );
+    dispatch(userCreateRecieved(res.data));
+  } catch (error) {
+    dispatch(userError({ error: error.response.data }));
+  }
+};
+
+export const editUser = user => async dispatch => {
+  dispatch(userLoading());
+  try {
+    // WILL BE API CALL
+    console.log(user);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
   }
 };
-
 
 export const UpdateUser = (email, phone) => async dispatch => {
   dispatch(userLoading());
