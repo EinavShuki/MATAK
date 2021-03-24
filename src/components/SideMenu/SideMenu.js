@@ -40,7 +40,9 @@ function SideMenu({ closeSideMenu }) {
         {page.open === OPTIONS_PAGE && <Options setPage={setPage} />}
         {page.open === ROUTE_DETAILS_PAGE && <RouteDetails setPage={setPage} />}
         {page.open === REPORTING_PAGE && <Reporting />}
-        {page.open === ROUTE_ADDITIONAL_DETAILS && <RouteAdditionalDetails />}
+        {page.open === ROUTE_ADDITIONAL_DETAILS && (
+          <RouteAdditionalDetails closeSideMenu={closeSideMenu} />
+        )}
       </div>
     </div>
   );

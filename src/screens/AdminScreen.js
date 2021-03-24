@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "../redux/users";
+import { fetchUsers, createUser, editUser } from "../redux/users";
 
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
@@ -16,37 +16,45 @@ const ManagementScreen = () => {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading } = useSelector((state) => state.users);
+  const { users, loading, showResultsModal } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
+  const handleCreateUser = user => {
+    dispatch(createUser(user));
+  };
+
+  const handleEditUser = user => {
+    dispatch(editUser(user));
+  };
+
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
+    { field: "id", headerName: "ID", width: 50 },
+    { field: "firstName", headerName: "First name", width: 160 },
+    { field: "lastName", headerName: "Last name", width: 160 },
     { field: "mobile", headerName: "Mobile", width: 130 },
     { field: "email", headerName: "Email", width: 200 },
-    { field: "organization", headerName: "Organization Name", width: 180 },
-    { field: "username", headerName: "User Name", width: 130 },
-    { field: "usertype", headerName: "User Type", width: 130 },
+    { field: "organization", headerName: "Organization", width: 160 },
+    { field: "username", headerName: "User Name", width: 160 },
+    { field: "usertype", headerName: "User Type", width: 140 },
     {
       field: "edit",
       headerName: "Edit User",
       width: 130,
       disableClickEventBubbling: true,
-      renderCell: (params) => {
+      renderCell: params => {
         const onClick = () => {
           const api = params.api;
           const fields = api
             .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
           const thisRow = {};
 
-          fields.forEach((f) => {
+          fields.forEach(f => {
             thisRow[f] = params.getValue(f);
           });
 
@@ -69,18 +77,18 @@ const ManagementScreen = () => {
     {
       field: "delete",
       headerName: "Delete User",
-      width: 130,
+      width: 160,
       disableClickEventBubbling: true,
-      renderCell: (params) => {
+      renderCell: params => {
         const onClick = () => {
           const api = params.api;
           const fields = api
             .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
           const thisRow = {};
 
-          fields.forEach((f) => {
+          fields.forEach(f => {
             thisRow[f] = params.getValue(f);
           });
 
@@ -126,7 +134,7 @@ const ManagementScreen = () => {
           handleClose={() => setShowCreateUserModal(false)}
         >
           <UserEditForm
-            onFormSubmit={user => console.log(user)}
+            onFormSubmit={handleCreateUser}
             onCancel={() => setShowCreateUserModal(false)}
           />
         </Modal>
@@ -139,7 +147,7 @@ const ManagementScreen = () => {
         >
           <UserEditForm
             user={selectedRow}
-            onFormSubmit={user => console.log(user)}
+            onFormSubmit={handleEditUser}
             onCancel={() => setShowEditModal(false)}
           />
         </Modal>

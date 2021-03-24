@@ -13,8 +13,12 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import React, { useState } from "react";
+import axios from "axios";
+import { resetRoute } from "../../../redux/createdRoute";
+import { useDispatch, useSelector } from "react-redux";
+import GeoJsonShape from "../../../classes/GeoJsonShape";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -22,7 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function RouteAdditionalDetails() {
+function RouteAdditionalDetails({ closeSideMenu }) {
+  const dispatch = useDispatch();
+  const { currentCreatedRoute, isPermanent } = useSelector(state => {
+    return state.createdRoute;
+  });
+
   const reasonsArray = [
     "Infrastructure",
     "Repair",
@@ -57,20 +66,22 @@ function RouteAdditionalDetails() {
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
   const [reason, setReason] = useState(reasonsArray[0]);
+  const [driversName, setDriversName] = useState("");
   const [phonePrefix, setPhonePrefix] = useState("050");
   const [phonePostfix, setPhonePostfix] = useState("");
+  const [notesText, setNotesText] = useState("");
 
-  const handleStartingDate = (date) => {
+  const handleStartingDate = date => {
     const today = new Date();
     if (date >= today) setStartingDate(date);
     if (date >= endingDate) setEndingDate(date);
   };
 
-  const handleEndingDate = (date) => {
+  const handleEndingDate = date => {
     if (date >= startingDate) setEndingDate(date);
   };
 
-  const handleStaringHour = (e) => {
+  const handleStaringHour = e => {
     const [hours, minutes] = e.target.value.split(":");
     const today = new Date();
     const newDate = new Date(startingDate);
@@ -80,7 +91,7 @@ function RouteAdditionalDetails() {
     if (newDate >= endingDate) setEndingDate(newDate);
   };
 
-  const handleEndingHour = (e) => {
+  const handleEndingHour = e => {
     const [hours, minutes] = e.target.value.split(":");
 
     const newDate = new Date(endingDate);
@@ -98,6 +109,49 @@ function RouteAdditionalDetails() {
     if (e.target.value === "" || re.test(e.target.value)) {
       setPhonePostfix(e.target.value);
     }
+  }
+
+  async function handleSubmitRoute() {
+    // console.log(startingDate);
+    // console.log(endingDate);
+    // console.log(reason);
+    // console.log(driversName);
+    // console.log(phonePrefix);
+    // console.log(phonePostfix);
+    // console.log(notesText);
+    // console.log(isPermanent);
+    const features = currentCreatedRoute.map(route => {
+      const geoJson = new GeoJsonShape(route.routeType);
+      geoJson.addCoordinates(route.positions);
+      return geoJson;
+    });
+
+    const geoJsonToSend = { type: "FeatureCollection", features };
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const send = {
+      Array_Of_Points: geoJsonToSend,
+      Terms_Text: "Check GeoJSON",
+      Applicant_User_Id: "adasdasdasds",
+      Path_Name: "muchabarat",
+      Reason_Text: "help to terrorists",
+      Remarks: "winter is coming",
+      Status_Name: "Received",
+      Is_Permanent: "false",
+    };
+    const { data } = await axios.post(
+      "https://www.hitprojectscenter.com/matakapinew/api/path",
+      send,
+      config
+    );
+    console.log(data);
+    dispatch(resetRoute());
+    closeSideMenu(false);
   }
   return (
     <>
@@ -187,9 +241,9 @@ function RouteAdditionalDetails() {
         <Select
           labelId="reason-for-coordination"
           value={reason}
-          onChange={(e) => setReason(e.target.value)}
+          onChange={e => setReason(e.target.value)}
         >
-          {reasonsArray.map((reason) => (
+          {reasonsArray.map(reason => (
             <MenuItem key={reason} value={reason}>
               {reason}
             </MenuItem>
@@ -201,10 +255,10 @@ function RouteAdditionalDetails() {
         <InputLabel id="car">Car</InputLabel>
         <Select
           labelId="car"
-          // value={reason}
-          // onChange={(e) => setReason(e.target.value)}
+          value={1}
+          // onChange={e => setReason(e.target.value)}
         >
-          {[].map((car) => (
+          {[1, 2, 3].map(car => (
             <MenuItem key={car} value={car}>
               {car}
             </MenuItem>
@@ -217,6 +271,8 @@ function RouteAdditionalDetails() {
         style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
         label="Driver's Full Name"
         variant="outlined"
+        value={driversName}
+        onChange={e => setDriversName(e.target.value)}
       />
       <InputLabel style={{ margin: "1rem 0 0.5rem 0" }}>
         Driver's Phone Number
@@ -234,7 +290,7 @@ function RouteAdditionalDetails() {
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
             value={phonePrefix}
-            onChange={(e) => setPhonePrefix(e.target.value)}
+            onChange={e => setPhonePrefix(e.target.value)}
           >
             {phonePrefixes.map((prefix, i) => (
               <MenuItem key={prefix + i} value={prefix}>
@@ -256,11 +312,12 @@ function RouteAdditionalDetails() {
       <TextField
         style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", marginTop: "1rem" }}
         color="secondary"
-        id="outlined-multiline-static"
         label="Notes"
         multiline
         rows={3}
         variant="outlined"
+        value={notesText}
+        onChange={e => setNotesText(e.target.value)}
       />
       <input style={{ marginTop: "1rem" }} type="file" />
       <Button
@@ -271,6 +328,7 @@ function RouteAdditionalDetails() {
           padding: "0.5rem 2rem",
           margin: "1rem 0",
         }}
+        onClick={handleSubmitRoute}
       >
         Send
       </Button>

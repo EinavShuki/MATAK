@@ -46,6 +46,7 @@ function MapComponent() {
 
   const handleRemovePosition = e => {
     const pos = e.latlng;
+    console.log(pos);
     // dispatch(removePosition(pos));
   };
 

@@ -104,6 +104,16 @@ a {
   transform: scale(1.2);
 }
 
+/*Notifications screen*/
+
+.MuiDataGrid-colCellTitle {
+  font-size: 1.1rem;
+}
+
+.MuiDataGrid-cell {
+  font-size: 1rem;
+}
+
 /* admin-panel */
 .table-container {
   width: 80%;
@@ -138,4 +148,8 @@ a {
 .negative-btn {
   background-color: "#f44336";
   color: "#fff";
+}
+
+.form-field {
+  width: 100%;
 }

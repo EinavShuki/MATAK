@@ -10,7 +10,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { HiOutlineHome } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -48,7 +48,9 @@ export default function ButtonAppBar() {
             </IconButton>
           </Link>
           <Typography variant="h6" className={classes.title}>
-            Einav
+            <Link style={{ color: "white" }} to="/my-account">
+              Einav
+            </Link>
           </Typography>
           <Link style={{ color: "white" }} to={`/home`}>
             <Button style={{ fontSize: "1rem" }} color="inherit">
