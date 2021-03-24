@@ -151,6 +151,8 @@ function RouteAdditionalDetails({ closeSideMenu }) {
       config
     );
 
+    console.log(geoJsonToSend);
+    console.log(data);
     dispatch(resetRoute());
     closeSideMenu(false);
     dispatch(fetchRoutes());

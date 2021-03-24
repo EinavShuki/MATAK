@@ -1,7 +1,7 @@
 class GeoJsonShape {
   constructor(type) {
     this.type = "Feature";
-    this.properties = {};
+    this.properties = { a: "vs" };
     this.geometry = {
       type: type,
       coordinates: [],

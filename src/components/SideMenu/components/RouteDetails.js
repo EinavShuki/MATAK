@@ -15,6 +15,7 @@ import {
   editAvailableOff,
   removeLastPoint,
 } from "../../../redux/createdRoute";
+import { toggleIsHidden } from "../../../redux/userRoutes";
 
 function RouteDetails({ setPage }) {
   const [isBeingCreated, setIsBeingCreated] = useState(false);
@@ -27,6 +28,9 @@ function RouteDetails({ setPage }) {
   const dispatch = useDispatch();
   const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
+  });
+  const { isHidden } = useSelector(state => {
+    return state.userRoutes;
   });
 
   const [hideRoutes, setHideRoutes] = useState(false);
@@ -109,8 +113,8 @@ function RouteDetails({ setPage }) {
         style={{ marginTop: "1.33em" }}
         control={
           <Switch
-            checked={hideRoutes}
-            onChange={() => setHideRoutes(prev => !prev)}
+            checked={isHidden}
+            onChange={() => dispatch(toggleIsHidden())}
             name="hide-routes"
             color="secondary"
           />
