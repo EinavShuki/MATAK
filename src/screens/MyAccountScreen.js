@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import {
   FormControl,
@@ -19,10 +19,12 @@ import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
 
 function MyAccountScreen() {
   const dispatch = useDispatch();
+  const emailRef = useRef();
+  const phoneRef = useRef();
 
-  // const updateHandler = () => {
-  //   dispatch(UpdateUser(currentUser.email, currentUser.phone));
-  // };
+  const updateHandler = () => {
+    dispatch(UpdateUser(emailRef, phoneRef));
+  };
 
   //taking current user's details
   const { currentUser } = useSelector(state => state.users);
@@ -60,6 +62,7 @@ function MyAccountScreen() {
           >
             <ListItem>
               <TextField
+                ref={emailRef}
                 fullWidth
                 margin="dense"
                 name="Mail"
@@ -79,6 +82,7 @@ function MyAccountScreen() {
             </ListItem>
             <ListItem>
               <TextField
+                ref={phoneRef}
                 fullWidth
                 margin="normal"
                 name="Phone"
@@ -96,36 +100,8 @@ function MyAccountScreen() {
                 }}
               />
             </ListItem>
-            {/* <ListItem>
-              <TextField
-                fullWidth
-                margin="normal"
-                name="password"
-                label="Password"
-                type="password"
-                autoComplete="off"
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdVpnKey />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                fullWidth
-                margin="normal"
-                name="confirm-password"
-                label="Confirm Password"
-                type="password"
-                autoComplete="off"
-                autoFocus
-              />
-            </ListItem> */}
             <Button
+              onClick={updateHandler()}
               variant="contained"
               color="primary"
               style={{

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { CURRENT_USER, USERS } from "../api";
 
 export const usersSlice = createSlice({
@@ -66,8 +67,13 @@ export const fetchUsers = () => async dispatch => {
 
 export const UpdateUser = (email, phone) => async dispatch => {
   dispatch(userLoading());
+
   try {
-    // WILL BE API CALL
+    const res = await axios.put(
+      "https://www.hitprojectscenter.com/matakapinew/api/users",
+      email,
+      phone
+    );
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
