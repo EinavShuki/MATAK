@@ -36,8 +36,8 @@ function MapComponent() {
     return state.createdRoute;
   });
 
-  const { userRoutes } = useSelector(state => {
-    return state;
+  const { routes, isHidden } = useSelector(state => {
+    return state.userRoutes;
   });
 
   const handleMapClick = e => {
@@ -118,8 +118,8 @@ function MapComponent() {
         />
         <ZoomControl position="topright" />
 
-        {userRoutes.length &&
-          userRoutes.map((route, i) => (
+        {!isHidden &&
+          routes.map((route, i) => (
             <GeoJSON
               key={i}
               data={route["Array_Of_Points"]}

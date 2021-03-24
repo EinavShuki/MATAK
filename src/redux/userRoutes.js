@@ -3,16 +3,21 @@ import axios from "axios";
 
 export const userRoutesSlice = createSlice({
   name: "userRoutes",
-  initialState: [],
+  initialState: {
+    isHidden: false,
+    routes: [],
+  },
   reducers: {
     setRoutes: (state, { payload }) => {
-      //   console.log(payload);
-      state.push(...payload);
+      state.routes.push(...payload);
+    },
+    toggleIsHidden: state => {
+      state.isHidden = !state.isHidden;
     },
   },
 });
 
-export const { setRoutes } = userRoutesSlice.actions;
+export const { setRoutes, toggleIsHidden } = userRoutesSlice.actions;
 
 export default userRoutesSlice.reducer;
 
