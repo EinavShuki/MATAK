@@ -64,6 +64,17 @@ export const fetchUsers = () => async dispatch => {
   }
 };
 
+export const createUser = user => async dispatch => {
+  dispatch(userLoading());
+  try {
+    // WILL BE API CALL
+    setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
+  } catch (error) {
+    dispatch(userError({ error: "some api error" }));
+  }
+};
+
+
 export const UpdateUser = (email, phone) => async dispatch => {
   dispatch(userLoading());
   try {

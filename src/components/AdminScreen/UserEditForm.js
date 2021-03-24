@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { formValueSelector } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -12,27 +15,36 @@ import {
 } from "react-icons/md";
 import { InputAdornment } from "@material-ui/core";
 
-function UserEditForm({ user, onFormSubmit, onCancel }) {
-  const [userDetails, setUserDetails] = useState(
-    user |
-      {
-        id: 1,
-        lastName: "last name",
-        firstName: "first name",
-        username: "username",
-        email: "email@example.com",
-        mobile: "mobile",
-        usertype: "user type",
-        organization: "organization",
-      }
-  );
+function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
+  const [userDetails, setUserDetails] = useState({
+    lastName: user?.lastName || "",
+    firstName: user?.firstName || "",
+    email: user?.email || "",
+    mobile: user?.mobile || "",
+    usertype: user?.usertype || "",
+    organization: user?.organization || "",
+  });
 
-  const handleChange = ({ target }) => {
-    setUserDetails(prevUser => ({
-      ...prevUser,
-      [target.name]: target.value,
-    }));
+  const handleFormSubmit = () => {
+    onFormSubmit(formValues);
   };
+
+  const renderTextField = ({
+    label,
+    input,
+    meta: { touched, invalid, error },
+    ...custom
+  }) => (
+    <TextField
+      label={label}
+      placeholder={label}
+      error={touched && invalid}
+      helperText={touched && error}
+      fullWidth
+      {...input}
+      {...custom}
+    />
+  );
 
   return (
     <form>
@@ -44,132 +56,98 @@ function UserEditForm({ user, onFormSubmit, onCancel }) {
         }}
       >
         <ListItem>
-          <TextField
-            fullWidth
-            margin="dense"
-            name="firstName"
-            label="First Name"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            onChange={handleChange}
-            value={userDetails.firstName}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MdAccountCircle />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <div className="form-field">
+            <Field
+              value
+              name="firstName"
+              component={renderTextField}
+              label="First Name"
+            />
+          </div>
         </ListItem>
         <ListItem>
-          <TextField
-            fullWidth
-            margin="dense"
-            name="lastName"
-            label="Last Name"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            onChange={handleChange}
-            value={userDetails.lastName}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MdAccountCircle />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <div className="form-field">
+            <Field
+              name="lastName"
+              component={renderTextField}
+              label="Last Name"
+            />
+          </div>
         </ListItem>
         <ListItem>
-          <TextField
-            fullWidth
-            margin="dense"
-            name="email"
-            label="User Email"
-            type="email"
-            autoComplete="off"
-            autoFocus
-            onChange={handleChange}
-            value={userDetails.email}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MdEmail />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <div className="form-field">
+            <Field
+              name="username"
+              component={renderTextField}
+              label="Username"
+            />
+          </div>
         </ListItem>
         <ListItem>
-          <TextField
-            fullWidth
-            margin="normal"
-            name="mobile"
-            label="Mobile"
-            type="tel"
-            autoComplete="off"
-            autoFocus
-            onChange={handleChange}
-            value={userDetails.mobile}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MdLocalPhone />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <div className="form-field">
+            <Field name="email" component={renderTextField} label="Email" />
+          </div>
         </ListItem>
         <ListItem>
-          <TextField
-            fullWidth
-            margin="normal"
-            name="organization"
-            label="Organization"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            onChange={handleChange}
-            value={userDetails.organization}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MdCardTravel />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <div className="form-field">
+            <Field name="mobile" component={renderTextField} label="Mobile" />
+          </div>
         </ListItem>
         <ListItem>
-          <TextField
-            fullWidth
-            margin="normal"
-            name="usertype"
-            label="User Type"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            onChange={handleChange}
-            value={userDetails.usertype}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MdPieChart />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <div className="form-field">
+            <Field
+              name="organization"
+              component={renderTextField}
+              label="Organization"
+            />
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="form-field">
+            <Field
+              name="usertype"
+              component={renderTextField}
+              label="User Type"
+            />
+          </div>
         </ListItem>
       </List>
-      <ActionButtons
-        onOk={() => onFormSubmit(userDetails)}
-        onCancel={onCancel}
-      />
+      <ActionButtons onOk={handleFormSubmit} onCancel={onCancel} />
     </form>
   );
 }
 
-export default UserEditForm;
+const validate = values => {
+  const errors = {};
+  const requiredFields = [
+    "firstName",
+    "lastName",
+    "email",
+    "username",
+    "mobile",
+    "usertype",
+    "organization",
+  ];
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = "Required";
+    }
+  });
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = "Invalid email address";
+  }
+  return errors;
+};
+
+const mapStateToProps = ({ form, users }) => ({
+  users,
+  formValues: form.userForm.values,
+});
+
+export default reduxForm({
+  form: "userForm",
+  validate,
+})(connect(mapStateToProps)(UserEditForm));
