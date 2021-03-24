@@ -3,6 +3,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import NavBar from "../components/NavBar";
 import IconButton from "@material-ui/core/IconButton";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import axios from "axios";
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
@@ -104,10 +105,22 @@ const rows = [
 const Notifications = () => {
   const [selectedRows, setSelectedRows] = useState([]);
 
-  //   useEffect(() => {
-  //     try {
-  //     } catch (err) {}
-  //   }, []);
+  useEffect(() => {
+    const fetchNoti = async () => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      try {
+        const res = await axios.post(
+          "https://www.hitprojectscenter.com/matakapinew/"
+        );
+      } catch (err) {}
+    };
+    fetchNoti();
+  }, []);
+
   // const deleteClickHandler=()=>{
   //   try {
   //     const {data}=async axios.delete(selectedRows);
