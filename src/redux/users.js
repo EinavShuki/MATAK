@@ -101,8 +101,17 @@ export const editUser = user => async dispatch => {
 
 export const UpdateUser = (email, phone) => async dispatch => {
   dispatch(userLoading());
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
   try {
-    // WILL BE API CALL
+    const res = await axios.put(
+      "https://www.hitprojectscenter.com/matakapinew/api/users/",
+      { email, phone },
+      config
+    );
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
