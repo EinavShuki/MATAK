@@ -16,7 +16,7 @@ const ManagementScreen = () => {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading, showResultsModal } = useSelector(state => state.users);
+  const { users, loading } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {

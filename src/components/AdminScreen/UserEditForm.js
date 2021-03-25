@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect, useSelector } from "react-redux";
-import { formValueSelector } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ActionButtons from "./ActionButtons";
 import {
-  MdEmail,
-  MdLocalPhone,
-  MdAccountCircle,
-  MdCardTravel,
-  MdPieChart,
-} from "react-icons/md";
-import {
-  InputAdornment,
   FormControl,
   RadioGroup,
   Radio,
@@ -26,6 +16,7 @@ import {
 const renderTextField = ({
   label,
   input,
+  fieldValue,
   type,
   meta: { touched, invalid, error },
   ...custom
@@ -42,14 +33,7 @@ const renderTextField = ({
   />
 );
 
-function UserEditForm({
-  user,
-  onFormSubmit,
-  onCancel,
-  formValues,
-  pristine,
-  invalid,
-}) {
+function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
   const [userDetails, setUserDetails] = useState({
     lastName: user?.lastName || "",
     firstName: user?.firstName || "",
@@ -59,11 +43,11 @@ function UserEditForm({
     organization: user?.organization || "",
   });
 
-  const { results, loading } = useSelector(state => state.users);
+  const { results, loading, error } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {
     console.log(formValues);
-    // onFormSubmit({...formValues, User_Type: +formValues.User_Type});
+    onFormSubmit({...formValues, User_Type: +formValues.User_Type});
   };
 
   const radioButton = ({ input, ...rest }) => (
@@ -88,7 +72,6 @@ function UserEditForm({
         <ListItem>
           <div className="form-field">
             <Field
-              value
               type="text"
               name="First_Name"
               component={renderTextField}
@@ -170,16 +153,20 @@ function UserEditForm({
             fullWidth
             variant="contained"
             color="primary"
-            
-            disabled={pristine || invalid}
+            // disabled={pristine || invalid}
             onClick={handleFormSubmit}
           >
             Submit
           </Button>
         </ListItem>
       </List>
-      {loading === 'pending' && <div className="form-message"><CircularProgress/></div>}
-      {results && <div className="form-message">User created successfuly</div>}
+      {loading === "pending" && (
+        <div className="form-message">
+          <CircularProgress />
+        </div>
+      )}
+      {results && <div className="form-message success">User created successfuly</div>}
+      {error && <div className="form-message failure">Failed to create new user</div>}
     </form>
   );
 }

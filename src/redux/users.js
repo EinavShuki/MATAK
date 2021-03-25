@@ -30,9 +30,11 @@ export const usersSlice = createSlice({
     userCreateRecieved: (state, action) => {
       state.loading = "idle";
       state.results = action.payload;
+      state.error = null;
     },
     userError: (state, action) => {
       state.loading = "idle";
+      state.results = null;
       state.error = action.payload;
     },
     logoutUser: (state, action) => {
@@ -84,7 +86,7 @@ export const createUser = user => async dispatch => {
     );
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
-    dispatch(userError({ error: error.response.data }));
+    dispatch(userError({ error: error.response.data.error }));
   }
 };
 
