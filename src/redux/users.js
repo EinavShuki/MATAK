@@ -32,6 +32,11 @@ export const usersSlice = createSlice({
       state.results = action.payload;
       state.error = null;
     },
+    userDeleteRecieved: (state, action) => {
+      state.loading = "idle";
+      state.results = action.payload;
+      state.error = null;
+    },
     userError: (state, action) => {
       state.loading = "idle";
       state.results = null;
@@ -49,6 +54,7 @@ export const {
   userLoading,
   userUpdateRecieved,
   userCreateRecieved,
+  userDeleteRecieved,
   userError,
   logoutUser,
 } = usersSlice.actions;
@@ -97,7 +103,20 @@ export const editUser = user => async dispatch => {
     console.log(user);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
-    dispatch(userError({ error: "some api error" }));
+   dispatch(userError({ error: error.response.data.error }));
+  }
+};
+
+export const deleteUser = userId => async dispatch => {
+  dispatch(userLoading());
+  try {
+    // WILL BE API CALL
+    const res = await axios.delete(
+      "https://www.hitprojectscenter.com/matakapinew/api/users/",
+      userId
+    );
+  } catch (error) {
+    dispatch(userError({ error: error.response.data.error }));
   }
 };
 
