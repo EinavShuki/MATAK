@@ -36,6 +36,10 @@ function MapComponent() {
     return state.createdRoute;
   });
 
+  const { routes, isHidden } = useSelector(state => {
+    return state.userRoutes;
+  });
+
   const handleMapClick = e => {
     if (isEditAvailable) {
       const pos = e.latlng;
@@ -80,7 +84,7 @@ function MapComponent() {
           return (
             <Polyline
               index={index}
-              color={STATUSES.submmited.color}
+              color={STATUSES.beingCreated.color}
               positions={[route.positions]}
             />
           );
@@ -88,7 +92,7 @@ function MapComponent() {
           return (
             <Polygon
               index={index}
-              color={STATUSES.submmited.color}
+              color={STATUSES.beingCreated.color}
               positions={[route.positions]}
             />
           );
@@ -114,10 +118,14 @@ function MapComponent() {
         />
         <ZoomControl position="topright" />
 
-        {/* {InfoArray.map((x, i) => (
-          <GeoJSON key={i} data={x} onEachFeature={handleClickOnRoute} />
-        ))} */}
-
+        {!isHidden &&
+          routes.map((route, i) => (
+            <GeoJSON
+              key={i}
+              data={route["Array_Of_Points"]}
+              onEachFeature={handleClickOnRoute}
+            />
+          ))}
         {renderRoutes()}
 
         {/* {routeDetails.positions &&

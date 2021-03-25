@@ -15,6 +15,7 @@ import {
 import React, { useState } from "react";
 import axios from "axios";
 import { resetRoute } from "../../../redux/createdRoute";
+import { fetchRoutes } from "../../../redux/userRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
 
@@ -149,9 +150,12 @@ function RouteAdditionalDetails({ closeSideMenu }) {
       send,
       config
     );
+
+    console.log(geoJsonToSend);
     console.log(data);
     dispatch(resetRoute());
     closeSideMenu(false);
+    dispatch(fetchRoutes());
   }
   return (
     <>

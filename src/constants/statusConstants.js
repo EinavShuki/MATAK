@@ -8,11 +8,16 @@ import {
   blue,
   green,
   blueGrey,
+  purple,
 } from "@material-ui/core/colors/";
 
 export const STATUSES = {
-  submmited: {
-    name: "Submmited",
+  beingCreated: {
+    name: "Being-Created",
+    color: purple[500],
+  },
+  submitted: {
+    name: "Submitted",
     color: blue[500],
   },
   recived: {
