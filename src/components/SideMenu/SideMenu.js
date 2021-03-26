@@ -16,7 +16,7 @@ import RouteAdditionalDetails from "./components/RouteAdditionalDetails";
 import { useDispatch } from "react-redux";
 import { resetRoute } from "../../redux/createdRoute";
 
-function SideMenu({ closeSideMenu }) {
+function SideMenu({ setsideMenu }) {
   const dispatch = useDispatch();
 
   const [page, setPage] = useState({
@@ -24,7 +24,7 @@ function SideMenu({ closeSideMenu }) {
   });
 
   const handleClose = () => {
-    closeSideMenu(false);
+    setsideMenu(false);
     dispatch(resetRoute());
   };
 
@@ -41,7 +41,7 @@ function SideMenu({ closeSideMenu }) {
         {page.open === ROUTE_DETAILS_PAGE && <RouteDetails setPage={setPage} />}
         {page.open === REPORTING_PAGE && <Reporting />}
         {page.open === ROUTE_ADDITIONAL_DETAILS && (
-          <RouteAdditionalDetails closeSideMenu={closeSideMenu} />
+          <RouteAdditionalDetails setsideMenu={setsideMenu} />
         )}
       </div>
     </div>

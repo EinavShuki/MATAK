@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import L from "leaflet";
 import {
   Map,
@@ -31,6 +31,8 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapComponent() {
+  const [routeDetailsMenu, setRouteDetailsMenu] = useState(false);
+
   const dispatch = useDispatch();
   const { currentCreatedRoute, isEditAvailable } = useSelector(state => {
     return state.createdRoute;
@@ -111,7 +113,7 @@ function MapComponent() {
         {!isHidden &&
           routes.map((route, i) => (
             <GeoJSON
-              color={STATUSES[route["Status_Name"]].color}
+              color={STATUSES[route["Status_Name"]]?.color}
               key={i}
               data={route["Array_Of_Points"]}
               onEachFeature={handleClickOnRoute}

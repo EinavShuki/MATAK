@@ -20,8 +20,8 @@ export const STATUSES = {
     name: "Submitted",
     color: blue[500],
   },
-  Recived: {
-    name: "Recived",
+  Received: {
+    name: "Received",
     color: yellow[500],
   },
   Changes: {

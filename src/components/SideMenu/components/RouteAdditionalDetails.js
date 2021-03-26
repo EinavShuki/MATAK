@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function RouteAdditionalDetails({ closeSideMenu }) {
+function RouteAdditionalDetails({ setsideMenu }) {
   const dispatch = useDispatch();
   const { currentCreatedRoute } = useSelector(state => {
     return state.createdRoute;
@@ -154,7 +154,7 @@ function RouteAdditionalDetails({ closeSideMenu }) {
     console.log(geoJsonToSend);
     console.log(data);
     dispatch(resetRoute());
-    closeSideMenu(false);
+    setsideMenu(false);
     dispatch(fetchRoutes());
   }
   return (

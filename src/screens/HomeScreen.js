@@ -31,7 +31,7 @@ function HomeScreen() {
         classNames="menu-transition"
         unmountOnExit
       >
-        <SideMenu closeSideMenu={setsideMenu} />
+        <SideMenu setsideMenu={setsideMenu} />
       </CSSTransition>
 
       <StatusInfo />
