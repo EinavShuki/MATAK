@@ -24,7 +24,7 @@ export const STATUSES = {
     name: "Received",
     color: yellow[500],
   },
-  ["Changes-Required"]: {
+  "Changes-Required": {
     name: "Changes-Required",
     color: orange[500],
   },

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import axiosConfig from "../config/axiosConfig";
 
 export const userRoutesSlice = createSlice({

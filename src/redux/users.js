@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { CURRENT_USER, USERS } from "../api";
 import axiosConfig from "../config/axiosConfig";
 

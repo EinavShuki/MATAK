@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import L from "leaflet";
 import {
   Map,
   Marker,
-  Popup,
   TileLayer,
-  Tooltip,
   Polygon,
   Polyline,
   ZoomControl,
@@ -21,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPositionToCurrent } from "../../redux/createdRoute";
 import { CSSTransition } from "react-transition-group";
 import SideMenu from "../SideMenu";
-import axios from "axios";
+
 import axiosConfig from "../../config/axiosConfig";
 
 // sets marker icon

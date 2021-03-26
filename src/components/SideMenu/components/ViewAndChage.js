@@ -16,7 +16,7 @@ import DateFnsUtils from "@date-io/date-fns";
 
 import React, { useMemo, useState } from "react";
 import { STATUSES } from "../../../constants/statusConstants";
-import axios from "axios";
+
 import { fetchRoutes } from "../../../redux/userRoutes";
 import { useDispatch } from "react-redux";
 import axiosConfig from "../../../config/axiosConfig";
