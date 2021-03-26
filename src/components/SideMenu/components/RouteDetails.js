@@ -33,7 +33,6 @@ function RouteDetails({ setPage }) {
     return state.userRoutes;
   });
 
-  const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
     dispatch(editAvailableOff());
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });
@@ -57,7 +56,6 @@ function RouteDetails({ setPage }) {
   const handleRemoveLastRoute = () => {
     setIsBeingCreated(false);
     dispatch(removeLastRoute());
-    console.log(currentCreatedRoute.length);
     dispatch(editAvailableOff());
   };
 

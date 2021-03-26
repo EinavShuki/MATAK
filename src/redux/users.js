@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { CURRENT_USER, USERS } from "../api";
+import axiosConfig from "../config/axiosConfig";
 
 export const usersSlice = createSlice({
   name: "users",
@@ -86,10 +87,7 @@ export const createUser = user => async dispatch => {
   try {
     // WILL BE API CALL
     console.log(user);
-    const res = await axios.post(
-      "https://www.hitprojectscenter.com/matakapinew/api/users/",
-      user
-    );
+    const res = await axiosConfig.post("/users/", user);
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
     dispatch(userError({ error: error.response.data.error }));
@@ -103,7 +101,7 @@ export const editUser = user => async dispatch => {
     console.log(user);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
-   dispatch(userError({ error: error.response.data.error }));
+    dispatch(userError({ error: error.response.data.error }));
   }
 };
 
@@ -111,10 +109,7 @@ export const deleteUser = userId => async dispatch => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
-    const res = await axios.delete(
-      "https://www.hitprojectscenter.com/matakapinew/api/users/",
-      userId
-    );
+    const res = await axiosConfig.delete("/users/", userId);
   } catch (error) {
     dispatch(userError({ error: error.response.data.error }));
   }
