@@ -9,7 +9,7 @@ export const userRoutesSlice = createSlice({
   },
   reducers: {
     setRoutes: (state, { payload }) => {
-      state.routes.push(...payload);
+      state.routes = [...payload];
     },
     toggleIsHidden: state => {
       state.isHidden = !state.isHidden;
@@ -34,7 +34,20 @@ export const fetchRoutes = () => async dispatch => {
       config
     );
 
-    dispatch(setRoutes(data.data));
+    let routesDetailsArray = data.data;
+
+    const result = routesDetailsArray.map(route => {
+      const arrayOfPoints = route["Array_Of_Points"]["features"].map(
+        feature => {
+          const _id = route["_id"];
+          return { ...feature, properties: { _id } };
+        }
+      );
+
+      return { ...route, Array_Of_Points: arrayOfPoints };
+    });
+
+    dispatch(setRoutes(result));
   } catch (error) {
     console.log(error);
   }

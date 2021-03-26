@@ -57,7 +57,6 @@ function RouteDetails({ setPage }) {
   const handleRemoveLastRoute = () => {
     setIsBeingCreated(false);
     dispatch(removeLastRoute());
-    console.log(currentCreatedRoute.length);
     dispatch(editAvailableOff());
   };
 

@@ -48,19 +48,15 @@ function MapComponent() {
     }
   };
 
-  const handleRemovePosition = e => {
-    const pos = e.latlng;
-    console.log(pos);
-    // dispatch(removePosition(pos));
-  };
-
-  function whenClicked(e) {
-    console.log(e);
+  function whenClicked(route) {
+    const routeId = route.properties._id;
+    const fullRoute = routes.filter(route => route._id === routeId)[0];
+    console.log(fullRoute);
   }
 
   const handleClickOnRoute = (route, layer) => {
     layer.on({
-      click: whenClicked,
+      click: () => whenClicked(route),
     });
   };
 
@@ -73,17 +69,11 @@ function MapComponent() {
     const routesToRender = filteredRoutes.map((route, index) => {
       switch (route.routeType) {
         case "Point":
-          return (
-            <Marker index={index} position={route.positions[0]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-          );
+          return <Marker key={index} position={route.positions[0]} />;
         case "LineString":
           return (
             <Polyline
-              index={index}
+              key={index}
               color={STATUSES.beingCreated.color}
               positions={[route.positions]}
             />
@@ -91,7 +81,7 @@ function MapComponent() {
         case "Polygon":
           return (
             <Polygon
-              index={index}
+              key={index}
               color={STATUSES.beingCreated.color}
               positions={[route.positions]}
             />
