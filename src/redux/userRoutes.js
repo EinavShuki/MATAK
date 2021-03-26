@@ -14,10 +14,17 @@ export const userRoutesSlice = createSlice({
     toggleIsHidden: state => {
       state.isHidden = !state.isHidden;
     },
+    turnOffIsHidden: state => {
+      state.isHidden = false;
+    },
   },
 });
 
-export const { setRoutes, toggleIsHidden } = userRoutesSlice.actions;
+export const {
+  setRoutes,
+  toggleIsHidden,
+  turnOffIsHidden,
+} = userRoutesSlice.actions;
 
 export default userRoutesSlice.reducer;
 

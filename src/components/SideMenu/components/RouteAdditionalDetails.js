@@ -14,7 +14,7 @@ import {
 } from "@material-ui/pickers";
 import React, { useState } from "react";
 import { resetRoute } from "../../../redux/createdRoute";
-import { fetchRoutes } from "../../../redux/userRoutes";
+import { fetchRoutes, turnOffIsHidden } from "../../../redux/userRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
 import { STATUSES } from "../../../constants/statusConstants";
@@ -145,8 +145,9 @@ function RouteAdditionalDetails({ setSideMenu }) {
     await axiosConfig.post("/path", send);
 
     dispatch(resetRoute());
-    setSideMenu(false);
     dispatch(fetchRoutes());
+    dispatch(turnOffIsHidden());
+    setSideMenu(false);
   }
 
   return (
