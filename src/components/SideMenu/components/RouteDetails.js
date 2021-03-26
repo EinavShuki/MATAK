@@ -33,7 +33,6 @@ function RouteDetails({ setPage }) {
     return state.userRoutes;
   });
 
-  const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
     dispatch(editAvailableOff());
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });

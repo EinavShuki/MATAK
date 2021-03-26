@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 function RouteAdditionalDetails({ closeSideMenu }) {
   const dispatch = useDispatch();
-  const { currentCreatedRoute, isPermanent } = useSelector(state => {
+  const { currentCreatedRoute } = useSelector(state => {
     return state.createdRoute;
   });
 

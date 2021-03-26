@@ -74,7 +74,7 @@ function MapComponent() {
           return (
             <Polyline
               key={index}
-              color={STATUSES.beingCreated.color}
+              color={STATUSES.BeingCreated.color}
               positions={[route.positions]}
             />
           );
@@ -82,7 +82,7 @@ function MapComponent() {
           return (
             <Polygon
               key={index}
-              color={STATUSES.beingCreated.color}
+              color={STATUSES.BeingCreated.color}
               positions={[route.positions]}
             />
           );
@@ -111,6 +111,7 @@ function MapComponent() {
         {!isHidden &&
           routes.map((route, i) => (
             <GeoJSON
+              color={STATUSES[route["Status_Name"]].color}
               key={i}
               data={route["Array_Of_Points"]}
               onEachFeature={handleClickOnRoute}

@@ -12,43 +12,43 @@ import {
 } from "@material-ui/core/colors/";
 
 export const STATUSES = {
-  beingCreated: {
+  BeingCreated: {
     name: "Being-Created",
     color: purple[500],
   },
-  submitted: {
+  Submitted: {
     name: "Submitted",
     color: blue[500],
   },
-  recived: {
+  Recived: {
     name: "Recived",
     color: yellow[500],
   },
-  changes: {
+  Changes: {
     name: "Changes Required",
     color: orange[500],
   },
-  approved: {
+  Approved: {
     name: "Approved",
     color: green[500],
   },
-  denied: {
+  Denied: {
     name: "Denied",
     color: red[500],
   },
-  completed: {
+  Completed: {
     name: "Completed",
     color: teal[500],
   },
-  canceled: {
+  Canceled: {
     name: "Canceled",
     color: grey[500],
   },
-  suspended: {
+  Suspended: {
     name: "Suspended",
     color: pink[500],
   },
-  permanent: {
+  Permanent: {
     name: "Permanent",
     color: blueGrey[500],
   },
