@@ -18,6 +18,8 @@ import { resetRoute } from "../../../redux/createdRoute";
 import { fetchRoutes } from "../../../redux/userRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
+import { STATUSES } from "../../../constants/statusConstants";
+import axiosConfig from "../../../config/axiosConfig";
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -27,9 +29,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function RouteAdditionalDetails({ setsideMenu }) {
+function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
-  const { currentCreatedRoute } = useSelector(state => {
+  const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
 
@@ -70,7 +72,7 @@ function RouteAdditionalDetails({ setsideMenu }) {
   const [driversName, setDriversName] = useState("");
   const [phonePrefix, setPhonePrefix] = useState("050");
   const [phonePostfix, setPhonePostfix] = useState("");
-  const [notesText, setNotesText] = useState("");
+  const [remarks, setRemarks] = useState("");
 
   const handleStartingDate = date => {
     const today = new Date();
@@ -129,34 +131,25 @@ function RouteAdditionalDetails({ setsideMenu }) {
 
     const geoJsonToSend = { type: "FeatureCollection", features };
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
     const send = {
+      Path_Name: "Try1",
+      Applicant_User_Id: "123456789",
       Array_Of_Points: geoJsonToSend,
-      Terms_Text: "Check GeoJSON",
-      Applicant_User_Id: "adasdasdasds",
-      Path_Name: "muchabarat",
-      Reason_Text: "help to terrorists",
-      Remarks: "winter is coming",
-      Status_Name: "Received",
-      Is_Permanent: "false",
+      Is_Permanent: isPermanent,
+      Terms_Text: "???????",
+      Reason_Text: reason,
+      Remarks: remarks ? remarks : "hello world",
+      Status_Name: isPermanent
+        ? STATUSES.Permanent.name
+        : STATUSES.Submitted.name,
     };
-    const { data } = await axios.post(
-      "https://www.hitprojectscenter.com/matakapinew/api/path",
-      send,
-      config
-    );
+    await axiosConfig.post("/path", send);
 
-    console.log(geoJsonToSend);
-    console.log(data);
     dispatch(resetRoute());
-    setsideMenu(false);
+    setSideMenu(false);
     dispatch(fetchRoutes());
   }
+
   return (
     <>
       <h1>Additional Information</h1>
@@ -316,12 +309,12 @@ function RouteAdditionalDetails({ setsideMenu }) {
       <TextField
         style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", marginTop: "1rem" }}
         color="secondary"
-        label="Notes"
+        label="Remarks"
         multiline
         rows={3}
         variant="outlined"
-        value={notesText}
-        onChange={e => setNotesText(e.target.value)}
+        value={remarks}
+        onChange={e => setRemarks(e.target.value)}
       />
       <input style={{ marginTop: "1rem" }} type="file" />
       <Button

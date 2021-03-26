@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { fetchRoutes } from "../redux/userRoutes";
 
 function HomeScreen() {
-  const [sideMenu, setsideMenu] = useState(false);
+  const [sideMenu, setSideMenu] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function HomeScreen() {
 
   return (
     <>
-      <FiMenu id="add-icon" onClick={() => setsideMenu(true)} />
+      <FiMenu id="add-icon" onClick={() => setSideMenu(true)} />
       <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
 
       <AvatarIcon letter={"M"} />
@@ -31,11 +31,11 @@ function HomeScreen() {
         classNames="menu-transition"
         unmountOnExit
       >
-        <SideMenu setsideMenu={setsideMenu} />
+        <SideMenu setSideMenu={setSideMenu} />
       </CSSTransition>
 
       <StatusInfo />
-      <MapComponent />
+      <MapComponent setMainSideMenu={setSideMenu} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosConfig from "../config/axiosConfig";
 
 export const userRoutesSlice = createSlice({
   name: "userRoutes",
@@ -23,16 +24,7 @@ export default userRoutesSlice.reducer;
 
 export const fetchRoutes = () => async dispatch => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.post(
-      "https://www.hitprojectscenter.com/matakapinew/api/path/get",
-      {},
-      config
-    );
+    const { data } = await axiosConfig.post("/path/get", {});
 
     let routesDetailsArray = data.data;
 

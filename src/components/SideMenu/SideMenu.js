@@ -6,6 +6,7 @@ import {
   ROUTE_DETAILS_PAGE,
   REPORTING_PAGE,
   ROUTE_ADDITIONAL_DETAILS,
+  VIEW_AND_CHANGE,
 } from "../../constants/pageConstants";
 
 //INITIAL COMPONENTS
@@ -15,16 +16,17 @@ import Reporting from "./components/Reporting";
 import RouteAdditionalDetails from "./components/RouteAdditionalDetails";
 import { useDispatch } from "react-redux";
 import { resetRoute } from "../../redux/createdRoute";
+import ViewAndChage from "./components/ViewAndChage";
 
-function SideMenu({ setsideMenu }) {
+function SideMenu({ setSideMenu, selectedRoute = null }) {
   const dispatch = useDispatch();
 
   const [page, setPage] = useState({
-    open: OPTIONS_PAGE,
+    open: selectedRoute ? VIEW_AND_CHANGE : OPTIONS_PAGE,
   });
 
   const handleClose = () => {
-    setsideMenu(false);
+    setSideMenu(false);
     dispatch(resetRoute());
   };
 
@@ -41,7 +43,13 @@ function SideMenu({ setsideMenu }) {
         {page.open === ROUTE_DETAILS_PAGE && <RouteDetails setPage={setPage} />}
         {page.open === REPORTING_PAGE && <Reporting />}
         {page.open === ROUTE_ADDITIONAL_DETAILS && (
-          <RouteAdditionalDetails setsideMenu={setsideMenu} />
+          <RouteAdditionalDetails setSideMenu={setSideMenu} />
+        )}
+        {page.open === VIEW_AND_CHANGE && (
+          <ViewAndChage
+            setSideMenu={setSideMenu}
+            selectedRoute={selectedRoute}
+          />
         )}
       </div>
     </div>

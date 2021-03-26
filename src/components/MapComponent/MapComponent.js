@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import {
   Map,
@@ -19,8 +19,10 @@ import { STATUSES } from "../../constants/statusConstants";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addPositionToCurrent } from "../../redux/createdRoute";
-
-import { info, InfoArray } from "../../constants/fakegeojson";
+import { CSSTransition } from "react-transition-group";
+import SideMenu from "../SideMenu";
+import axios from "axios";
+import axiosConfig from "../../config/axiosConfig";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -30,8 +32,9 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-function MapComponent() {
+function MapComponent({ setMainSideMenu }) {
   const [routeDetailsMenu, setRouteDetailsMenu] = useState(false);
+  const [selectedRoute, setSelectedRoute] = useState(null);
 
   const dispatch = useDispatch();
   const { currentCreatedRoute, isEditAvailable } = useSelector(state => {
@@ -50,11 +53,17 @@ function MapComponent() {
     }
   };
 
-  function whenClicked(route) {
-    const routeId = route.properties._id;
-    const fullRoute = routes.filter(route => route._id === routeId)[0];
-    console.log(fullRoute);
-  }
+  const whenClicked = async route => {
+    setMainSideMenu(false);
+
+    const send = {
+      _id: route.properties._id,
+    };
+
+    const { data } = await axiosConfig.post("/path/get", send);
+    setSelectedRoute(data.data[0]);
+    setRouteDetailsMenu(true);
+  };
 
   const handleClickOnRoute = (route, layer) => {
     layer.on({
@@ -95,8 +104,21 @@ function MapComponent() {
 
     return routesToRender;
   };
+
   return (
     <>
+      <CSSTransition
+        in={routeDetailsMenu}
+        timeout={230}
+        classNames="menu-transition"
+        unmountOnExit
+      >
+        <SideMenu
+          setSideMenu={setRouteDetailsMenu}
+          selectedRoute={selectedRoute}
+        />
+      </CSSTransition>
+
       <Map
         zoomControl={false}
         onclick={handleMapClick}
@@ -111,14 +133,16 @@ function MapComponent() {
         <ZoomControl position="topright" />
 
         {!isHidden &&
-          routes.map((route, i) => (
-            <GeoJSON
-              color={STATUSES[route["Status_Name"]]?.color}
-              key={i}
-              data={route["Array_Of_Points"]}
-              onEachFeature={handleClickOnRoute}
-            />
-          ))}
+          routes.map((route, i) => {
+            return (
+              <GeoJSON
+                color={STATUSES[route["Status_Name"]]?.color}
+                key={i}
+                data={route["Array_Of_Points"]}
+                onEachFeature={handleClickOnRoute}
+              />
+            );
+          })}
         {renderRoutes()}
 
         {/* {routeDetails.positions &&
