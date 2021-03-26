@@ -52,6 +52,7 @@ function MapComponent({ setMainSideMenu }) {
   };
 
   const whenClicked = async route => {
+    setRouteDetailsMenu(false);
     setMainSideMenu(false);
 
     const send = {
@@ -59,6 +60,7 @@ function MapComponent({ setMainSideMenu }) {
     };
 
     const { data } = await axiosConfig.post("/path/get", send);
+
     setSelectedRoute(data.data[0]);
     setRouteDetailsMenu(true);
   };
@@ -107,7 +109,7 @@ function MapComponent({ setMainSideMenu }) {
     <>
       <CSSTransition
         in={routeDetailsMenu}
-        timeout={230}
+        timeout={200}
         classNames="menu-transition"
         unmountOnExit
       >
