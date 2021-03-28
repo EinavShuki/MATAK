@@ -42,10 +42,6 @@ body {
 .MuiButton-containedSecondary:hover {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
-::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-}
 
 ::-webkit-scrollbar-thumb {
   background: rgba(90, 90, 90, 0.466);
