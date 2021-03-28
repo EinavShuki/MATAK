@@ -16,6 +16,7 @@ import Reporting from "./components/Reporting";
 import RouteAdditionalDetails from "./components/RouteAdditionalDetails";
 import { useDispatch } from "react-redux";
 import { resetRoute } from "../../redux/createdRoute";
+import { turnOffIsHidden } from "../../redux/userRoutes";
 import ViewAndChage from "./components/ViewAndChage";
 
 function SideMenu({ setSideMenu, selectedRoute = null }) {
@@ -28,6 +29,7 @@ function SideMenu({ setSideMenu, selectedRoute = null }) {
   const handleClose = () => {
     setSideMenu(false);
     dispatch(resetRoute());
+    dispatch(turnOffIsHidden());
   };
 
   return (
