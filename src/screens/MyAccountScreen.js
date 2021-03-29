@@ -23,7 +23,7 @@ function MyAccountScreen() {
   const phoneRef = useRef();
 
   const updateHandler = () => {
-    dispatch(UpdateUser(emailRef, phoneRef));
+    // dispatch(UpdateUser(emailRef, phoneRef));
   };
 
   //taking current user's details
