@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   FormControl,
@@ -9,7 +9,7 @@ import {
   Button,
   InputAdornment,
 } from "@material-ui/core";
-import { UpdateUser } from "../redux/users";
+import { UpdateUser, fetchCurrentUser } from "../redux/users";
 import { useDispatch, useSelector } from "react-redux";
 
 import MatakIcon from "../images/matak.png";
@@ -28,6 +28,10 @@ function MyAccountScreen() {
 
   //taking current user's details
   const { currentUser } = useSelector(state => state.users);
+
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
   return (
     <>

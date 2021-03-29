@@ -55,8 +55,18 @@ export default usersSlice.reducer;
 
 export const fetchCurrentUser = () => async dispatch => {
   dispatch(userLoading());
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
   try {
-    // WILL BE API CALL
+    const { data } = await axios.post(
+      "https://www.hitprojectscenter.com/matakapinew/api/users/get",
+      {},
+      config
+    );
+    console.log("curr user res", data);
     dispatch(currentUserReceived(CURRENT_USER));
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
@@ -101,13 +111,18 @@ export const editUser = user => async dispatch => {
 
 export const UpdateUser = (email, phone) => async dispatch => {
   dispatch(userLoading());
-
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
   try {
     const res = await axios.put(
-      "https://www.hitprojectscenter.com/matakapinew/api/users",
-      email,
-      phone
+      "https://www.hitprojectscenter.com/matakapinew/api/users/",
+      { Email: email, Mobile: phone },
+      config
     );
+    console.log(res);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
