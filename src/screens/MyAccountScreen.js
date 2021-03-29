@@ -36,90 +36,89 @@ function MyAccountScreen() {
   return (
     <>
       <NavBar />
-      <div className="my_account_screen">
-        <div className="frame">
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Avatar className="avatar_name">ES</Avatar>
-            <h1
-              // value={currentUser.name}
-              className="name"
-            >
-              Einav Shpigel
-            </h1>
-          </span>
-          <h3 className="organization-name">
-            here we put the organization name
-          </h3>
-
-          <List
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "0 2rem",
-            }}
-          >
-            <ListItem>
-              <TextField
-                ref={emailRef}
-                fullWidth
-                margin="dense"
-                name="Mail"
-                label="User Email"
-                type="email"
-                autoComplete="off"
-                autoFocus
-                // value={currentUser.email}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdEmail />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                ref={phoneRef}
-                fullWidth
-                margin="normal"
-                name="Phone"
-                label="User Phone"
-                type="tel"
-                // value={currentUser.phone}
-                autoComplete="off"
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdLocalPhone />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-            <Button
-              onClick={updateHandler()}
-              variant="contained"
-              color="primary"
+      {currentUser && (
+        <div className="my_account_screen">
+          <div className="frame">
+            <span
               style={{
-                alignSelf: "center",
-                marginTop: "1rem",
-                width: "90%",
-                padding: "0.5rem 0.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Update
-            </Button>
-          </List>
+              <Avatar className="avatar_name">ES</Avatar>
+              <h1 value={currentUser.name} className="name">
+                Einav Shpigel
+              </h1>
+            </span>
+            <h3 className="organization-name">
+              here we put the organization name
+            </h3>
+
+            <List
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "0 2rem",
+              }}
+            >
+              <ListItem>
+                <TextField
+                  ref={emailRef}
+                  fullWidth
+                  margin="dense"
+                  name="Mail"
+                  label="User Email"
+                  type="email"
+                  autoComplete="off"
+                  autoFocus
+                  value={currentUser.email}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MdEmail />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListItem>
+              <ListItem>
+                <TextField
+                  ref={phoneRef}
+                  fullWidth
+                  margin="normal"
+                  name="Phone"
+                  label="User Phone"
+                  type="tel"
+                  // value={currentUser.phone}
+                  autoComplete="off"
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MdLocalPhone />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListItem>
+              <Button
+                onClick={updateHandler()}
+                variant="contained"
+                color="primary"
+                style={{
+                  alignSelf: "center",
+                  marginTop: "1rem",
+                  width: "90%",
+                  padding: "0.5rem 0.5rem",
+                }}
+              >
+                Update
+              </Button>
+            </List>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
