@@ -142,7 +142,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
         ? STATUSES.Permanent.name
         : STATUSES.Submitted.name,
     };
-    await axiosConfig.post("/path", send);
+    await axiosConfig.post("/path", send, {withCredentials: true});
 
     dispatch(resetRoute());
     dispatch(fetchRoutes());

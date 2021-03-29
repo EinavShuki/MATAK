@@ -59,7 +59,7 @@ function MapComponent({ setMainSideMenu }) {
       _id: route.properties._id,
     };
 
-    const { data } = await axiosConfig.post("/path/get", send);
+    const { data } = await axiosConfig.post("/path/get", send, {withCredentials: true});
 
     setSelectedRoute(data.data[0]);
     setRouteDetailsMenu(true);

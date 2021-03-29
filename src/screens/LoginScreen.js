@@ -6,6 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import MatakIcon from "../images/matak.png";
 import MatakModal from "./MatakModal";
+import axiosConfig from "../config/axiosConfig";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,39 +34,65 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const usernameRegex = /^(?=.{1,15}$)[a-zA-Z]+[a-zA-Z0-9]*/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[a-zA-Z]).{8,30}$/;
+// const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[a-zA-Z]).{8,30}$/;
+const passwordRegex = /^(?=.{1,15}$)[a-zA-Z]+[a-zA-Z0-9]*/;
 
+//history.push("/home");
 export default function LoginScreen({history}) {
+    const classes = useStyles();
+
     const [isUsernameValid, setIsUsernameValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
     const [usernameLength, setUsernameLength] = useState(0);
     const [passwordLength, setPasswordLength] = useState(0);
     const [modalText, setModalText] = useState('');
-    const [showModal, setShowModal] = useState(false);
 
+    const [showModal, setShowModal] = useState(false);
     const handleClick = () => {
         if (isPasswordValid && isUsernameValid) {
-            history.push("/home");
+            handleLogIn();
         } else if (!isUsernameValid) {
-            setShowModal(true);
-            setModalText('User name is not valid');
+            openModal('User name is not valid');
         } else if (!isPasswordValid) {
-            setShowModal(true);
-            setModalText('Password is not valid');
+            openModal('Password is not valid');
         }
+
     };
-    const classes = useStyles();
+
+    const handleLogIn = () => {
+        const body = { Username: username, Password: password};
+        axiosConfig.post("/users/login", body)
+            .catch((data) => openModal('Failed to log in'))
+            .then((response) => {
+                if (response) {
+                    const {data} = response;
+                    if (data.success) {
+                        // here you can dispatch if user admin
+                        history.push("/home");
+                    }
+                }
+            });
+    }
+
+    const openModal = (text) => {
+        setShowModal(true);
+        setModalText(text);
+    };
 
     const validateUsername = (event) => {
         const inputText = event.target.value;
         setIsUsernameValid(usernameRegex.test(inputText));
         setUsernameLength(inputText.length);
+        setUserName(inputText);
     };
 
     const validatePassword = (event) => {
         const inputText = event.target.value;
         setIsPasswordValid(passwordRegex.test(inputText));
         setPasswordLength(inputText.length);
+        setPassword(inputText);
     };
 
     return (
