@@ -102,12 +102,12 @@ export const editUser = user => async dispatch => {
 export const UpdateUser = (id, email, phone) => async dispatch => {
   dispatch(userLoading());
   try {
-    const res = await axiosConfig.put("/users", {
+    const { data } = await axiosConfig.put("/users", {
       _id: id,
       Email: email,
       Mobile: phone,
     });
-    console.log(res);
+    console.log(data);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
