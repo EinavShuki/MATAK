@@ -1,29 +1,22 @@
 import React, { useState } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect, useSelector } from "react-redux";
-import { formValueSelector } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ActionButtons from "./ActionButtons";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {
-  MdEmail,
-  MdLocalPhone,
-  MdAccountCircle,
-  MdCardTravel,
-  MdPieChart,
-} from "react-icons/md";
-import {
-  InputAdornment,
   FormControl,
   RadioGroup,
   Radio,
   FormControlLabel,
+  Button,
 } from "@material-ui/core";
 
 const renderTextField = ({
   label,
   input,
+  fieldValue,
   type,
   meta: { touched, invalid, error },
   ...custom
@@ -40,7 +33,7 @@ const renderTextField = ({
   />
 );
 
-function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
+function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
   const [userDetails, setUserDetails] = useState({
     lastName: user?.lastName || "",
     firstName: user?.firstName || "",
@@ -50,9 +43,10 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
     organization: user?.organization || "",
   });
 
-  const {results} = useSelector(state => state.users)
+  const { results, loading, error } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {
+    console.log(formValues);
     onFormSubmit({...formValues, User_Type: +formValues.User_Type});
   };
 
@@ -72,13 +66,12 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: "1rem 0 3rem 0",
+          padding: "1rem 0 1rem 0",
         }}
       >
         <ListItem>
           <div className="form-field">
             <Field
-              value
               type="text"
               name="First_Name"
               component={renderTextField}
@@ -155,9 +148,25 @@ function UserEditForm({ user, onFormSubmit, onCancel, formValues }) {
             </Field>
           </div>
         </ListItem>
+        <ListItem>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            // disabled={pristine || invalid}
+            onClick={handleFormSubmit}
+          >
+            Submit
+          </Button>
+        </ListItem>
       </List>
-      {results && <span>User created successfuly</span>}
-      <ActionButtons onOk={handleFormSubmit} onCancel={onCancel} />
+      {loading === "pending" && (
+        <div className="form-message">
+          <CircularProgress />
+        </div>
+      )}
+      {results && <div className="form-message success">User created successfuly</div>}
+      {error && <div className="form-message failure">Failed to create new user</div>}
     </form>
   );
 }

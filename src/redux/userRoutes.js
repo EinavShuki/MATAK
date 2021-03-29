@@ -1,35 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosConfig from "../config/axiosConfig";
 
 export const userRoutesSlice = createSlice({
   name: "userRoutes",
-  initialState: [],
+  initialState: {
+    isHidden: false,
+    routes: [],
+  },
   reducers: {
     setRoutes: (state, { payload }) => {
-      //   console.log(payload);
-      state.push(...payload);
+      state.routes = [...payload];
+    },
+    toggleIsHidden: state => {
+      state.isHidden = !state.isHidden;
+    },
+    turnOffIsHidden: state => {
+      state.isHidden = false;
     },
   },
 });
 
-export const { setRoutes } = userRoutesSlice.actions;
+export const {
+  setRoutes,
+  toggleIsHidden,
+  turnOffIsHidden,
+} = userRoutesSlice.actions;
 
 export default userRoutesSlice.reducer;
 
 export const fetchRoutes = () => async dispatch => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.post(
-      "https://www.hitprojectscenter.com/matakapinew/api/path/get",
-      {},
-      config
-    );
+    const { data } = await axiosConfig.post("/path/get", {});
 
-    dispatch(setRoutes(data.data));
+    let routesDetailsArray = data.data;
+
+    const result = routesDetailsArray.map(route => {
+      const arrayOfPoints = route["Array_Of_Points"]["features"].map(
+        feature => {
+          const _id = route["_id"];
+          return { ...feature, properties: { _id } };
+        }
+      );
+
+      return { ...route, Array_Of_Points: arrayOfPoints };
+    });
+
+    dispatch(setRoutes(result));
   } catch (error) {
     console.log(error);
   }

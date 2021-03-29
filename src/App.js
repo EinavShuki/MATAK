@@ -6,6 +6,7 @@ import LoginScreen from "./screens/LoginScreen";
 import MyAccountScreen from "./screens/MyAccountScreen";
 import AdminScreen from "./screens/AdminScreen";
 import Notifications from "./screens/Notification";
+import RoutesManagement from "./screens/RoutesManagement";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" component={LoginScreen} exact />
         <Route path="/home" component={HomeScreen} />
         <Route path="/my-account" component={MyAccountScreen} />
+        <Route path="/routes-management" component={RoutesManagement} />
         <Route path="/admin-panel" component={AdminScreen} />
         <Route path="/notifications" component={Notifications} />
       </Switch>
