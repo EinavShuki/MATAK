@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MatakIcon from "../images/matak.png";
 import { FiMenu } from "react-icons/fi";
 
@@ -8,12 +8,20 @@ import SideMenu from "../components/SideMenu";
 import StatusInfo from "../components/StatusInfo/StatusInfo";
 import AvatarIcon from "../components/AvatarIcon";
 import { CSSTransition } from "react-transition-group";
+import { useDispatch } from "react-redux";
+import { fetchRoutes } from "../redux/userRoutes";
 
 function HomeScreen() {
-  const [sideMenu, setsideMenu] = useState(false);
+  const [sideMenu, setSideMenu] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchRoutes());
+  }, [dispatch]);
+
   return (
     <>
-      <FiMenu id="add-icon" onClick={() => setsideMenu(true)} />
+      <FiMenu id="add-icon" onClick={() => setSideMenu(true)} />
       <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
 
       <AvatarIcon letter={"M"} />
@@ -23,11 +31,11 @@ function HomeScreen() {
         classNames="menu-transition"
         unmountOnExit
       >
-        <SideMenu closeSideMenu={setsideMenu} />
+        <SideMenu setSideMenu={setSideMenu} />
       </CSSTransition>
 
       <StatusInfo />
-      <MapComponent />
+      <MapComponent setMainSideMenu={setSideMenu} />
     </>
   );
 }

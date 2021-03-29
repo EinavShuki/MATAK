@@ -4,33 +4,29 @@ class GeoJsonShape {
     this.properties = {};
     this.geometry = {
       type: type,
-      coordinate: [],
+      coordinates: [],
     };
   }
 
-  addCoordinates(coordinates) {
+  addCoordinates(inputCoordinates) {
     switch (this.geometry.type) {
       case "Polygon":
-        this.geometry.coordinate = [
-          [
-            coordinates.map(coordinate => {
-              const { lat, lng } = coordinate;
-              return [lng, lat];
-            }),
-          ],
-        ];
-        break;
-      case "LineString":
-        this.geometry.coordinate = [
-          coordinates.map(coordinate => {
+        this.geometry.coordinates = [
+          inputCoordinates.map(coordinate => {
             const { lat, lng } = coordinate;
             return [lng, lat];
           }),
         ];
         break;
+      case "LineString":
+        this.geometry.coordinates = inputCoordinates.map(coordinate => {
+          const { lat, lng } = coordinate;
+          return [lng, lat];
+        });
+        break;
       case "Point":
-        const { lat, lng } = coordinates[0];
-        this.geometry.coordinate = [lng, lat];
+        const { lat, lng } = inputCoordinates[0];
+        this.geometry.coordinates = [lng, lat];
         break;
       default:
         break;
