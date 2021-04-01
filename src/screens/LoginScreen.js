@@ -63,7 +63,7 @@ export default function LoginScreen({history}) {
 
     const handleLogIn = () => {
         const body = { Username: username, Password: password};
-        axiosConfig.post("/users/login", body)
+        axiosConfig.post("/users/login", body, {withCredentials: true})
             .catch((data) => openModal('Failed to log in'))
             .then((response) => {
                 if (response) {

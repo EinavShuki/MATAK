@@ -67,7 +67,7 @@ function ViewAndChage({ selectedRoute, setSideMenu }) {
       _id,
       Status_Name: status,
     };
-    await axiosConfig.put("/path", send);
+    await axiosConfig.put("/path", send, {withCredentials: true});
 
     dispatch(fetchRoutes());
     setSideMenu(false);
