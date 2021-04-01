@@ -57,7 +57,7 @@ export default usersSlice.reducer;
 export const fetchCurrentUser = () => async dispatch => {
   dispatch(userLoading());
   try {
-    const { data } = await axiosConfig.post("/users/get", {});
+    const { data } = await axiosConfig.post("/users/get", {}, {withCredentials: true});
     console.log("curr user res", data);
     dispatch(currentUserReceived(CURRENT_USER));
   } catch (error) {
@@ -81,7 +81,7 @@ export const createUser = user => async dispatch => {
   try {
     // WILL BE API CALL
     console.log(user);
-    const res = await axios.post("/users", user);
+    const res = await axios.post("/users", user, {withCredentials: true});
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
     dispatch(userError({ error: error.response.data }));
@@ -107,7 +107,7 @@ export const UpdateUser = (id, email, phone) => async dispatch => {
       _id: id,
       Email: email,
       Mobile: phone,
-    });
+    }, {withCredentials: true});
     console.log(res);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
