@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   FormControl,
@@ -9,7 +9,7 @@ import {
   Button,
   InputAdornment,
 } from "@material-ui/core";
-import { UpdateUser } from "../redux/users";
+import { UpdateUser, fetchCurrentUser } from "../redux/users";
 import { useDispatch, useSelector } from "react-redux";
 
 import MatakIcon from "../images/matak.png";
@@ -19,127 +19,106 @@ import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
 
 function MyAccountScreen() {
   const dispatch = useDispatch();
+  const emailRef = useRef();
+  const phoneRef = useRef();
 
-  // const updateHandler = () => {
-  //   dispatch(UpdateUser(currentUser.email, currentUser.phone));
-  // };
+  const updateHandler = () => {
+    dispatch(UpdateUser(currentUser._id, emailRef, phoneRef));
+  };
 
   //taking current user's details
   const { currentUser } = useSelector(state => state.users);
 
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
+
   return (
     <>
       <NavBar />
-      <div className="my_account_screen">
-        <div className="frame">
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Avatar className="avatar_name">ES</Avatar>
-            <h1
-              // value={currentUser.name}
-              className="name"
-            >
-              Einav Shpigel
-            </h1>
-          </span>
-          <h3 className="organization-name">
-            here we put the organization name
-          </h3>
-
-          <List
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "0 2rem",
-            }}
-          >
-            <ListItem>
-              <TextField
-                fullWidth
-                margin="dense"
-                name="Mail"
-                label="User Email"
-                type="email"
-                autoComplete="off"
-                autoFocus
-                // value={currentUser.email}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdEmail />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                fullWidth
-                margin="normal"
-                name="Phone"
-                label="User Phone"
-                type="tel"
-                // value={currentUser.phone}
-                autoComplete="off"
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdLocalPhone />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-            {/* <ListItem>
-              <TextField
-                fullWidth
-                margin="normal"
-                name="password"
-                label="Password"
-                type="password"
-                autoComplete="off"
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdVpnKey />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                fullWidth
-                margin="normal"
-                name="confirm-password"
-                label="Confirm Password"
-                type="password"
-                autoComplete="off"
-                autoFocus
-              />
-            </ListItem> */}
-            <Button
-              variant="contained"
-              color="primary"
+      {currentUser && (
+        <div className="my_account_screen">
+          <div className="frame">
+            <span
               style={{
-                alignSelf: "center",
-                marginTop: "1rem",
-                width: "90%",
-                padding: "0.5rem 0.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Update
-            </Button>
-          </List>
+              <Avatar className="avatar_name">ES</Avatar>
+              <h1 value={currentUser.name} className="name">
+                Einav Shpigel
+              </h1>
+            </span>
+            <h3 className="organization-name">
+              here we put the organization name
+            </h3>
+
+            <List
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "0 2rem",
+              }}
+            >
+              <ListItem>
+                <TextField
+                  ref={emailRef}
+                  fullWidth
+                  margin="dense"
+                  name="Mail"
+                  label="User Email"
+                  type="email"
+                  autoComplete="off"
+                  autoFocus
+                  value={currentUser.email}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MdEmail />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListItem>
+              <ListItem>
+                <TextField
+                  ref={phoneRef}
+                  fullWidth
+                  margin="normal"
+                  name="Phone"
+                  label="User Phone"
+                  type="tel"
+                  // value={currentUser.phone}
+                  autoComplete="off"
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MdLocalPhone />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListItem>
+              <Button
+                onClick={updateHandler()}
+                variant="contained"
+                color="primary"
+                style={{
+                  alignSelf: "center",
+                  marginTop: "1rem",
+                  width: "90%",
+                  padding: "0.5rem 0.5rem",
+                }}
+              >
+                Update
+              </Button>
+            </List>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
