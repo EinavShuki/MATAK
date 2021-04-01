@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { CURRENT_USER, USERS } from "../api";
 import axiosConfig from "../config/axiosConfig";
 
@@ -31,9 +30,16 @@ export const usersSlice = createSlice({
     userCreateRecieved: (state, action) => {
       state.loading = "idle";
       state.results = action.payload;
+      state.error = null;
+    },
+    userDeleteRecieved: (state, action) => {
+      state.loading = "idle";
+      state.results = action.payload;
+      state.error = null;
     },
     userError: (state, action) => {
       state.loading = "idle";
+      state.results = null;
       state.error = action.payload;
     },
     logoutUser: (state, action) => {
@@ -48,6 +54,7 @@ export const {
   userLoading,
   userUpdateRecieved,
   userCreateRecieved,
+  userDeleteRecieved,
   userError,
   logoutUser,
 } = usersSlice.actions;
@@ -57,11 +64,9 @@ export default usersSlice.reducer;
 export const fetchCurrentUser = () => async dispatch => {
   dispatch(userLoading());
   try {
-    const { data } = await axiosConfig.post("/users/get", {});
-    console.log("curr user res", data);
+    // WILL BE API CALL
     dispatch(currentUserReceived(CURRENT_USER));
   } catch (error) {
-    console.log("oops", error);
     dispatch(userError({ error: "some api error" }));
   }
 };
@@ -81,10 +86,10 @@ export const createUser = user => async dispatch => {
   try {
     // WILL BE API CALL
     console.log(user);
-    const res = await axios.post("/users", user);
+    const res = await axiosConfig.post("/users/", user, {withCredentials: true});
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
-    dispatch(userError({ error: error.response.data }));
+    dispatch(userError({ error: error.response.data.error }));
   }
 };
 
@@ -95,20 +100,24 @@ export const editUser = user => async dispatch => {
     console.log(user);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
-    dispatch(userError({ error: "some api error" }));
+    dispatch(userError({ error: error.response.data.error }));
   }
 };
 
-export const UpdateUser = (id, email, phone) => async dispatch => {
+export const deleteUser = userId => async dispatch => {
   dispatch(userLoading());
-
   try {
-    const res = await axiosConfig.put("/users", {
-      _id: id,
-      Email: email,
-      Mobile: phone,
-    });
-    console.log(res);
+    // WILL BE API CALL
+    const res = await axiosConfig.delete("/users/", userId);
+  } catch (error) {
+    dispatch(userError({ error: error.response.data.error }));
+  }
+};
+
+export const UpdateUser = (email, phone) => async dispatch => {
+  dispatch(userLoading());
+  try {
+    // WILL BE API CALL
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
