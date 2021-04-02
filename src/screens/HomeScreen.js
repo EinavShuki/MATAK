@@ -10,6 +10,8 @@ import AvatarIcon from "../components/AvatarIcon";
 import { CSSTransition } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRoutes } from "../redux/userRoutes";
+import { Avatar } from "@material-ui/core";
+import { MdRefresh } from "react-icons/md";
 
 function HomeScreen() {
   const [sideMenu, setSideMenu] = useState(false);
@@ -23,12 +25,19 @@ function HomeScreen() {
     dispatch(fetchRoutes());
   }, [dispatch]);
 
+  const updateRoutes = () => {
+    dispatch(fetchRoutes());
+  };
+
   return (
     <>
       <FiMenu id="add-icon" onClick={() => setSideMenu(true)} />
       <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
 
       <AvatarIcon letter={First_Name ? First_Name[0].toUpperCase() : "M"} />
+      <Avatar id="refresh-icon" onClick={updateRoutes}>
+        <MdRefresh />
+      </Avatar>
       <CSSTransition
         in={sideMenu}
         timeout={230}
