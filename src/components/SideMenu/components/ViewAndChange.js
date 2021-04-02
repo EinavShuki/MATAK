@@ -130,7 +130,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
 
   const handleDeleteRoute = async () => {
     const send = {
-      _id,
+      data: { _id },
     };
     await axiosConfig.delete("/path", send);
     setOpen(false);
