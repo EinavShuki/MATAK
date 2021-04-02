@@ -52,22 +52,28 @@ function MapComponent({ setMainSideMenu }) {
   };
 
   const whenClicked = async route => {
-    setRouteDetailsMenu(false);
-    setMainSideMenu(false);
+    console.log(isEditAvailable);
+    if (!isEditAvailable) {
+      setRouteDetailsMenu(false);
+      setMainSideMenu(false);
 
-    const send = {
-      _id: route.properties._id,
-    };
+      const send = {
+        _id: route.properties._id,
+      };
 
-    const { data } = await axiosConfig.post("/path/get", send, {withCredentials: true});
+      const { data } = await axiosConfig.post("/path/get", send);
 
-    setSelectedRoute(data.data[0]);
-    setRouteDetailsMenu(true);
+      setSelectedRoute(data.data[0]);
+      setRouteDetailsMenu(true);
+    }
   };
 
   const handleClickOnRoute = (route, layer) => {
     layer.on({
       click: () => whenClicked(route),
+      mouseover: () => {
+        // console.log("object");
+      },
     });
   };
 
@@ -132,12 +138,17 @@ function MapComponent({ setMainSideMenu }) {
         />
         <ZoomControl position="topright" />
 
-        {!isHidden &&
+        {routes &&
+          !isHidden &&
           routes.map((route, i) => {
             return (
               <GeoJSON
-                color={STATUSES[route["Status_Name"]]?.color}
-                key={i}
+                color={
+                  route.Is_Permanent
+                    ? STATUSES.Permanent.color
+                    : STATUSES[route["Status_Name"]].color
+                }
+                key={route._id}
                 data={route["Array_Of_Points"]}
                 onEachFeature={handleClickOnRoute}
               />

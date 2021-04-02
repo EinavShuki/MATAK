@@ -30,7 +30,7 @@ export default userRoutesSlice.reducer;
 
 export const fetchRoutes = () => async dispatch => {
   try {
-    const { data } = await axiosConfig.post("/path/get", {}, {withCredentials: true});
+    const { data } = await axiosConfig.post("/path/get", {});
 
     let routesDetailsArray = data.data;
 

@@ -84,6 +84,8 @@ export const fetchUsers = () => async dispatch => {
 export const createUser = user => async dispatch => {
   dispatch(userLoading());
   try {
+    // WILL BE API CALL
+    console.log(user);
     const res = await axiosConfig.post("/users/", user);
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
