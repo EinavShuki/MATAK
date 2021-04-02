@@ -1,10 +1,9 @@
 import React from "react";
 import { ImAppleinc } from "react-icons/im";
-import { FaSearch, FaMapMarked, FaHistory } from "react-icons/fa";
+import { FaSearch, FaMapMarked, FaHistory, FaSuitcase } from "react-icons/fa";
 import { ROUTE_DETAILS_PAGE } from "../../../constants/pageConstants";
 import { REPORTING_PAGE } from "../../../constants/pageConstants";
-import {Link} from "react-router-dom";
-import {BsBriefcase} from "react-icons/all";
+import { Link } from "react-router-dom";
 
 function Options({ setPage }) {
   return (
@@ -42,12 +41,12 @@ function Options({ setPage }) {
         <ImAppleinc />
         <li>Status</li>
       </div>
-        <Link to={`/routes-management`}>
-           <div className="list-item">
-              <BsBriefcase />
-              <li>Route Management</li>
-           </div>
-        </Link>
+      <Link to={`/routes-management`}>
+        <div className="list-item">
+          <FaSuitcase />
+          <li>Route Management</li>
+        </div>
+      </Link>
     </ul>
   );
 }

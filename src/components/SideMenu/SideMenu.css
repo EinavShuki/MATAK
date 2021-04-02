@@ -7,11 +7,6 @@
   max-width: 37rem;
 }
 
-.nav-menu::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-}
-
 #close-button {
   font-size: 3rem;
   color: white;
@@ -75,5 +70,3 @@
     width: 100%;
   }
 }
-
-

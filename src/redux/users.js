@@ -86,7 +86,7 @@ export const createUser = user => async dispatch => {
   try {
     // WILL BE API CALL
     console.log(user);
-    const res = await axiosConfig.post("/users/", user, {withCredentials: true});
+    const res = await axiosConfig.post("/users/", user);
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
     dispatch(userError({ error: error.response.data.error }));
