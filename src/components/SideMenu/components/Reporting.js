@@ -64,7 +64,7 @@ function Reporting() {
     "ARBEL",
   ];
 
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(theme => ({
     ulStyle: {
       border: "1px solid rgba(0, 0, 0, 0.1)",
       borderRadius: "5px",
@@ -126,31 +126,31 @@ function Reporting() {
     ARBEL: false,
   });
 
-  const handleChangeStatus = (event) => {
+  const handleChangeStatus = event => {
     setStatus({ ...status, [event.target.name]: event.target.checked });
   };
-  const handleChangeOrg = (event) => {
+  const handleChangeOrg = event => {
     setOrganization({
       ...organization,
       [event.target.name]: event.target.checked,
     });
   };
-  const handleChangeReas = (event) => {
+  const handleChangeReas = event => {
     setReasons({ ...reasons, [event.target.name]: event.target.checked });
   };
-  const handleChangeEsc = (event) => {
+  const handleChangeEsc = event => {
     setEscort({ ...escort, [event.target.name]: event.target.checked });
   };
 
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
 
-  const handleStartingDate = (date) => {
+  const handleStartingDate = date => {
     setStartingDate(date);
     if (date >= endingDate) setEndingDate(date);
   };
 
-  const handleEndingDate = (date) => {
+  const handleEndingDate = date => {
     if (date >= startingDate) setEndingDate(date);
   };
 

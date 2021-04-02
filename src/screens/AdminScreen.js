@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, createUser, editUser } from "../redux/users";
+import {
+  fetchUsers,
+  createUser,
+  editUser,
+  deleteUser,
+  clear,
+} from "../redux/users";
 
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
@@ -16,12 +22,12 @@ const ManagementScreen = () => {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading } = useSelector(state => state.users);
+  const { users, loading, results } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, [dispatch]);
+  }, [dispatch, results]);
 
   const handleCreateUser = user => {
     dispatch(createUser(user));
@@ -31,15 +37,20 @@ const ManagementScreen = () => {
     dispatch(editUser(user));
   };
 
+  const handleDeleteUser = () => {
+    dispatch(deleteUser(selectedRow._id));
+    setShowDeleteModal(false);
+  };
+
   const columns = [
-    { field: "id", headerName: "ID", width: 50 },
-    { field: "firstName", headerName: "First name", width: 160 },
-    { field: "lastName", headerName: "Last name", width: 160 },
-    { field: "mobile", headerName: "Mobile", width: 130 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "organization", headerName: "Organization", width: 160 },
-    { field: "username", headerName: "User Name", width: 160 },
-    { field: "usertype", headerName: "User Type", width: 140 },
+    { field: "_id", headerName: "ID", width: 50, hide: true },
+    { field: "First_Name", headerName: "First name", width: 160 },
+    { field: "Last_Name", headerName: "Last name", width: 160 },
+    { field: "Mobile", headerName: "Mobile", width: 130 },
+    { field: "Email", headerName: "Email", width: 200 },
+    { field: "Organization_Name", headerName: "Organization", width: 160 },
+    { field: "Username", headerName: "User Name", width: 160 },
+    { field: "User_Type", headerName: "User Type", width: 140 },
     {
       field: "edit",
       headerName: "Edit User",
@@ -122,6 +133,7 @@ const ManagementScreen = () => {
         <DataGrid
           rows={users}
           columns={columns}
+          getRowId={row => row._id}
           pageSize={10}
           checkboxSelection
           loading={loading === "pending"}
@@ -131,7 +143,10 @@ const ManagementScreen = () => {
         <Modal
           text={"Create new user"}
           show
-          handleClose={() => setShowCreateUserModal(false)}
+          handleClose={() => {
+            setShowCreateUserModal(false);
+            dispatch(clear());
+          }}
         >
           <UserEditForm
             onFormSubmit={handleCreateUser}
@@ -159,7 +174,7 @@ const ManagementScreen = () => {
           handleClose={() => setShowDeleteModal(false)}
         >
           <ActionButtons
-            onOk={() => console.log("ok")}
+            onOk={handleDeleteUser}
             onCancel={() => setShowDeleteModal(false)}
           />
         </Modal>

@@ -17,7 +17,7 @@ import RouteAdditionalDetails from "./components/RouteAdditionalDetails";
 import { useDispatch } from "react-redux";
 import { resetRoute } from "../../redux/createdRoute";
 import { turnOffIsHidden } from "../../redux/userRoutes";
-import ViewAndChage from "./components/ViewAndChage";
+import ViewAndChange from "./components/ViewAndChange";
 
 function SideMenu({ setSideMenu, selectedRoute = null }) {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ function SideMenu({ setSideMenu, selectedRoute = null }) {
           <RouteAdditionalDetails setSideMenu={setSideMenu} />
         )}
         {page.open === VIEW_AND_CHANGE && (
-          <ViewAndChage
+          <ViewAndChange
             setSideMenu={setSideMenu}
             selectedRoute={selectedRoute}
           />

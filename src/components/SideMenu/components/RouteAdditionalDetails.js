@@ -131,18 +131,21 @@ function RouteAdditionalDetails({ setSideMenu }) {
     const geoJsonToSend = { type: "FeatureCollection", features };
 
     const send = {
-      Path_Name: "Try1",
-      Applicant_User_Id: "123456789",
       Array_Of_Points: geoJsonToSend,
-      Is_Permanent: isPermanent,
       Terms_Text: "???????",
+
+      Path_Name: "Try1",
+
+      Start_Date: startingDate,
+      End_Date: endingDate,
       Reason_Text: reason,
+      Involved_Organ_Array: ["stam"],
+      Escort_Organ_Array: ["stam"],
+      Is_Permanent: isPermanent,
       Remarks: remarks ? remarks : "hello world",
-      Status_Name: isPermanent
-        ? STATUSES.Permanent.name
-        : STATUSES.Submitted.name,
     };
-    await axiosConfig.post("/path", send);
+
+    await axiosConfig.post("/path", { data: JSON.stringify(send) });
 
     dispatch(resetRoute());
     dispatch(fetchRoutes());

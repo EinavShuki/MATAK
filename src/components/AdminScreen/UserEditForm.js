@@ -46,16 +46,15 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
   const { results, loading, error } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {
-    console.log(formValues);
-    onFormSubmit({...formValues, User_Type: +formValues.User_Type});
+    onFormSubmit(formValues);
   };
 
   const radioButton = ({ input, ...rest }) => (
     <FormControl>
       <RadioGroup {...input} {...rest}>
-        <FormControlLabel value="0" control={<Radio />} label="Arbel" />
-        <FormControlLabel value="1" control={<Radio />} label="Matak" />
-        <FormControlLabel value="2" control={<Radio />} label="Admin" />
+        <FormControlLabel value="Arbel" control={<Radio />} label="Arbel" />
+        <FormControlLabel value="Matak" control={<Radio />} label="Matak" />
+        <FormControlLabel value="Admin" control={<Radio />} label="Admin" />
       </RadioGroup>
     </FormControl>
   );
@@ -142,9 +141,9 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
         <ListItem>
           <div className="form-field">
             <Field name="User_Type" component={radioButton}>
-              <Radio value={0} label="Arbel" />
-              <Radio value={1} label="Matak" />
-              <Radio value={2} label="Admin" />
+              <Radio value="Arbel" label="Arbel" />
+              <Radio value="Matak" label="Matak" />
+              <Radio value="Admin" label="Admin" />
             </Field>
           </div>
         </ListItem>
@@ -165,8 +164,12 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
           <CircularProgress />
         </div>
       )}
-      {results && <div className="form-message success">User created successfuly</div>}
-      {error && <div className="form-message failure">Failed to create new user</div>}
+      {results && !error (
+        <div className="form-message success">User created successfuly</div>
+      )}
+      {error && (
+        <div className="form-message failure">Failed to create new user</div>
+      )}
     </form>
   );
 }
