@@ -148,7 +148,8 @@ function MapComponent({ setMainSideMenu }) {
                     ? STATUSES.Permanent.color
                     : STATUSES[route["Status_Name"]].color
                 }
-                key={route._id}
+                //key is like a dependency to render the geoJson
+                key={route._id + isEditAvailable}
                 data={route["Array_Of_Points"]}
                 onEachFeature={handleClickOnRoute}
               />
