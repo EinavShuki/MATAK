@@ -70,9 +70,11 @@ export default usersSlice.reducer;
 export const fetchCurrentUser = () => async dispatch => {
   dispatch(userLoading());
   try {
-    // WILL BE API CALL
+    const { data } = await axiosConfig.post("/users/get", {});
+    console.log("curr user res", data);
     dispatch(currentUserReceived(CURRENT_USER));
   } catch (error) {
+    console.log("oops", error);
     dispatch(userError({ error: "some api error" }));
   }
 };
@@ -121,10 +123,15 @@ export const deleteUser = userId => async dispatch => {
   }
 };
 
-export const UpdateUser = (email, phone) => async dispatch => {
+export const UpdateUser = (id, email, phone) => async dispatch => {
   dispatch(userLoading());
   try {
-    // WILL BE API CALL
+    const { data } = await axiosConfig.put("/users", {
+      _id: id,
+      Email: email,
+      Mobile: phone,
+    });
+    console.log(data);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
