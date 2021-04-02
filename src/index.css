@@ -102,6 +102,12 @@ a {
   margin-right: 2rem;
   transform: scale(1.2);
 }
+.name {
+  text-transform: capitalize;
+}
+.organization-name {
+  text-transform: capitalize;
+}
 
 /*Notifications screen*/
 
