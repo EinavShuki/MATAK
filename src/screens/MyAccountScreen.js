@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   FormControl,
@@ -19,19 +19,18 @@ import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
 
 function MyAccountScreen() {
   const dispatch = useDispatch();
-  const emailRef = useRef();
-  const phoneRef = useRef();
+  const { currentUser } = useSelector(state => state.users);
+  const [email, setEmail] = useState(currentUser.Email);
+  const [mobile, setMobile] = useState(currentUser.Mobile);
 
   const updateHandler = () => {
-    dispatch(UpdateUser(currentUser._id, emailRef, phoneRef));
+    dispatch(UpdateUser(currentUser._id, email, mobile));
   };
 
-  //taking current user's details
-  const { currentUser } = useSelector(state => state.users);
-
-  useEffect(() => {
-    dispatch(fetchCurrentUser());
-  }, [dispatch]);
+  const initialsFun = () => {
+    const { First_Name, Last_Name } = currentUser;
+    return First_Name[0].toUpperCase() + Last_Name[0].toUpperCase();
+  };
 
   return (
     <>
@@ -46,13 +45,13 @@ function MyAccountScreen() {
                 justifyContent: "center",
               }}
             >
-              <Avatar className="avatar_name">ES</Avatar>
-              <h1 value={currentUser.name} className="name">
-                Einav Shpigel
+              <Avatar className="avatar_name">{initialsFun()}</Avatar>
+              <h1 className="name ">
+                {`${currentUser.First_Name} ${currentUser.Last_Name}`}
               </h1>
             </span>
             <h3 className="organization-name">
-              here we put the organization name
+              {currentUser.Organization_Name}
             </h3>
 
             <List
@@ -64,15 +63,16 @@ function MyAccountScreen() {
             >
               <ListItem>
                 <TextField
-                  ref={emailRef}
                   fullWidth
                   margin="dense"
                   name="Mail"
                   label="User Email"
                   type="email"
                   autoComplete="off"
-                  autoFocus
-                  value={currentUser.email}
+                  value={email}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -84,15 +84,16 @@ function MyAccountScreen() {
               </ListItem>
               <ListItem>
                 <TextField
-                  ref={phoneRef}
                   fullWidth
                   margin="normal"
                   name="Phone"
                   label="User Phone"
                   type="tel"
-                  // value={currentUser.phone}
+                  value={mobile}
                   autoComplete="off"
-                  autoFocus
+                  onChange={e => {
+                    setMobile(e.target.value);
+                  }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -103,7 +104,7 @@ function MyAccountScreen() {
                 />
               </ListItem>
               <Button
-                onClick={updateHandler()}
+                onClick={updateHandler}
                 variant="contained"
                 color="primary"
                 style={{
