@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, createUser, editUser, deleteUser } from "../redux/users";
+import {
+  fetchUsers,
+  createUser,
+  editUser,
+  deleteUser,
+  clear,
+} from "../redux/users";
 
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
@@ -16,12 +22,12 @@ const ManagementScreen = () => {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading } = useSelector(state => state.users);
+  const { users, loading, results } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, [dispatch]);
+  }, [dispatch, results]);
 
   const handleCreateUser = user => {
     dispatch(createUser(user));
@@ -137,7 +143,10 @@ const ManagementScreen = () => {
         <Modal
           text={"Create new user"}
           show
-          handleClose={() => setShowCreateUserModal(false)}
+          handleClose={() => {
+            setShowCreateUserModal(false);
+            dispatch(clear());
+          }}
         >
           <UserEditForm
             onFormSubmit={handleCreateUser}

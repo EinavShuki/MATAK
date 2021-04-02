@@ -19,6 +19,7 @@ export const usersSlice = createSlice({
     usersReceived: (state, action) => {
       state.users = action.payload;
       state.loading = "idle";
+      state.results = null;
     },
     userLoading: (state, action) => {
       state.loading = "pending";
@@ -45,6 +46,10 @@ export const usersSlice = createSlice({
     logoutUser: (state, action) => {
       state.currentUser = null;
     },
+    clear: state => {
+      state.results = null;
+      state.error = null;
+    },
   },
 });
 
@@ -57,6 +62,7 @@ export const {
   userDeleteRecieved,
   userError,
   logoutUser,
+  clear,
 } = usersSlice.actions;
 
 export default usersSlice.reducer;
@@ -108,7 +114,7 @@ export const deleteUser = userId => async dispatch => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
-    const res = await axiosConfig.delete("/users", { data: { _id: userId }});
+    const res = await axiosConfig.delete("/users", { data: { _id: userId } });
     dispatch(userDeleteRecieved(res.data));
   } catch (error) {
     dispatch(userError({ error: error.response.data.error }));

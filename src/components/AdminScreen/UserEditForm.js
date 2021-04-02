@@ -164,7 +164,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
           <CircularProgress />
         </div>
       )}
-      {results && (
+      {results && !error (
         <div className="form-message success">User created successfuly</div>
       )}
       {error && (
