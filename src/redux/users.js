@@ -74,19 +74,17 @@ export const fetchCurrentUser = () => async dispatch => {
 export const fetchUsers = () => async dispatch => {
   dispatch(userLoading());
   try {
-    // WILL BE API CALL
-    setTimeout(() => dispatch(usersReceived(USERS)), 2000);
+    const res = await axiosConfig.post("/users/get", {});
+    dispatch(usersReceived(res.data.data));
   } catch (error) {
-    dispatch(userError({ error: "some api error" }));
+    dispatch(userError({ error: error.response.data.error }));
   }
 };
 
 export const createUser = user => async dispatch => {
   dispatch(userLoading());
   try {
-    // WILL BE API CALL
-    console.log(user);
-    const res = await axiosConfig.post("/users/", user, {withCredentials: true});
+    const res = await axiosConfig.post("/users/", user);
     dispatch(userCreateRecieved(res.data));
   } catch (error) {
     dispatch(userError({ error: error.response.data.error }));
@@ -108,7 +106,8 @@ export const deleteUser = userId => async dispatch => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
-    const res = await axiosConfig.delete("/users/", userId);
+    const res = await axiosConfig.delete("/users", { data: { _id: userId }});
+    dispatch(userDeleteRecieved(res.data));
   } catch (error) {
     dispatch(userError({ error: error.response.data.error }));
   }
