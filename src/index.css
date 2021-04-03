@@ -102,6 +102,12 @@ a {
   margin-right: 2rem;
   transform: scale(1.2);
 }
+.name {
+  text-transform: capitalize;
+}
+.organization-name {
+  text-transform: capitalize;
+}
 
 /*Notifications screen*/
 
@@ -168,4 +174,19 @@ a {
 
 .failure {
   color: red;
+}
+
+#refresh-icon {
+  position: fixed;
+  z-index: 5001;
+  top: 25px;
+  right: 125px;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: all 0.1ms ease;
+}
+
+#refresh-icon:hover {
+  background-color: rgba(0, 0, 0, 1);
+  cursor: pointer;
+  transform: scale(1.1);
 }
