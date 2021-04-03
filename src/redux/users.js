@@ -93,9 +93,9 @@ export const createUser = user => async dispatch => {
     // WILL BE API CALL
     console.log(user);
     const res = await axiosConfig.post("/users/", user);
-    dispatch(userCreateRecieved(res.data));
+    dispatch(userCreateRecieved(res.data.data));
   } catch (error) {
-    dispatch(userError({ error: error.response.data.error }));
+    dispatch(userError('Failed to create a new user'));
   }
 };
 
@@ -106,7 +106,7 @@ export const editUser = user => async dispatch => {
     console.log(user);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
-    dispatch(userError({ error: error.response.data.error }));
+    dispatch(userError("Failed to edit the user"));
   }
 };
 
@@ -117,7 +117,7 @@ export const deleteUser = userId => async dispatch => {
     const res = await axiosConfig.delete("/users", { data: { _id: userId } });
     dispatch(userDeleteRecieved(res.data));
   } catch (error) {
-    dispatch(userError({ error: error.response.data.error }));
+    dispatch(userError("Failed to delete the user"));
   }
 };
 

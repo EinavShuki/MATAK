@@ -152,7 +152,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
             fullWidth
             variant="contained"
             color="primary"
-            // disabled={pristine || invalid}
+            disabled={pristine || invalid}
             onClick={handleFormSubmit}
           >
             Submit
@@ -164,7 +164,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
           <CircularProgress />
         </div>
       )}
-      {results && !error (
+      {results && (
         <div className="form-message success">User created successfuly</div>
       )}
       {error && (

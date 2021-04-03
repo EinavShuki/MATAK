@@ -16,10 +16,8 @@ import Modal from "./MatakModal";
 import ActionButtons from "../components/AdminScreen/ActionButtons";
 import UserEditForm from "../components/AdminScreen/UserEditForm";
 
-const ManagementScreen = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+const AdminScreen = () => {
+  const [showModal, setShowModal] = useState("none");
   const [selectedRow, setSelectedRow] = useState(null);
 
   const { users, loading, results } = useSelector(state => state.users);
@@ -28,6 +26,10 @@ const ManagementScreen = () => {
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch, results]);
+
+  const hideModal = () => {
+    setShowModal("none");
+  };
 
   const handleCreateUser = user => {
     dispatch(createUser(user));
@@ -39,7 +41,7 @@ const ManagementScreen = () => {
 
   const handleDeleteUser = () => {
     dispatch(deleteUser(selectedRow._id));
-    setShowDeleteModal(false);
+    hideModal();
   };
 
   const columns = [
@@ -69,7 +71,7 @@ const ManagementScreen = () => {
             thisRow[f] = params.getValue(f);
           });
 
-          setShowEditModal(true);
+          setShowModal("edit");
           setSelectedRow(thisRow);
         };
 
@@ -103,7 +105,7 @@ const ManagementScreen = () => {
             thisRow[f] = params.getValue(f);
           });
 
-          setShowDeleteModal(true);
+          setShowModal("delete");
           setSelectedRow(thisRow);
         };
 
@@ -120,13 +122,14 @@ const ManagementScreen = () => {
       },
     },
   ];
+
   return (
     <>
       <NavBar />
       <div className="table-container">
         <div className="table-title">
           <h1>Users</h1>
-          <div className="add-btn" onClick={() => setShowCreateUserModal(true)}>
+          <div className="add-btn" onClick={() => setShowModal("create")}>
             <MdAdd size={40} />
           </div>
         </div>
@@ -139,48 +142,38 @@ const ManagementScreen = () => {
           loading={loading === "pending"}
         />
       </div>
-      {showCreateUserModal && (
+      {showModal === "create" && (
         <Modal
           text={"Create new user"}
           show
           handleClose={() => {
-            setShowCreateUserModal(false);
+            hideModal();
             dispatch(clear());
           }}
         >
-          <UserEditForm
-            onFormSubmit={handleCreateUser}
-            onCancel={() => setShowCreateUserModal(false)}
-          />
+          <UserEditForm onFormSubmit={handleCreateUser} onCancel={hideModal} />
         </Modal>
       )}
-      {showEditModal && (
-        <Modal
-          text={"Edit User Details"}
-          show
-          handleClose={() => setShowEditModal(false)}
-        >
+      {showModal === "edit" && (
+        <Modal text={"Edit User Details"} show handleClose={hideModal}>
           <UserEditForm
             user={selectedRow}
             onFormSubmit={handleEditUser}
-            onCancel={() => setShowEditModal(false)}
+            onCancel={hideModal}
           />
         </Modal>
       )}
-      {showDeleteModal && (
+      {showModal === "delete" && (
         <Modal
           text={"Are you sure you to delete this user?"}
           show
-          handleClose={() => setShowDeleteModal(false)}
+          handleClose={hideModal}
         >
-          <ActionButtons
-            onOk={handleDeleteUser}
-            onCancel={() => setShowDeleteModal(false)}
-          />
+          <ActionButtons onOk={handleDeleteUser} onCancel={hideModal} />
         </Modal>
       )}
     </>
   );
 };
 
-export default ManagementScreen;
+export default AdminScreen;
