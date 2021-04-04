@@ -9,7 +9,8 @@ import { FiMenu } from "react-icons/fi";
 import { IoIosNotifications } from "react-icons/io";
 import { HiOutlineHome } from "react-icons/hi";
 import { Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { capitalize } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const { currentUser } = useSelector(state => state.users);
 
   return (
     <div className={classes.root}>
@@ -48,8 +50,11 @@ export default function ButtonAppBar() {
             </IconButton>
           </Link>
           <Typography variant="h6" className={classes.title}>
-            <Link style={{ color: "white" }} to="/my-account">
-              Einav
+            <Link
+              style={{ color: "white", textTransform: "capitalize" }}
+              to="/my-account"
+            >
+              {currentUser.First_Name}
             </Link>
           </Typography>
           <Link style={{ color: "white" }} to={`/home`}>
