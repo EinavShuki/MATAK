@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUsers,
-  createUser,
-  editUser,
-  deleteUser,
-  clear,
-} from "../redux/users";
-
+import { fetchUsers, createUser, editUser, deleteUser } from "../redux/users";
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
 import Button from "@material-ui/core/Button";
@@ -143,19 +136,12 @@ const AdminScreen = () => {
         />
       </div>
       {showModal === "create" && (
-        <Modal
-          text={"Create new user"}
-          show
-          handleClose={() => {
-            hideModal();
-            dispatch(clear());
-          }}
-        >
+        <Modal text={"Create new user"} show onClose={hideModal}>
           <UserEditForm onFormSubmit={handleCreateUser} onCancel={hideModal} />
         </Modal>
       )}
       {showModal === "edit" && (
-        <Modal text={"Edit User Details"} show handleClose={hideModal}>
+        <Modal text="Edit User Details" show onClose={hideModal}>
           <UserEditForm
             user={selectedRow}
             onFormSubmit={handleEditUser}
@@ -165,9 +151,9 @@ const AdminScreen = () => {
       )}
       {showModal === "delete" && (
         <Modal
-          text={"Are you sure you to delete this user?"}
+          text="Are you sure you to delete this user?"
           show
-          handleClose={hideModal}
+          onClose={hideModal}
         >
           <ActionButtons onOk={handleDeleteUser} onCancel={hideModal} />
         </Modal>
