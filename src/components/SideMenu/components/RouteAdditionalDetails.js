@@ -14,12 +14,12 @@ import {
 } from "@material-ui/pickers";
 import React, { useState } from "react";
 import { resetRoute } from "../../../redux/createdRoute";
-import { fetchRoutes, turnOffIsHidden } from "../../../redux/userRoutes";
+import { turnOffIsHidden } from "../../../redux/userRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
-import { STATUSES } from "../../../constants/statusConstants";
-import axiosConfig from "../../../config/axiosConfig";
 
+import axiosConfig from "../../../config/axiosConfig";
+import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
 const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
@@ -72,7 +72,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const [phonePrefix, setPhonePrefix] = useState("050");
   const [phonePostfix, setPhonePostfix] = useState("");
   const [remarks, setRemarks] = useState("");
-
+  const { fetchRoutesData } = useDispatchRoutes();
   const handleStartingDate = date => {
     const today = new Date();
     if (date >= today) setStartingDate(date);
@@ -148,7 +148,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
     await axiosConfig.post("/path", { data: JSON.stringify(send) });
 
     dispatch(resetRoute());
-    dispatch(fetchRoutes());
+    fetchRoutesData();
     dispatch(turnOffIsHidden());
     setSideMenu(false);
   }
@@ -156,84 +156,86 @@ function RouteAdditionalDetails({ setSideMenu }) {
   return (
     <>
       <h1>Additional Information</h1>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <div>
-          <KeyboardDatePicker
-            color="secondary"
-            disableToolbar
-            variant="inline"
-            format="dd/MM/yyyy"
-            margin="normal"
-            label="Pick Starting Date"
-            value={startingDate}
-            onChange={handleStartingDate}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          />
-          <TextField
-            color="secondary"
-            style={{ marginTop: "16px", width: "100px" }}
-            label="Starting Hour"
-            type="time"
-            value={`${
-              startingDate.getHours() < 10
-                ? "0" + startingDate.getHours()
-                : startingDate.getHours()
-            }:${
-              startingDate.getMinutes() < 10
-                ? "0" + startingDate.getMinutes()
-                : startingDate.getMinutes()
-            }`}
-            onChange={handleStaringHour}
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              step: 900,
-            }}
-          />
-        </div>
-        <div style={{ marginTop: "1rem" }}>
-          <KeyboardDatePicker
-            color="secondary"
-            disableToolbar
-            variant="inline"
-            format="dd/MM/yyyy"
-            margin="normal"
-            label="Pick Ending Date"
-            value={endingDate}
-            onChange={handleEndingDate}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          />
-          <TextField
-            color="secondary"
-            style={{ marginTop: "16px", width: "100px" }}
-            label="Ending Hour"
-            type="time"
-            value={`${
-              endingDate.getHours() < 10
-                ? "0" + endingDate.getHours()
-                : endingDate.getHours()
-            }:${
-              endingDate.getMinutes() < 10
-                ? "0" + endingDate.getMinutes()
-                : endingDate.getMinutes()
-            }`}
-            onChange={handleEndingHour}
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              step: 900,
-            }}
-          />
-        </div>
-      </MuiPickersUtilsProvider>
+      {!isPermanent && (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <div>
+            <KeyboardDatePicker
+              color="secondary"
+              disableToolbar
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
+              label="Pick Starting Date"
+              value={startingDate}
+              onChange={handleStartingDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+            <TextField
+              color="secondary"
+              style={{ marginTop: "16px", width: "100px" }}
+              label="Starting Hour"
+              type="time"
+              value={`${
+                startingDate.getHours() < 10
+                  ? "0" + startingDate.getHours()
+                  : startingDate.getHours()
+              }:${
+                startingDate.getMinutes() < 10
+                  ? "0" + startingDate.getMinutes()
+                  : startingDate.getMinutes()
+              }`}
+              onChange={handleStaringHour}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 900,
+              }}
+            />
+          </div>
+          <div style={{ marginTop: "1rem" }}>
+            <KeyboardDatePicker
+              color="secondary"
+              disableToolbar
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
+              label="Pick Ending Date"
+              value={endingDate}
+              onChange={handleEndingDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+            <TextField
+              color="secondary"
+              style={{ marginTop: "16px", width: "100px" }}
+              label="Ending Hour"
+              type="time"
+              value={`${
+                endingDate.getHours() < 10
+                  ? "0" + endingDate.getHours()
+                  : endingDate.getHours()
+              }:${
+                endingDate.getMinutes() < 10
+                  ? "0" + endingDate.getMinutes()
+                  : endingDate.getMinutes()
+              }`}
+              onChange={handleEndingHour}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 900,
+              }}
+            />
+          </div>
+        </MuiPickersUtilsProvider>
+      )}
       <FormControl style={{ margin: "1rem 0" }} color="secondary">
         <InputLabel id="reason-for-coordination">
           Reason For Coordination

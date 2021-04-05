@@ -43,6 +43,10 @@ function MapComponent({ setMainSideMenu }) {
     return state.userRoutes;
   });
 
+  const { isPermanent } = useSelector(state => {
+    return state.createdRoute;
+  });
+
   const handleMapClick = e => {
     if (isEditAvailable) {
       const pos = e.latlng;
@@ -52,7 +56,6 @@ function MapComponent({ setMainSideMenu }) {
   };
 
   const whenClicked = async route => {
-    console.log(isEditAvailable);
     if (!isEditAvailable) {
       setRouteDetailsMenu(false);
       setMainSideMenu(false);
@@ -91,7 +94,11 @@ function MapComponent({ setMainSideMenu }) {
           return (
             <Polyline
               key={index}
-              color={STATUSES.BeingCreated.color}
+              color={
+                isPermanent
+                  ? STATUSES.BeingCreated.permanent
+                  : STATUSES.BeingCreated.color
+              }
               positions={[route.positions]}
             />
           );
@@ -99,7 +106,11 @@ function MapComponent({ setMainSideMenu }) {
           return (
             <Polygon
               key={index}
-              color={STATUSES.BeingCreated.color}
+              color={
+                isPermanent
+                  ? STATUSES.BeingCreated.permanent
+                  : STATUSES.BeingCreated.color
+              }
               positions={[route.positions]}
             />
           );

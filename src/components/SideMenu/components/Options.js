@@ -1,5 +1,4 @@
 import React from "react";
-import { ImAppleinc } from "react-icons/im";
 import { FaSearch, FaMapMarked, FaHistory, FaSuitcase } from "react-icons/fa";
 import { ROUTE_DETAILS_PAGE } from "../../../constants/pageConstants";
 import { REPORTING_PAGE } from "../../../constants/pageConstants";
@@ -37,14 +36,14 @@ function Options({ setPage }) {
         <li>Routes History</li>
       </div>
 
-      <div className="list-item">
+      {/* <div className="list-item">
         <ImAppleinc />
         <li>Status</li>
-      </div>
+      </div> */}
       <Link to={`/routes-management`}>
         <div className="list-item">
           <FaSuitcase />
-          <li>Route Management</li>
+          <li>Routes Management</li>
         </div>
       </Link>
     </ul>
