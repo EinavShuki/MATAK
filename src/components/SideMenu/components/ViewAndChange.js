@@ -22,11 +22,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import React, { useMemo, useState } from "react";
 import { STATUSES } from "../../../constants/statusConstants";
 
-import { fetchRoutes } from "../../../redux/userRoutes";
-import { useDispatch } from "react-redux";
 import axiosConfig from "../../../config/axiosConfig";
-import zIndex from "@material-ui/core/styles/zIndex";
-
+import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
 const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
@@ -47,7 +44,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     End_Date,
   } = selectedRoute;
 
-  const dispatch = useDispatch();
+  const { fetchRoutesData } = useDispatchRoutes();
   const [status, setStatus] = useState(Status_Name);
 
   const [startingDate, setStartingDate] = useState(
@@ -124,7 +121,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     };
     await axiosConfig.put("/path", send);
 
-    dispatch(fetchRoutes());
+    fetchRoutesData();
     setSideMenu(false);
   };
 
@@ -134,7 +131,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     };
     await axiosConfig.delete("/path", send);
     setOpen(false);
-    dispatch(fetchRoutes());
+    fetchRoutesData();
 
     setSideMenu(false);
   };

@@ -66,7 +66,7 @@ export default function LoginScreen({ history }) {
     const body = { Username: username, Password: password };
     try {
       const { data } = await axiosConfig.post("/users/login", body);
-      console.log(data.id);
+
       dispatch(fetchCurrentUser(data.id));
       history.push("/home");
     } catch (error) {

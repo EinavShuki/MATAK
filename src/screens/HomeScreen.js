@@ -9,9 +9,9 @@ import StatusInfo from "../components/StatusInfo/StatusInfo";
 import AvatarIcon from "../components/AvatarIcon";
 import { CSSTransition } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRoutes } from "../redux/userRoutes";
 import { Avatar } from "@material-ui/core";
 import { MdRefresh } from "react-icons/md";
+import useDispatchRoutes from "../customHooks/useDispatchRoutes";
 
 function HomeScreen() {
   const [sideMenu, setSideMenu] = useState(false);
@@ -20,13 +20,15 @@ function HomeScreen() {
     return state.users;
   });
   const First_Name = currentUser?.First_Name;
+  const { fetchRoutesData } = useDispatchRoutes();
 
   useEffect(() => {
-    dispatch(fetchRoutes());
+    fetchRoutesData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const updateRoutes = () => {
-    dispatch(fetchRoutes());
+    fetchRoutesData();
   };
 
   return (

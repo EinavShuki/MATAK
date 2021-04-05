@@ -15,6 +15,7 @@ export const STATUSES = {
   BeingCreated: {
     name: "Being-Created",
     color: purple[500],
+    permanent: purple[900],
   },
   Submitted: {
     name: "Submitted",
