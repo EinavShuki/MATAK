@@ -132,7 +132,7 @@ const AdminScreen = () => {
       )}
       {showModal === "delete" && (
         <Modal
-          text="Are you sure you to delete this user?"
+          text="Are you sure you want to delete this user?"
           show
           onClose={hideModal}
         >

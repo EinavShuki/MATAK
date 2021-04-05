@@ -129,6 +129,7 @@ a {
 .table-title {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .table-title h1 {
