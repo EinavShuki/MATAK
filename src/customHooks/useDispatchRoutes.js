@@ -20,12 +20,13 @@ function useDispatchRoutes() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
-  useEffect(() => {
-    if (currentUser) {
-      fetchRoutesData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  // useEffect(() => {
+  //   console.log("object");
+  //   if (currentUser) {
+  //     fetchRoutesData();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return { fetchRoutesData };
 }

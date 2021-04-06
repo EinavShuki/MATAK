@@ -25,7 +25,7 @@ function HomeScreen() {
   useEffect(() => {
     fetchRoutesData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   const updateRoutes = () => {
     fetchRoutesData();
