@@ -6,6 +6,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import "./RoutesManagement.css";
 import { Button } from "@material-ui/core";
 import exportFromJSON from "export-from-json";
+import {RiFileExcel2Fill} from "react-icons/all";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    position: "relative"
   },
   table: {},
 }));
@@ -28,7 +30,14 @@ export default function RoutesManagement() {
   const routes = useSelector(state => {
     const { routes } = state.userRoutes;
     return routes.map(route => {
-      return { ...route, id: route._id };
+      console.log(route);
+      return {
+        ...route,
+        id: route._id,
+        Start_Date: new Date(route.Start_Date).toLocaleString(),
+        End_Date: new Date(route.End_Date).toLocaleString(),
+        createdAt: new Date(route.createdAt).toLocaleString()
+      };
     });
   });
 
@@ -36,7 +45,6 @@ export default function RoutesManagement() {
 
   const columns = [
     { field: "Path_Name", headerName: "Name", width: 200 },
-    { field: "Applicant_User_Id", headerName: "Applicant ID", width: 200 },
     { field: "Status_Name", headerName: "Status", width: 160 },
     { field: "Start_Date", headerName: "Start Date", width: 200 },
     { field: "End_Date", headerName: "End Date", width: 200 },
@@ -72,10 +80,10 @@ export default function RoutesManagement() {
           <Button
             variant="contained"
             color="primary"
-            style={{ alignSelf: "center", marginTop: 20, width: 190 }}
+            style={{ alignSelf: "center", marginTop: 20, marginRight: 20, width: "60px", height: "60px" , position: "absolute", top: 0, right: 0}}
             onClick={() => exportRoutes()}
           >
-            Export (Excel)
+            <RiFileExcel2Fill size={"1x"}/>
           </Button>
         </div>
       </div>
