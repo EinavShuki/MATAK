@@ -66,12 +66,13 @@ export const {
 
 export default usersSlice.reducer;
 
-export const fetchCurrentUser = id => async dispatch => {
+export const fetchCurrentUser = (id, goHome) => async dispatch => {
   dispatch(userLoading());
   try {
     const { data } = await axiosConfig.post("/users/get", { _id: id });
     // console.log("curr user", data.data[0]);
     dispatch(currentUserReceived(data.data[0]));
+    goHome();
   } catch (error) {
     console.log("oops", error);
     dispatch(userError({ error: "some api error" }));

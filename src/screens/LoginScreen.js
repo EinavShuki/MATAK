@@ -62,13 +62,15 @@ export default function LoginScreen({ history }) {
     }
   };
 
+  const goHome = () => {
+    history.push("/home");
+  };
   const handleLogIn = async () => {
     const body = { Username: username, Password: password };
     try {
       const { data } = await axiosConfig.post("/users/login", body);
 
-      dispatch(fetchCurrentUser(data.id));
-      history.push("/home");
+      dispatch(fetchCurrentUser(data.id, goHome));
     } catch (error) {
       openModal("Failed to log in");
     }

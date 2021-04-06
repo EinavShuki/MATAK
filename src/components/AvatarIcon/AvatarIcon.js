@@ -6,11 +6,12 @@ import {
   MdPowerSettingsNew,
   MdSettings,
   MdAccountCircle,
-  MdPhonelinkSetup
+  MdPhonelinkSetup,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   avatar: {
     position: "fixed",
     zIndex: "5003",
@@ -25,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
 function AvatarIcon({ letter }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { currentUser } = useSelector(state => state.users);
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -58,13 +60,14 @@ function AvatarIcon({ letter }) {
             My Account
           </MenuItem>
         </Link>
-
-        <Link to={`/admin-panel`}>
-          <MenuItem>
-            <MdPhonelinkSetup className={classes.icon} />
-            Admin Panel
-          </MenuItem>
-        </Link>
+        {currentUser.User_Type === "Admin" && (
+          <Link to={`/admin-panel`}>
+            <MenuItem>
+              <MdPhonelinkSetup className={classes.icon} />
+              Admin Panel
+            </MenuItem>
+          </Link>
+        )}
 
         {/* check for admin */}
         <MenuItem onClick={handleClose}>
