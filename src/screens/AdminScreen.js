@@ -41,11 +41,11 @@ const AdminScreen = () => {
     { field: "_id", headerName: "ID", width: 50, hide: true },
     { field: "First_Name", headerName: "First name", width: 160 },
     { field: "Last_Name", headerName: "Last name", width: 160 },
-    { field: "Mobile", headerName: "Mobile", width: 130 },
-    { field: "Email", headerName: "Email", width: 200 },
-    { field: "Organization_Name", headerName: "Organization", width: 160 },
     { field: "Username", headerName: "User Name", width: 160 },
     { field: "User_Type", headerName: "User Type", width: 140 },
+    { field: "Mobile", headerName: "Mobile", width: 130 },
+    { field: "Email", headerName: "Email", width: 230 },
+    { field: "Organization_Name", headerName: "Organization", width: 160 },
     {
       field: "edit",
       headerName: "Edit User",
@@ -68,22 +68,13 @@ const AdminScreen = () => {
           setSelectedRow(thisRow);
         };
 
-        return (
-          <Button
-            variant="contained"
-            style={{ backgroundColor: "#00bbf9", color: "#fff" }}
-            startIcon={<MdModeEdit />}
-            onClick={onClick}
-          >
-            Edit
-          </Button>
-        );
+        return <Button startIcon={<MdModeEdit />} onClick={onClick}/>;
       },
     },
     {
       field: "delete",
       headerName: "Delete User",
-      width: 160,
+      width: 155,
       disableClickEventBubbling: true,
       renderCell: params => {
         const onClick = () => {
@@ -102,16 +93,7 @@ const AdminScreen = () => {
           setSelectedRow(thisRow);
         };
 
-        return (
-          <Button
-            variant="contained"
-            style={{ backgroundColor: "#f44336", color: "#fff" }}
-            startIcon={<MdDelete />}
-            onClick={onClick}
-          >
-            Delete
-          </Button>
-        );
+        return <Button startIcon={<MdDelete />} onClick={onClick}/>;
       },
     },
   ];
@@ -131,7 +113,6 @@ const AdminScreen = () => {
           columns={columns}
           getRowId={row => row._id}
           pageSize={10}
-          checkboxSelection
           loading={loading === "pending"}
         />
       </div>
@@ -151,7 +132,7 @@ const AdminScreen = () => {
       )}
       {showModal === "delete" && (
         <Modal
-          text="Are you sure you to delete this user?"
+          text="Are you sure you want to delete this user?"
           show
           onClose={hideModal}
         >
