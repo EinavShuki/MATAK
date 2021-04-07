@@ -30,7 +30,6 @@ export default function RoutesManagement() {
   const routes = useSelector(state => {
     const { routes } = state.userRoutes;
     return routes.map(route => {
-      console.log(route);
       return {
         ...route,
         id: route._id,
