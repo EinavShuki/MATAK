@@ -27,6 +27,7 @@ export default function RoutesManagement() {
   const exportedFileName = "Routes";
   const exportType = "xls";
 
+  // TODO: We need to receive the full name of the user who opened a route on each route from the server, and then display it in table
   const routes = useSelector(state => {
     const { routes } = state.userRoutes;
     return routes.map(route => {
