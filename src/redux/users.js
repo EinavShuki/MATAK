@@ -103,9 +103,8 @@ export const createUser = user => async dispatch => {
 export const editUser = user => async dispatch => {
   dispatch(userLoading());
   try {
-    // WILL BE API CALL
-    console.log(user);
-    setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
+    const res = await axiosConfig.put("/users", user);
+    dispatch(userUpdateRecieved(res.data.data));
   } catch (error) {
     dispatch(userError("Failed to edit the user"));
   }

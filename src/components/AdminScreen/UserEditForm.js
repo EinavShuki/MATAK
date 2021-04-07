@@ -20,33 +20,44 @@ const renderTextField = ({
   type,
   meta: { touched, invalid, error },
   ...custom
-}) => (
-  <TextField
-    label={label}
-    placeholder={label}
-    error={touched && invalid}
-    helperText={touched && error}
-    type={type}
-    fullWidth
-    {...input}
-    {...custom}
-  />
-);
+}) => {
+  if (input.value === "" && custom.defaultValue) {
+    // hack for redux form with material components
+    input.onChange(String(custom.defaultValue));
+  }
+  return (
+    <TextField
+      label={label}
+      error={touched && invalid}
+      helperText={touched && error}
+      type={type}
+      fullWidth
+      {...input}
+      {...custom}
+    />
+  );
+};
 
 function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
   const [userDetails, setUserDetails] = useState({
-    lastName: user?.lastName || "",
-    firstName: user?.firstName || "",
-    email: user?.email || "",
-    mobile: user?.mobile || "",
-    usertype: user?.usertype || "",
-    organization: user?.organization || "",
+    Last_Name: user?.Last_Name || "",
+    First_Name: user?.First_Name || "",
+    Username: user?.Username || "",
+    Password: "",
+    Email: user?.Email || "",
+    Mobile: user?.Mobile || "",
+    Usert_Type: user?.User_Type || "",
+    Organization_Name: user?.Organization_Name || "",
   });
-
+  console.log("user in form:", userDetails);
   const { results, loading, error } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {
-    onFormSubmit(formValues);
+    if (user) {
+      onFormSubmit({ ...formValues, _id: user._id });
+    } else {
+      onFormSubmit(formValues);
+    }
   };
 
   const radioButton = ({ input, ...rest }) => (
@@ -73,6 +84,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
             <Field
               type="text"
               name="First_Name"
+              defaultValue={userDetails.First_Name}
               component={renderTextField}
               label="First Name"
             />
@@ -82,6 +94,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
           <div className="form-field">
             <Field
               name="Last_Name"
+              defaultValue={userDetails.Last_Name}
               type="text"
               component={renderTextField}
               label="Last Name"
@@ -92,6 +105,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
           <div className="form-field">
             <Field
               name="Username"
+              defaultValue={userDetails.Username}
               type="text"
               component={renderTextField}
               label="Username"
@@ -103,6 +117,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
             <Field
               name="Password"
               type="password"
+              defaultValue={userDetails.Password}
               component={renderTextField}
               label="Password"
             />
@@ -112,6 +127,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
           <div className="form-field">
             <Field
               name="Email"
+              defaultValue={userDetails.Email}
               type="text"
               component={renderTextField}
               label="Email"
@@ -123,6 +139,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
             <Field
               name="Mobile"
               type="text"
+              defaultValue={userDetails.Mobile}
               component={renderTextField}
               label="Mobile"
             />
@@ -133,6 +150,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
             <Field
               type="text"
               name="Organization_Name"
+              defaultValue={userDetails.Organization_Name}
               component={renderTextField}
               label="Organization Name"
             />
