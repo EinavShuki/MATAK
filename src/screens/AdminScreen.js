@@ -41,11 +41,11 @@ const AdminScreen = () => {
     { field: "_id", headerName: "ID", width: 50, hide: true },
     { field: "First_Name", headerName: "First name", width: 160 },
     { field: "Last_Name", headerName: "Last name", width: 160 },
+    { field: "Username", headerName: "User Name", width: 160 },
+    { field: "User_Type", headerName: "User Type", width: 140 },
     { field: "Mobile", headerName: "Mobile", width: 130 },
     { field: "Email", headerName: "Email", width: 230 },
     { field: "Organization_Name", headerName: "Organization", width: 160 },
-    { field: "Username", headerName: "User Name", width: 160 },
-    { field: "User_Type", headerName: "User Type", width: 140 },
     {
       field: "edit",
       headerName: "Edit User",
