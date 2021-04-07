@@ -19,6 +19,7 @@ export const usersSlice = createSlice({
     usersReceived: (state, action) => {
       state.users = action.payload;
       state.loading = "idle";
+      state.results = null;
     },
     userLoading: (state, action) => {
       state.loading = "pending";
