@@ -29,6 +29,9 @@ function RouteDetails({ setPage }) {
   const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
+  const {
+    currentUser: { isAdminOrMatakUser },
+  } = useSelector(state => state.users);
   const { isHidden } = useSelector(state => {
     return state.userRoutes;
   });
@@ -92,32 +95,38 @@ function RouteDetails({ setPage }) {
     }
   }, [currentCreatedRoute]);
 
+  console.log(isAdminOrMatakUser);
+
   return (
     <>
       <h1>Create a New Route</h1>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={isPermanent}
-            onChange={() => dispatch(togglePermanentRoute())}
-            name="permanentRoute"
-            disabled={!currentCreatedRoute.length}
+      {isAdminOrMatakUser && (
+        <>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isPermanent}
+                onChange={() => dispatch(togglePermanentRoute())}
+                name="permanentRoute"
+                disabled={!currentCreatedRoute.length}
+              />
+            }
+            label="Create a Permanent Route"
           />
-        }
-        label="Create a Permanent Route"
-      />
-      <FormControlLabel
-        style={{ marginTop: "1.33em" }}
-        control={
-          <Switch
-            checked={isHidden}
-            onChange={() => dispatch(toggleIsHidden())}
-            name="hide-routes"
-            color="secondary"
+          <FormControlLabel
+            style={{ marginTop: "1.33em" }}
+            control={
+              <Switch
+                checked={isHidden}
+                onChange={() => dispatch(toggleIsHidden())}
+                name="hide-routes"
+                color="secondary"
+              />
+            }
+            label="Hide Routes"
           />
-        }
-        label="Hide Routes"
-      />
+        </>
+      )}
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
         <Button

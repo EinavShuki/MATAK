@@ -64,10 +64,13 @@ function MapComponent({ setMainSideMenu }) {
         _id: route.properties._id,
       };
 
-      const { data } = await axiosConfig.post("/path/get", send);
-
-      setSelectedRoute(data.data[0]);
-      setRouteDetailsMenu(true);
+      try {
+        const { data } = await axiosConfig.post("/path/get", send);
+        setSelectedRoute(data.data[0]);
+        setRouteDetailsMenu(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -75,7 +78,10 @@ function MapComponent({ setMainSideMenu }) {
     layer.on({
       click: () => whenClicked(route),
       mouseover: () => {
-        // console.log("object");
+        layer.bindPopup(route?.properties?.routeName).openPopup(); // here add openPopup()
+      },
+      mouseout: () => {
+        layer.closePopup(); // here add openPopup()
       },
     });
   };
@@ -96,8 +102,8 @@ function MapComponent({ setMainSideMenu }) {
               key={index}
               color={
                 isPermanent
-                  ? STATUSES.BeingCreated.permanent
-                  : STATUSES.BeingCreated.color
+                  ? STATUSES?.BeingCreated?.permanent
+                  : STATUSES?.BeingCreated?.color
               }
               positions={[route.positions]}
             />
@@ -108,8 +114,8 @@ function MapComponent({ setMainSideMenu }) {
               key={index}
               color={
                 isPermanent
-                  ? STATUSES.BeingCreated.permanent
-                  : STATUSES.BeingCreated.color
+                  ? STATUSES?.BeingCreated?.permanent
+                  : STATUSES?.BeingCreated?.color
               }
               positions={[route.positions]}
             />
@@ -156,8 +162,8 @@ function MapComponent({ setMainSideMenu }) {
               <GeoJSON
                 color={
                   route.Is_Permanent
-                    ? STATUSES.Permanent.color
-                    : STATUSES[route["Status_Name"]].color
+                    ? STATUSES?.Permanent?.color
+                    : STATUSES[route["Status_Name"]]?.color
                 }
                 //key is like a dependency to render the geoJson
                 key={route._id + isEditAvailable}

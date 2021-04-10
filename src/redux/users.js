@@ -71,8 +71,9 @@ export const fetchCurrentUser = (id, goHome) => async dispatch => {
   dispatch(userLoading());
   try {
     const { data } = await axiosConfig.post("/users/get", { _id: id });
-    // console.log("curr user", data.data[0]);
-    dispatch(currentUserReceived(data.data[0]));
+    const isAdminOrMatakUser =
+      data.data[0].User_Type === "Admin" || data.data[0].User_Type === "Matak";
+    dispatch(currentUserReceived({ ...data.data[0], isAdminOrMatakUser }));
     goHome();
   } catch (error) {
     console.log("oops", error);

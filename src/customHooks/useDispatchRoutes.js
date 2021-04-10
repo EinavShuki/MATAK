@@ -8,10 +8,9 @@ function useDispatchRoutes() {
     return state.users;
   });
 
-  const params =
-    currentUser?.User_Type === "Admin" || currentUser?.User_Type === "Matak"
-      ? {}
-      : { Applicant_User_Id: currentUser?._id };
+  const params = currentUser?.isAdminOrMatakUser
+    ? {}
+    : { Applicant_User_Id: currentUser?._id };
 
   const fetchRoutesData = useCallback(() => {
     if (currentUser) {
