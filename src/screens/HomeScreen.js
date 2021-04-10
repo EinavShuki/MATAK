@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MatakIcon from "../images/matak.png";
+import loadingGif from "../images/loading.gif";
 import { FiMenu } from "react-icons/fi";
 
 //components area
@@ -19,6 +20,10 @@ function HomeScreen() {
   const { currentUser } = useSelector(state => {
     return state.users;
   });
+
+  const { loading } = useSelector(state => {
+    return state.userRoutes;
+  });
   const First_Name = currentUser?.First_Name;
   const { fetchRoutesData } = useDispatchRoutes();
 
@@ -36,8 +41,12 @@ function HomeScreen() {
       <FiMenu id="add-icon" onClick={() => setSideMenu(true)} />
       <img id="matak-icon" src={MatakIcon} alt="Matak-Icon" />
 
-      <AvatarIcon letter={First_Name ? First_Name[0].toUpperCase() : "M"} />
-      <Avatar id="refresh-icon" onClick={updateRoutes}>
+      <AvatarIcon letter={First_Name ? First_Name[0].toUpperCase() : "N/A"} />
+      <Avatar
+        id="refresh-icon"
+        onClick={updateRoutes}
+        src={loading && loadingGif}
+      >
         <MdRefresh />
       </Avatar>
       <CSSTransition

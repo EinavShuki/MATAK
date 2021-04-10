@@ -5,17 +5,22 @@ export const userRoutesSlice = createSlice({
   name: "userRoutes",
   initialState: {
     isHidden: false,
+    loading: false,
     routes: [],
   },
   reducers: {
     setRoutes: (state, { payload }) => {
       state.routes = [...payload];
+      state.loading = false;
     },
     toggleIsHidden: state => {
       state.isHidden = !state.isHidden;
     },
     turnOffIsHidden: state => {
       state.isHidden = false;
+    },
+    loadingOn: state => {
+      state.loading = true;
     },
   },
 });
@@ -24,14 +29,15 @@ export const {
   setRoutes,
   toggleIsHidden,
   turnOffIsHidden,
+  loadingOn,
 } = userRoutesSlice.actions;
 
 export default userRoutesSlice.reducer;
 
 export const fetchRoutes = params => async dispatch => {
+  dispatch(loadingOn());
   try {
     const { data } = await axiosConfig.post("/path/get", params);
-
     let routesDetailsArray = data.data;
 
     const result = routesDetailsArray.map(route => {
