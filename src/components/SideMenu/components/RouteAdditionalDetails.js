@@ -2,31 +2,21 @@ import {
   FormControl,
   Button,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
   TextField,
 } from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+
 import React, { useState } from "react";
 import { resetRoute } from "../../../redux/createdRoute";
 import { turnOffIsHidden } from "../../../redux/userRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
-
 import axiosConfig from "../../../config/axiosConfig";
 import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
-const useStyles = makeStyles(theme => ({
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-}));
+import { reasonsArray, phonePrefixes } from "../../../constants/infoConstants";
+import DatePicker from "../../DatePicker";
+import generate from "project-name-generator";
 
 function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
@@ -34,37 +24,6 @@ function RouteAdditionalDetails({ setSideMenu }) {
     return state.createdRoute;
   });
 
-  const reasonsArray = [
-    "Infrastructure",
-    "Repair",
-    "Assessment",
-    "Sanitation/Waste disposal",
-    "Facilities supply",
-    "Staff movment",
-    "Damage assessment",
-    "Needs assessment",
-    "Commodities loading",
-    "Food distribution",
-    "Emergency response",
-    "Ambulance",
-    "Fire truck",
-    "Civil defence",
-    "UXO",
-  ];
-
-  const phonePrefixes = [
-    "050",
-    "051",
-    "052",
-    "053",
-    "054",
-    "055",
-    "056",
-    "058",
-    "059",
-  ];
-
-  const classes = useStyles();
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
   const [reason, setReason] = useState(reasonsArray[0]);
@@ -73,35 +32,6 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const [phonePostfix, setPhonePostfix] = useState("");
   const [remarks, setRemarks] = useState("");
   const { fetchRoutesData } = useDispatchRoutes();
-  const handleStartingDate = date => {
-    const today = new Date();
-    if (date >= today) setStartingDate(date);
-    if (date >= endingDate) setEndingDate(date);
-  };
-
-  const handleEndingDate = date => {
-    if (date >= startingDate) setEndingDate(date);
-  };
-
-  const handleStaringHour = e => {
-    const [hours, minutes] = e.target.value.split(":");
-    const today = new Date();
-    const newDate = new Date(startingDate);
-    newDate.setHours(hours);
-    newDate.setMinutes(minutes);
-    if (newDate >= today) setStartingDate(newDate);
-    if (newDate >= endingDate) setEndingDate(newDate);
-  };
-
-  const handleEndingHour = e => {
-    const [hours, minutes] = e.target.value.split(":");
-
-    const newDate = new Date(endingDate);
-    newDate.setHours(hours);
-    newDate.setMinutes(minutes);
-
-    if (newDate >= startingDate) setEndingDate(newDate);
-  };
 
   function handlePhoneNumber(e) {
     const re = /^[0-9\b]+$/;
@@ -114,14 +44,6 @@ function RouteAdditionalDetails({ setSideMenu }) {
   }
 
   async function handleSubmitRoute() {
-    // console.log(startingDate);
-    // console.log(endingDate);
-    // console.log(reason);
-    // console.log(driversName);
-    // console.log(phonePrefix);
-    // console.log(phonePostfix);
-    // console.log(notesText);
-    // console.log(isPermanent);
     const features = currentCreatedRoute.map(route => {
       const geoJson = new GeoJsonShape(route.routeType);
       geoJson.addCoordinates(route.positions);
@@ -133,9 +55,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
     const send = {
       Array_Of_Points: geoJsonToSend,
       Terms_Text: "???????",
-
-      Path_Name: "Try1",
-
+      Path_Name: generate().spaced,
       Start_Date: startingDate,
       End_Date: endingDate,
       Reason_Text: reason,
@@ -145,97 +65,28 @@ function RouteAdditionalDetails({ setSideMenu }) {
       Remarks: remarks ? remarks : "hello world",
     };
 
-    await axiosConfig.post("/path", { data: JSON.stringify(send) });
+    try {
+      await axiosConfig.post("/path", { data: JSON.stringify(send) });
 
-    dispatch(resetRoute());
-    fetchRoutesData();
-    dispatch(turnOffIsHidden());
-    setSideMenu(false);
+      dispatch(resetRoute());
+      fetchRoutesData();
+      dispatch(turnOffIsHidden());
+      setSideMenu(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  const dateController = {
+    endingDate,
+    setEndingDate,
+    startingDate,
+    setStartingDate,
+  };
   return (
     <>
       <h1>Additional Information</h1>
-      {!isPermanent && (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div>
-            <KeyboardDatePicker
-              color="secondary"
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Pick Starting Date"
-              value={startingDate}
-              onChange={handleStartingDate}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <TextField
-              color="secondary"
-              style={{ marginTop: "16px", width: "100px" }}
-              label="Starting Hour"
-              type="time"
-              value={`${
-                startingDate.getHours() < 10
-                  ? "0" + startingDate.getHours()
-                  : startingDate.getHours()
-              }:${
-                startingDate.getMinutes() < 10
-                  ? "0" + startingDate.getMinutes()
-                  : startingDate.getMinutes()
-              }`}
-              onChange={handleStaringHour}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 900,
-              }}
-            />
-          </div>
-          <div style={{ marginTop: "1rem" }}>
-            <KeyboardDatePicker
-              color="secondary"
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Pick Ending Date"
-              value={endingDate}
-              onChange={handleEndingDate}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <TextField
-              color="secondary"
-              style={{ marginTop: "16px", width: "100px" }}
-              label="Ending Hour"
-              type="time"
-              value={`${
-                endingDate.getHours() < 10
-                  ? "0" + endingDate.getHours()
-                  : endingDate.getHours()
-              }:${
-                endingDate.getMinutes() < 10
-                  ? "0" + endingDate.getMinutes()
-                  : endingDate.getMinutes()
-              }`}
-              onChange={handleEndingHour}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 900,
-              }}
-            />
-          </div>
-        </MuiPickersUtilsProvider>
-      )}
+      <DatePicker {...dateController} isDisabled={false} />
       <FormControl style={{ margin: "1rem 0" }} color="secondary">
         <InputLabel id="reason-for-coordination">
           Reason For Coordination

@@ -38,7 +38,8 @@ export const fetchRoutes = params => async dispatch => {
       const arrayOfPoints = route["Array_Of_Points"]["features"].map(
         feature => {
           const _id = route["_id"];
-          return { ...feature, properties: { _id } };
+          const routeName = route["Path_Name"];
+          return { ...feature, properties: { _id, routeName } };
         }
       );
 

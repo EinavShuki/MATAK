@@ -12,25 +12,13 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
 import { FaLock } from "react-icons/fa";
-import DateFnsUtils from "@date-io/date-fns";
-
 import React, { useMemo, useState } from "react";
 import { STATUSES } from "../../../constants/statusConstants";
-
 import axiosConfig from "../../../config/axiosConfig";
 import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
-const useStyles = makeStyles(theme => ({
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-}));
+import DatePicker from "../../DatePicker";
+import { useSelector } from "react-redux";
 
 function ViewAndChange({ selectedRoute, setSideMenu }) {
   const {
@@ -44,6 +32,9 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     End_Date,
   } = selectedRoute;
 
+  const {
+    currentUser: { isAdminOrMatakUser },
+  } = useSelector(state => state.users);
   const { fetchRoutesData } = useDispatchRoutes();
   const [status, setStatus] = useState(Status_Name);
 
@@ -64,8 +55,6 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     setOpen(false);
   };
 
-  const classes = useStyles();
-
   const statusesArray = useMemo(() => {
     return Object.values(STATUSES).filter(status => {
       if (
@@ -77,36 +66,6 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     });
   }, []);
 
-  const handleStartingDate = date => {
-    const today = new Date();
-    if (date >= today) setStartingDate(date);
-    if (date >= endingDate) setEndingDate(date);
-  };
-
-  const handleEndingDate = date => {
-    if (date >= startingDate) setEndingDate(date);
-  };
-
-  const handleStaringHour = e => {
-    const [hours, minutes] = e.target.value.split(":");
-    const today = new Date();
-    const newDate = new Date(startingDate);
-    newDate.setHours(hours);
-    newDate.setMinutes(minutes);
-    if (newDate >= today) setStartingDate(newDate);
-    if (newDate >= endingDate) setEndingDate(newDate);
-  };
-
-  const handleEndingHour = e => {
-    const [hours, minutes] = e.target.value.split(":");
-
-    const newDate = new Date(endingDate);
-    newDate.setHours(hours);
-    newDate.setMinutes(minutes);
-
-    if (newDate >= startingDate) setEndingDate(newDate);
-  };
-
   const handleSubmitRoute = async () => {
     const send = {
       // Path_Name: "Try1",
@@ -116,30 +75,45 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
       // Terms_Text: "???????",
       // Reason_Text: reason,
       // Remarks: remarks ? remarks : "hello world",
+      Start_Date: startingDate,
+      End_Date: endingDate,
       _id,
-      Status_Name: status,
+      Status_Name: Status_Name === "Changes-Required" ? "Submitted" : status,
     };
-    await axiosConfig.put("/path", send);
+    try {
+      await axiosConfig.put("/path", send);
 
-    fetchRoutesData();
-    setSideMenu(false);
+      fetchRoutesData();
+      setSideMenu(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteRoute = async () => {
     const send = {
       data: { _id },
     };
-    await axiosConfig.delete("/path", send);
-    setOpen(false);
-    fetchRoutesData();
+    try {
+      await axiosConfig.delete("/path", send);
+      setOpen(false);
+      fetchRoutesData();
+      setSideMenu(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    setSideMenu(false);
+  const dateController = {
+    endingDate,
+    setEndingDate,
+    startingDate,
+    setStartingDate,
   };
 
   return (
     <>
       <h1>View Route</h1>
-
       <span style={{ fontSize: "20px" }}>
         {Path_Name}{" "}
         {Is_Permanent ? (
@@ -153,78 +127,10 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
           ""
         )}
       </span>
-      {!Is_Permanent && (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div>
-            <KeyboardDatePicker
-              disabled
-              color="secondary"
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Pick Starting Date"
-              value={startingDate}
-              onChange={handleStartingDate}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <TextField
-              disabled
-              color="secondary"
-              style={{ marginTop: "16px", width: "100px" }}
-              label="Starting Hour"
-              type="time"
-              value={`${
-                startingDate.getHours() < 10
-                  ? "0" + startingDate.getHours()
-                  : startingDate.getHours()
-              }:${
-                startingDate.getMinutes() < 10
-                  ? "0" + startingDate.getMinutes()
-                  : startingDate.getMinutes()
-              }`}
-              onChange={handleStaringHour}
-              className={classes.textField}
-            />
-          </div>
-          <div style={{ marginTop: "1rem" }}>
-            <KeyboardDatePicker
-              disabled
-              color="secondary"
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Pick Ending Date"
-              value={endingDate}
-              onChange={handleEndingDate}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <TextField
-              disabled
-              color="secondary"
-              style={{ marginTop: "16px", width: "100px" }}
-              label="Ending Hour"
-              type="time"
-              value={`${
-                endingDate.getHours() < 10
-                  ? "0" + endingDate.getHours()
-                  : endingDate.getHours()
-              }:${
-                endingDate.getMinutes() < 10
-                  ? "0" + endingDate.getMinutes()
-                  : endingDate.getMinutes()
-              }`}
-              onChange={handleEndingHour}
-              className={classes.textField}
-            />
-          </div>
-        </MuiPickersUtilsProvider>
-      )}
+      <DatePicker
+        {...dateController}
+        isDisabled={Status_Name !== "Changes-Required"}
+      />
 
       <TextField
         disabled
@@ -252,6 +158,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
             labelId="route-status"
             value={status}
             onChange={e => setStatus(e.target.value)}
+            disabled={!isAdminOrMatakUser}
           >
             {statusesArray.map(status => (
               <MenuItem
@@ -267,44 +174,49 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
       )}
 
       <div>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{
-            margin: "1rem 0",
-            width: "100%",
-          }}
-          onClick={handleClickOpen}
-        >
-          Delete
-        </Button>
-        <Dialog
-          style={{ zIndex: 10000 }}
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Delete Route</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are You Sure You Want To Delete This Route?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Cancel
-            </Button>
+        {isAdminOrMatakUser && (
+          <>
             <Button
-              onClick={handleDeleteRoute}
-              color="primary"
               variant="contained"
-              disableElevation
+              color="secondary"
+              style={{
+                margin: "1rem 0",
+                width: "100%",
+              }}
+              onClick={handleClickOpen}
             >
               Delete
             </Button>
-          </DialogActions>
-        </Dialog>
+
+            <Dialog
+              style={{ zIndex: 10000 }}
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">Delete Route</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are You Sure You Want To Delete This Route?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDeleteRoute}
+                  color="primary"
+                  variant="contained"
+                  disableElevation
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        )}
       </div>
       <Button
         variant="contained"
