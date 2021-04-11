@@ -16,20 +16,44 @@ import MatakIcon from "../images/matak.png";
 
 import NavBar from "../components/NavBar";
 import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
+import MatakModal from "./MatakModal";
 
 function MyAccountScreen() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector(state => state.users);
   const [email, setEmail] = useState(currentUser.Email);
   const [mobile, setMobile] = useState(currentUser.Mobile);
+  const [validemail, setValidEmail] = useState();
+  const [validmobile, setValidMobile] = useState();
+
+  const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const mobileRegex = /^\d{10}$/;
+  useEffect(() => {
+    validateMobile();
+    validateEmail();
+  }, []);
 
   const updateHandler = () => {
-    dispatch(UpdateUser(currentUser._id, email, mobile));
+    validateMobile();
+    validateEmail();
+
+    if (validemail && validmobile)
+      dispatch(UpdateUser(currentUser._id, email, mobile));
+    else if (!validmobile) alert("Mobile is not valid!");
+    else if (!validemail) alert("Email is not valid!");
+    else alert("Fields are not valid!");
   };
 
   const initialsFun = () => {
     const { First_Name, Last_Name } = currentUser;
     return First_Name[0].toUpperCase() + Last_Name[0].toUpperCase();
+  };
+
+  const validateEmail = e => {
+    setValidEmail(emailRegex.test(email));
+  };
+  const validateMobile = e => {
+    setValidMobile(mobileRegex.test(mobile));
   };
 
   return (
@@ -63,6 +87,7 @@ function MyAccountScreen() {
             >
               <ListItem>
                 <TextField
+                  required="true"
                   fullWidth
                   margin="dense"
                   name="Mail"
@@ -70,9 +95,7 @@ function MyAccountScreen() {
                   type="email"
                   autoComplete="off"
                   value={email}
-                  onChange={e => {
-                    setEmail(e.target.value);
-                  }}
+                  onChange={e => setEmail(e.target.value)}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -84,6 +107,7 @@ function MyAccountScreen() {
               </ListItem>
               <ListItem>
                 <TextField
+                  required="true"
                   fullWidth
                   margin="normal"
                   name="Phone"
