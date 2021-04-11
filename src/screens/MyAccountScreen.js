@@ -118,7 +118,7 @@ function MyAccountScreen() {
               )}
               <ListItem>
                 <TextField
-                  required="true"
+                  required
                   fullWidth
                   margin="normal"
                   name="Phone"
