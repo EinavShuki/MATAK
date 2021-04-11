@@ -15,6 +15,7 @@ import {
   editAvailableOff,
   removeLastPoint,
 } from "../../../redux/createdRoute";
+import { toggleIsHidden } from "../../../redux/userRoutes";
 
 function RouteDetails({ setPage }) {
   const [isBeingCreated, setIsBeingCreated] = useState(false);
@@ -28,8 +29,13 @@ function RouteDetails({ setPage }) {
   const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
+  const {
+    currentUser: { isAdminOrMatakUser },
+  } = useSelector(state => state.users);
+  const { isHidden } = useSelector(state => {
+    return state.userRoutes;
+  });
 
-  const [hideRoutes, setHideRoutes] = useState(false);
   const handleNext = () => {
     dispatch(editAvailableOff());
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });
@@ -53,9 +59,7 @@ function RouteDetails({ setPage }) {
   const handleRemoveLastRoute = () => {
     setIsBeingCreated(false);
     dispatch(removeLastRoute());
-    if (currentCreatedRoute.length === 0) {
-      dispatch(editAvailableOff());
-    }
+    dispatch(editAvailableOff());
   };
 
   useEffect(() => {
@@ -91,32 +95,38 @@ function RouteDetails({ setPage }) {
     }
   }, [currentCreatedRoute]);
 
+  console.log(isAdminOrMatakUser);
+
   return (
     <>
       <h1>Create a New Route</h1>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={isPermanent}
-            onChange={() => dispatch(togglePermanentRoute())}
-            name="permanentRoute"
-            disabled={!currentCreatedRoute.length}
+      {isAdminOrMatakUser && (
+        <>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isPermanent}
+                onChange={() => dispatch(togglePermanentRoute())}
+                name="permanentRoute"
+                disabled={!currentCreatedRoute.length}
+              />
+            }
+            label="Create a Permanent Route"
           />
-        }
-        label="Create a Permanent Route"
-      />
-      <FormControlLabel
-        style={{ marginTop: "1.33em" }}
-        control={
-          <Switch
-            checked={hideRoutes}
-            onChange={() => setHideRoutes(prev => !prev)}
-            name="hide-routes"
-            color="secondary"
+          <FormControlLabel
+            style={{ marginTop: "1.33em" }}
+            control={
+              <Switch
+                checked={isHidden}
+                onChange={() => dispatch(toggleIsHidden())}
+                name="hide-routes"
+                color="secondary"
+              />
+            }
+            label="Hide Routes"
           />
-        }
-        label="Hide Routes"
-      />
+        </>
+      )}
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
         <Button
@@ -234,6 +244,7 @@ function RouteDetails({ setPage }) {
           margin: "4rem 0",
         }}
         onClick={handleNext}
+        disabled={!currentCreatedRoute[0]?.positions.length}
       >
         Next
       </Button>

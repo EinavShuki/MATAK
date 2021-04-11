@@ -6,16 +6,19 @@ import LoginScreen from "./screens/LoginScreen";
 import MyAccountScreen from "./screens/MyAccountScreen";
 import AdminScreen from "./screens/AdminScreen";
 import Notifications from "./screens/Notification";
+import RoutesManagement from "./screens/RoutesManagement";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route path="/" component={LoginScreen} exact />
-        <Route path="/home" component={HomeScreen} />
-        <Route path="/my-account" component={MyAccountScreen} />
-        <Route path="/admin-panel" component={AdminScreen} />
-        <Route path="/notifications" component={Notifications} />
+        <PrivateRoute path="/home" component={HomeScreen} />
+        <PrivateRoute path="/my-account" component={MyAccountScreen} />
+        <PrivateRoute path="/routes-management" component={RoutesManagement} />
+        <PrivateRoute path="/admin-panel" component={AdminScreen} />
+        <PrivateRoute path="/notifications" component={Notifications} />
       </Switch>
     </Router>
   );

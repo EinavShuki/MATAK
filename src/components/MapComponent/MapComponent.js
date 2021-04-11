@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import L from "leaflet";
 import {
   Map,
   Marker,
-  Popup,
   TileLayer,
-  Tooltip,
   Polygon,
   Polyline,
   ZoomControl,
@@ -19,8 +17,10 @@ import { STATUSES } from "../../constants/statusConstants";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addPositionToCurrent } from "../../redux/createdRoute";
+import { CSSTransition } from "react-transition-group";
+import SideMenu from "../SideMenu";
 
-import { info, InfoArray } from "../../constants/fakegeojson";
+import axiosConfig from "../../config/axiosConfig";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -30,9 +30,20 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-function MapComponent() {
+function MapComponent({ setMainSideMenu }) {
+  const [routeDetailsMenu, setRouteDetailsMenu] = useState(false);
+  const [selectedRoute, setSelectedRoute] = useState(null);
+
   const dispatch = useDispatch();
   const { currentCreatedRoute, isEditAvailable } = useSelector(state => {
+    return state.createdRoute;
+  });
+
+  const { routes, isHidden } = useSelector(state => {
+    return state.userRoutes;
+  });
+
+  const { isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
 
@@ -44,18 +55,34 @@ function MapComponent() {
     }
   };
 
-  const handleRemovePosition = e => {
-    const pos = e.latlng;
-    // dispatch(removePosition(pos));
-  };
+  const whenClicked = async route => {
+    if (!isEditAvailable) {
+      setRouteDetailsMenu(false);
+      setMainSideMenu(false);
 
-  function whenClicked(e) {
-    console.log(e);
-  }
+      const send = {
+        _id: route.properties._id,
+      };
+
+      try {
+        const { data } = await axiosConfig.post("/path/get", send);
+        setSelectedRoute(data.data[0]);
+        setRouteDetailsMenu(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const handleClickOnRoute = (route, layer) => {
     layer.on({
-      click: whenClicked,
+      click: () => whenClicked(route),
+      mouseover: () => {
+        layer.bindPopup(route?.properties?.routeName).openPopup(); // here add openPopup()
+      },
+      mouseout: () => {
+        layer.closePopup(); // here add openPopup()
+      },
     });
   };
 
@@ -68,26 +95,28 @@ function MapComponent() {
     const routesToRender = filteredRoutes.map((route, index) => {
       switch (route.routeType) {
         case "Point":
-          return (
-            <Marker index={index} position={route.positions[0]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-          );
+          return <Marker key={index} position={route.positions[0]} />;
         case "LineString":
           return (
             <Polyline
-              index={index}
-              color={STATUSES.submmited.color}
+              key={index}
+              color={
+                isPermanent
+                  ? STATUSES?.BeingCreated?.permanent
+                  : STATUSES?.BeingCreated?.color
+              }
               positions={[route.positions]}
             />
           );
         case "Polygon":
           return (
             <Polygon
-              index={index}
-              color={STATUSES.submmited.color}
+              key={index}
+              color={
+                isPermanent
+                  ? STATUSES?.BeingCreated?.permanent
+                  : STATUSES?.BeingCreated?.color
+              }
               positions={[route.positions]}
             />
           );
@@ -98,8 +127,21 @@ function MapComponent() {
 
     return routesToRender;
   };
+
   return (
     <>
+      <CSSTransition
+        in={routeDetailsMenu}
+        timeout={200}
+        classNames="menu-transition"
+        unmountOnExit
+      >
+        <SideMenu
+          setSideMenu={setRouteDetailsMenu}
+          selectedRoute={selectedRoute}
+        />
+      </CSSTransition>
+
       <Map
         zoomControl={false}
         onclick={handleMapClick}
@@ -113,10 +155,23 @@ function MapComponent() {
         />
         <ZoomControl position="topright" />
 
-        {/* {InfoArray.map((x, i) => (
-          <GeoJSON key={i} data={x} onEachFeature={handleClickOnRoute} />
-        ))} */}
-
+        {routes &&
+          !isHidden &&
+          routes.map((route, i) => {
+            return (
+              <GeoJSON
+                color={
+                  route.Is_Permanent
+                    ? STATUSES?.Permanent?.color
+                    : STATUSES[route["Status_Name"]]?.color
+                }
+                //key is like a dependency to render the geoJson
+                key={route._id + isEditAvailable}
+                data={route["Array_Of_Points"]}
+                onEachFeature={handleClickOnRoute}
+              />
+            );
+          })}
         {renderRoutes()}
 
         {/* {routeDetails.positions &&

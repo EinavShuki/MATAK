@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "../redux/users";
-
+import { fetchUsers, createUser, editUser, deleteUser } from "../redux/users";
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
 import Button from "@material-ui/core/Button";
@@ -10,154 +9,138 @@ import Modal from "./MatakModal";
 import ActionButtons from "../components/AdminScreen/ActionButtons";
 import UserEditForm from "../components/AdminScreen/UserEditForm";
 
-const ManagementScreen = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+const AdminScreen = () => {
+  const [showModal, setShowModal] = useState("none");
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading } = useSelector((state) => state.users);
+  const { users, loading, results } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, [dispatch]);
+  }, [dispatch, results]);
+
+  const hideModal = () => {
+    setShowModal("none");
+  };
+
+  const handleCreateUser = user => {
+    dispatch(createUser(user));
+  };
+
+  const handleEditUser = user => {
+    dispatch(editUser(user));
+  };
+
+  const handleDeleteUser = () => {
+    dispatch(deleteUser(selectedRow._id));
+    hideModal();
+  };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
-    { field: "mobile", headerName: "Mobile", width: 130 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "organization", headerName: "Organization Name", width: 180 },
-    { field: "username", headerName: "User Name", width: 130 },
-    { field: "usertype", headerName: "User Type", width: 130 },
+    { field: "_id", headerName: "ID", width: 50, hide: true },
+    { field: "First_Name", headerName: "First name", width: 160 },
+    { field: "Last_Name", headerName: "Last name", width: 160 },
+    { field: "Username", headerName: "User Name", width: 160 },
+    { field: "User_Type", headerName: "User Type", width: 140 },
+    { field: "Mobile", headerName: "Mobile", width: 130 },
+    { field: "Email", headerName: "Email", width: 230 },
+    { field: "Organization_Name", headerName: "Organization", width: 160 },
     {
       field: "edit",
       headerName: "Edit User",
       width: 130,
       disableClickEventBubbling: true,
-      renderCell: (params) => {
+      renderCell: params => {
         const onClick = () => {
           const api = params.api;
           const fields = api
             .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
           const thisRow = {};
 
-          fields.forEach((f) => {
+          fields.forEach(f => {
             thisRow[f] = params.getValue(f);
           });
 
-          setShowEditModal(true);
+          setShowModal("edit");
           setSelectedRow(thisRow);
         };
 
-        return (
-          <Button
-            variant="contained"
-            style={{ backgroundColor: "#00bbf9", color: "#fff" }}
-            startIcon={<MdModeEdit />}
-            onClick={onClick}
-          >
-            Edit
-          </Button>
-        );
+        return <Button startIcon={<MdModeEdit />} onClick={onClick}/>;
       },
     },
     {
       field: "delete",
       headerName: "Delete User",
-      width: 130,
+      width: 155,
       disableClickEventBubbling: true,
-      renderCell: (params) => {
+      renderCell: params => {
         const onClick = () => {
           const api = params.api;
           const fields = api
             .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
           const thisRow = {};
 
-          fields.forEach((f) => {
+          fields.forEach(f => {
             thisRow[f] = params.getValue(f);
           });
 
-          setShowDeleteModal(true);
+          setShowModal("delete");
           setSelectedRow(thisRow);
         };
 
-        return (
-          <Button
-            variant="contained"
-            style={{ backgroundColor: "#f44336", color: "#fff" }}
-            startIcon={<MdDelete />}
-            onClick={onClick}
-          >
-            Delete
-          </Button>
-        );
+        return <Button startIcon={<MdDelete />} onClick={onClick}/>;
       },
     },
   ];
+
   return (
     <>
       <NavBar />
       <div className="table-container">
         <div className="table-title">
           <h1>Users</h1>
-          <div className="add-btn" onClick={() => setShowCreateUserModal(true)}>
+          <div className="add-btn" onClick={() => setShowModal("create")}>
             <MdAdd size={40} />
           </div>
         </div>
         <DataGrid
           rows={users}
           columns={columns}
+          getRowId={row => row._id}
           pageSize={10}
-          checkboxSelection
           loading={loading === "pending"}
         />
       </div>
-      {showCreateUserModal && (
-        <Modal
-          text={"Create new user"}
-          show
-          handleClose={() => setShowCreateUserModal(false)}
-        >
-          <UserEditForm
-            onFormSubmit={user => console.log(user)}
-            onCancel={() => setShowCreateUserModal(false)}
-          />
+      {showModal === "create" && (
+        <Modal text={"Create new user"} show onClose={hideModal}>
+          <UserEditForm onFormSubmit={handleCreateUser} onCancel={hideModal} />
         </Modal>
       )}
-      {showEditModal && (
-        <Modal
-          text={"Edit User Details"}
-          show
-          handleClose={() => setShowEditModal(false)}
-        >
+      {showModal === "edit" && (
+        <Modal text="Edit User Details" show onClose={hideModal}>
           <UserEditForm
             user={selectedRow}
-            onFormSubmit={user => console.log(user)}
-            onCancel={() => setShowEditModal(false)}
+            onFormSubmit={handleEditUser}
+            onCancel={hideModal}
           />
         </Modal>
       )}
-      {showDeleteModal && (
+      {showModal === "delete" && (
         <Modal
-          text={"Are you sure you to delete this user?"}
+          text="Are you sure you want to delete this user?"
           show
-          handleClose={() => setShowDeleteModal(false)}
+          onClose={hideModal}
         >
-          <ActionButtons
-            onOk={() => console.log("ok")}
-            onCancel={() => setShowDeleteModal(false)}
-          />
+          <ActionButtons onOk={handleDeleteUser} onCancel={hideModal} />
         </Modal>
       )}
     </>
   );
 };
 
-export default ManagementScreen;
+export default AdminScreen;
