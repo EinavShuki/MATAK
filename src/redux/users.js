@@ -131,7 +131,7 @@ export const UpdateUser = (id, email, phone) => async dispatch => {
       Email: email,
       Mobile: phone,
     });
-    console.log(data);
+    if (data.success) alert(data.message);
     setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));

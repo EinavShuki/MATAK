@@ -142,7 +142,7 @@ export default function LoginScreen({ history }) {
             margin="normal"
             required
             error={!!(!isPasswordValid && passwordLength)}
-            onChange={validatePassword.bind(this)}
+            onChange={validatePassword}
             fullWidth
             name="password"
             label="Password"
