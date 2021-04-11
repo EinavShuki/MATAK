@@ -23,8 +23,8 @@ function MyAccountScreen() {
   const { currentUser } = useSelector(state => state.users);
   const [email, setEmail] = useState(currentUser.Email);
   const [mobile, setMobile] = useState(currentUser.Mobile);
-  const [validemail, setValidEmail] = useState();
-  const [validmobile, setValidMobile] = useState();
+  const [validemail, setValidEmail] = useState("");
+  const [validmobile, setValidMobile] = useState("");
 
   const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   const mobileRegex = /^\d{10}$/;
@@ -36,12 +36,10 @@ function MyAccountScreen() {
   const updateHandler = () => {
     validateMobile();
     validateEmail();
+    console.log(validmobile);
 
-    if (validemail && validmobile)
+    if (validemail === "" && validmobile === "")
       dispatch(UpdateUser(currentUser._id, email, mobile));
-    else if (!validmobile) alert("Mobile is not valid!");
-    else if (!validemail) alert("Email is not valid!");
-    else alert("Fields are not valid!");
   };
 
   const initialsFun = () => {
@@ -50,10 +48,12 @@ function MyAccountScreen() {
   };
 
   const validateEmail = e => {
-    setValidEmail(emailRegex.test(email));
+    if (!emailRegex.test(email)) setValidEmail("Email is not valid");
+    else setValidEmail("");
   };
   const validateMobile = e => {
-    setValidMobile(mobileRegex.test(mobile));
+    if (!mobileRegex.test(mobile)) setValidMobile("Mobile is not valid");
+    else setValidMobile("");
   };
 
   return (
@@ -105,6 +105,17 @@ function MyAccountScreen() {
                   }}
                 />
               </ListItem>
+              {validemail !== "" && (
+                <small
+                  style={{
+                    color: "red",
+                    textAlign: "start",
+                    marginLeft: "1rem",
+                  }}
+                >
+                  {validemail}
+                </small>
+              )}
               <ListItem>
                 <TextField
                   required="true"
@@ -127,6 +138,17 @@ function MyAccountScreen() {
                   }}
                 />
               </ListItem>
+              {validmobile !== "" && (
+                <small
+                  style={{
+                    color: "red",
+                    textAlign: "start",
+                    marginLeft: "1rem",
+                  }}
+                >
+                  {validmobile}
+                </small>
+              )}
               <Button
                 onClick={updateHandler}
                 variant="contained"
