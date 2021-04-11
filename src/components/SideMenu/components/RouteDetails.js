@@ -111,7 +111,7 @@ function RouteDetails({ setPage }) {
                 disabled={!currentCreatedRoute.length}
               />
             }
-            label="Create a Permanent Route"
+            label="C.L.A Remark"
           />
           <FormControlLabel
             style={{ marginTop: "1.33em" }}
