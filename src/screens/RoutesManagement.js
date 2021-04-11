@@ -54,7 +54,18 @@ export default function RoutesManagement() {
   ];
 
   const exportRoutes = () => {
-    exportFromJSON({ data: routes, fileName: exportedFileName, exportType });
+    let filteredData = [...routes];
+    filteredData = filteredData.map((route) => {
+      const excelRoute = {...route};
+      excelRoute["__v"] !== undefined && delete excelRoute["__v"];
+      excelRoute["id"] !== undefined && delete excelRoute["id"];
+      excelRoute["_id"] !== undefined && delete excelRoute["_id"];
+      excelRoute["Applicant_User_Id"] !== undefined && delete excelRoute["Applicant_User_Id"];
+      return excelRoute;
+    })
+    console.log(routes)
+    console.log(filteredData)
+    exportFromJSON({ data: filteredData, fileName: exportedFileName, exportType });
   };
 
   return (
