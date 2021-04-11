@@ -63,8 +63,6 @@ export default function RoutesManagement() {
       excelRoute["Applicant_User_Id"] !== undefined && delete excelRoute["Applicant_User_Id"];
       return excelRoute;
     })
-    console.log(routes)
-    console.log(filteredData)
     exportFromJSON({ data: filteredData, fileName: exportedFileName, exportType });
   };
 
