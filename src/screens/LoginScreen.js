@@ -108,6 +108,13 @@ export default function LoginScreen({ history }) {
     setPassword(inputText);
   };
 
+  const enterPressed = (event) => {
+    const code = event.keyCode || event.which;
+    if(code === 13) { //13 is the enter keycode
+      handleClick();
+    }
+  }
+
   return (
     <Container
       id="login"
@@ -136,6 +143,7 @@ export default function LoginScreen({ history }) {
             autoFocus
             error={!!(!isUsernameValid && usernameLength)}
             onChange={validateUsername.bind(this)}
+            onKeyPress={enterPressed}
           />
           <TextField
             variant="outlined"
@@ -149,6 +157,7 @@ export default function LoginScreen({ history }) {
             type="password"
             id="password"
             autoComplete="current-password"
+            onKeyPress={enterPressed}
           />
           <Button
             fullWidth
