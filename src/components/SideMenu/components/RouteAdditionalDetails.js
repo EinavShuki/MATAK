@@ -23,11 +23,17 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
+  const {
+    currentUser: { Username },
+  } = useSelector(state => {
+    return state.users;
+  });
 
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
   const [reason, setReason] = useState(reasonsArray[0]);
   const [driversName, setDriversName] = useState("");
+  const [vehicleID, setVehicle] = useState("");
   const [phonePrefix, setPhonePrefix] = useState("050");
   const [phonePostfix, setPhonePostfix] = useState("");
   const [remarks, setRemarks] = useState("");
@@ -50,19 +56,32 @@ function RouteAdditionalDetails({ setSideMenu }) {
       return geoJson;
     });
 
-    const geoJsonToSend = { type: "FeatureCollection", features };
+    const geoJsonToSend = {
+      type: "FeatureCollection",
+      features,
+    };
 
     const send = {
       Array_Of_Points: geoJsonToSend,
-      Terms_Text: "???????",
+
       Path_Name: generate().spaced,
       Start_Date: startingDate,
       End_Date: endingDate,
       Reason_Text: reason,
+      Is_Permanent: isPermanent,
+      Remarks: `Created by: ${Username} on ${new Date().toLocaleDateString([], {
+        hour12: false,
+        hour: "numeric",
+        minute: "numeric",
+        day: "numeric",
+        month: "numeric",
+        year: "2-digit",
+      })}\n 
+      ${remarks}`,
+
+      Terms_Text: "???????",
       Involved_Organ_Array: ["stam"],
       Escort_Organ_Array: ["stam"],
-      Is_Permanent: isPermanent,
-      Remarks: remarks ? remarks : "hello world",
     };
 
     try {
@@ -104,20 +123,14 @@ function RouteAdditionalDetails({ setSideMenu }) {
         </Select>
       </FormControl>
 
-      <FormControl style={{ margin: "1rem 0" }} color="secondary">
-        <InputLabel id="car">Car</InputLabel>
-        <Select
-          labelId="car"
-          value={1}
-          // onChange={e => setReason(e.target.value)}
-        >
-          {[1, 2, 3].map(car => (
-            <MenuItem key={car} value={car}>
-              {car}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <TextField
+        color="secondary"
+        style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+        label="Car Number"
+        variant="outlined"
+        value={vehicleID}
+        onChange={e => setVehicle(e.target.value)}
+      />
 
       <TextField
         color="secondary"

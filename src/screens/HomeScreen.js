@@ -45,7 +45,7 @@ function HomeScreen() {
       <Avatar
         id="refresh-icon"
         onClick={updateRoutes}
-        src={loading && loadingGif}
+        src={loading ? loadingGif : ""}
       >
         <MdRefresh />
       </Avatar>

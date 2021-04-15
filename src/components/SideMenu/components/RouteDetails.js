@@ -14,6 +14,8 @@ import {
   editAvailableOn,
   editAvailableOff,
   removeLastPoint,
+  addToStartingPosition,
+  addToEndingPosition,
 } from "../../../redux/createdRoute";
 import { toggleIsHidden } from "../../../redux/userRoutes";
 
@@ -25,19 +27,33 @@ function RouteDetails({ setPage }) {
 
   const [canAddAnotherRoute, setCanAddAnotherRoute] = useState(false);
 
+  const [startingLngPosition, setStartingLngPosition] = useState("");
+  const [startingLatPosition, setStartingLatPosition] = useState("");
+  const [endingLngPosition, setEndingLngPosition] = useState("");
+  const [endingLatPosition, setEndingLatPosition] = useState("");
+
   const dispatch = useDispatch();
-  const { currentCreatedRoute, isPermanent } = useSelector(state => {
+
+  const {
+    currentCreatedRoute,
+    isPermanent,
+    startingPosition,
+    endingPosition,
+  } = useSelector(state => {
     return state.createdRoute;
   });
+
   const {
     currentUser: { isAdminOrMatakUser },
   } = useSelector(state => state.users);
+
   const { isHidden } = useSelector(state => {
     return state.userRoutes;
   });
 
   const handleNext = () => {
     dispatch(editAvailableOff());
+
     setPage({ open: ROUTE_ADDITIONAL_DETAILS });
   };
 
@@ -95,13 +111,22 @@ function RouteDetails({ setPage }) {
     }
   }, [currentCreatedRoute]);
 
-  console.log(isAdminOrMatakUser);
-
   return (
     <>
       <h1>Create a New Route</h1>
       {isAdminOrMatakUser && (
-        <>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isHidden}
+                onChange={() => dispatch(toggleIsHidden())}
+                name="hide-routes"
+                color="secondary"
+              />
+            }
+            label="Hide Routes"
+          />
           <FormControlLabel
             control={
               <Checkbox
@@ -113,20 +138,116 @@ function RouteDetails({ setPage }) {
             }
             label="C.L.A Remark"
           />
-          <FormControlLabel
-            style={{ marginTop: "1.33em" }}
-            control={
-              <Switch
-                checked={isHidden}
-                onChange={() => dispatch(toggleIsHidden())}
-                name="hide-routes"
-                color="secondary"
-              />
-            }
-            label="Hide Routes"
-          />
-        </>
+        </div>
       )}
+      <h4>Starting Position:</h4>
+      <div>
+        <TextField
+          style={{
+            marginRight: "0.5rem",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
+          }}
+          color="secondary"
+          id="outlined-number"
+          label="Latitude"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          required
+          variant="outlined"
+          value={startingLatPosition}
+          onChange={e => setStartingLatPosition(e.target.value)}
+        />
+
+        <TextField
+          style={{
+            marginRight: "0.5rem",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
+          }}
+          color="secondary"
+          id="outlined-number"
+          label="Longitude"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          required
+          variant="outlined"
+          value={startingLngPosition}
+          onChange={e => setStartingLngPosition(e.target.value)}
+        />
+        <Button
+          variant={startingPosition ? "contained" : ""}
+          color="secondary"
+          style={{ fontSize: "1.6rem" }}
+          disabled={!startingLatPosition || !startingLngPosition}
+          onClick={() =>
+            dispatch(
+              addToStartingPosition({
+                lat: startingLatPosition,
+                lng: startingLngPosition,
+              })
+            )
+          }
+        >
+          +
+        </Button>
+      </div>
+      <h4>Ending Position:</h4>
+      <div>
+        <TextField
+          style={{
+            marginRight: "0.5rem",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
+          }}
+          color="secondary"
+          id="outlined-number"
+          label="Latitude"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          required
+          variant="outlined"
+          value={endingLatPosition}
+          onChange={e => setEndingLatPosition(e.target.value)}
+        />
+
+        <TextField
+          style={{
+            marginRight: "0.5rem",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
+          }}
+          color="secondary"
+          id="outlined-number"
+          label="Longitude"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          required
+          variant="outlined"
+          value={endingLngPosition}
+          onChange={e => setEndingLngPosition(e.target.value)}
+        />
+        <Button
+          variant={endingPosition ? "contained" : ""}
+          color="secondary"
+          style={{ fontSize: "1.6rem" }}
+          disabled={!endingLatPosition || !endingLngPosition}
+          onClick={() =>
+            dispatch(
+              addToEndingPosition({
+                lat: endingLatPosition,
+                lng: endingLngPosition,
+              })
+            )
+          }
+        >
+          +
+        </Button>
+      </div>
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
         <Button
@@ -241,10 +362,14 @@ function RouteDetails({ setPage }) {
         style={{
           alignSelf: "flex-end",
           padding: "0.5rem 2rem",
-          margin: "4rem 0",
+          margin: "2rem 0 1rem 0",
         }}
         onClick={handleNext}
-        disabled={!currentCreatedRoute[0]?.positions.length}
+        disabled={
+          !currentCreatedRoute[0]?.positions.length ||
+          !startingPosition ||
+          !endingPosition
+        }
       >
         Next
       </Button>
