@@ -11,14 +11,14 @@
   font-size: 3rem;
   color: white;
   position: absolute;
-  top: 10px;
+  top: 15px;
   right: 15px;
   cursor: pointer;
   transition: transform 0.1s ease;
 }
 
 #close-button:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 #close-button:active {

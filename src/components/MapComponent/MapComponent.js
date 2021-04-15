@@ -21,7 +21,8 @@ import { CSSTransition } from "react-transition-group";
 import SideMenu from "../SideMenu";
 
 import axiosConfig from "../../config/axiosConfig";
-
+import startFlag from "../../images/start.svg";
+import finishFlag from "../../images/finish.svg";
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -35,7 +36,13 @@ function MapComponent({ setMainSideMenu }) {
   const [selectedRoute, setSelectedRoute] = useState(null);
 
   const dispatch = useDispatch();
-  const { currentCreatedRoute, isEditAvailable } = useSelector(state => {
+  const {
+    currentCreatedRoute,
+    isEditAvailable,
+    isPermanent,
+    startingPosition,
+    endingPosition,
+  } = useSelector(state => {
     return state.createdRoute;
   });
 
@@ -43,8 +50,14 @@ function MapComponent({ setMainSideMenu }) {
     return state.userRoutes;
   });
 
-  const { isPermanent } = useSelector(state => {
-    return state.createdRoute;
+  const startIcon = new L.Icon({
+    iconUrl: startFlag,
+    iconAnchor: [10, 50],
+  });
+
+  const finishIcon = new L.Icon({
+    iconUrl: finishFlag,
+    iconAnchor: [10, 50],
   });
 
   const handleMapClick = e => {
@@ -78,10 +91,11 @@ function MapComponent({ setMainSideMenu }) {
     layer.on({
       click: () => whenClicked(route),
       mouseover: () => {
-        layer.bindPopup(route?.properties?.routeName).openPopup(); // here add openPopup()
+        !isEditAvailable &&
+          layer.bindPopup(route?.properties?.routeName).openPopup(); // here add openPopup()
       },
       mouseout: () => {
-        layer.closePopup(); // here add openPopup()
+        !isEditAvailable && layer.closePopup(); // here add openPopup()
       },
     });
   };
@@ -95,7 +109,13 @@ function MapComponent({ setMainSideMenu }) {
     const routesToRender = filteredRoutes.map((route, index) => {
       switch (route.routeType) {
         case "Point":
-          return <Marker key={index} position={route.positions[0]} />;
+          return (
+            <Marker
+              key={index}
+              position={route.positions[0]}
+              // icon={startIcon}
+            />
+          );
         case "LineString":
           return (
             <Polyline
@@ -127,6 +147,13 @@ function MapComponent({ setMainSideMenu }) {
 
     return routesToRender;
   };
+
+  // const stam = (feature, LatLng) => {
+  //   const icon = new L.Icon({
+  //     iconUrl: finishFlag,
+  //   });
+  //   return L.marker(LatLng, { icon: { icon } }); // Change the icon to a custom icon
+  // };
 
   return (
     <>
@@ -169,98 +196,19 @@ function MapComponent({ setMainSideMenu }) {
                 key={route._id + isEditAvailable}
                 data={route["Array_Of_Points"]}
                 onEachFeature={handleClickOnRoute}
+                // pointToLayer={stam}
               />
             );
           })}
         {renderRoutes()}
 
-        {/* {routeDetails.positions &&
-          routeDetails.positions.map((pos, index) => {
-            return (
-              <Marker
-                key={pos.lat + pos.lng + index}
-                position={pos}
-                onClick={handleRemovePosition}
-                onmouseover={(e) => {
-                  e.target.openPopup();
-                }}
-                onmouseout={(e) => {
-                  e.target.closePopup();
-                }}
-              >
-                <Popup closeOnClick={true}>
-                  <div>
-                    <h3>{JSON.stringify(pos, null, 2)}</h3>
-                  </div>
-                </Popup>
-              </Marker>
-            );
-          })} */}
-
-        {/* 
-        {routeDetails.map((kindOfRoute, index) => {
-          if (
-            kindOfRoute.routeType === "Point" &&
-            kindOfRoute.positions.length
-          ) {
-            return (
-              <Marker index={index} position={kindOfRoute.positions[0]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            );
-          } else if (
-            kindOfRoute.positions.length &&
-            kindOfRoute.routeType === "LineString"
-          ) {
-            console.log("object");
-            return (
-              <Polyline
-                index={index}
-                color={STATUSES.submmited.color}
-                positions={kindOfRoute.positions}
-              />
-            );
-          } else if (
-            kindOfRoute.positions.length &&
-            kindOfRoute.routeType === "Polygon"
-          ) {
-            return (
-              <Polygon
-                index={index}
-                color={STATUSES.submmited.color}
-                positions={kindOfRoute.positions}
-              />
-            );
-          }
-        })} */}
-
-        {/* {routeDetails.routeType === "Point" && routeDetails.positions && (
-          <Marker
-            position={[
-              routeDetails.positions[0].lat,
-              routeDetails.positions[0].lng,
-            ]}
-          >
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+        {startingPosition && (
+          <Marker position={startingPosition} icon={startIcon} />
         )}
 
-        {routeDetails.routeType === "LineString" && (
-          <Polyline
-            color={STATUSES.submmited.color}
-            positions={routeDetails.positions}
-          />
+        {endingPosition && (
+          <Marker position={endingPosition} icon={finishIcon} />
         )}
-        {routeDetails.routeType === "Polygon" && (
-          <Polygon
-            color={STATUSES.submmited.color}
-            positions={routeDetails.positions}
-          />
-        )} */}
       </Map>
     </>
   );

@@ -6,6 +6,8 @@ export const createdRouteSlice = createSlice({
     isPermanent: false,
     isEditAvailable: false,
     currentCreatedRoute: [],
+    startingPosition: null,
+    endingPosition: null,
   },
   reducers: {
     editAvailableOn: state => {
@@ -41,6 +43,14 @@ export const createdRouteSlice = createSlice({
       state.isPermanent = false;
       state.isEditAvailable = false;
       state.currentCreatedRoute = [];
+      state.startingPosition = null;
+      state.endingPosition = null;
+    },
+    setStartingPosition: (state, { payload }) => {
+      state.startingPosition = payload;
+    },
+    setEndingPosition: (state, { payload }) => {
+      state.endingPosition = payload;
     },
   },
 });
@@ -54,6 +64,8 @@ export const {
   editAvailableOff,
   removeLastPoint,
   resetRoute,
+  setStartingPosition,
+  setEndingPosition,
 } = createdRouteSlice.actions;
 
 export default createdRouteSlice.reducer;
@@ -64,4 +76,12 @@ export const createNewRoute = type => dispatch => {
 
 export const addPositionToCurrent = position => dispatch => {
   dispatch(addPosition(position));
+};
+
+export const addToStartingPosition = position => dispatch => {
+  dispatch(setStartingPosition(position));
+};
+
+export const addToEndingPosition = position => dispatch => {
+  dispatch(setEndingPosition(position));
 };
