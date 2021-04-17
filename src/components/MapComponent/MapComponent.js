@@ -78,7 +78,7 @@ function MapComponent({ setMainSideMenu }) {
       };
 
       try {
-        const { data } = await axiosConfig.post("/path/get", send);
+        const { data } = await axiosConfig.get("/path", send);
         setSelectedRoute(data.data[0]);
         setRouteDetailsMenu(true);
       } catch (error) {
