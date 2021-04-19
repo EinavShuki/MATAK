@@ -28,6 +28,10 @@ export const usersSlice = createSlice({
       state.loading = "idle";
       state.results = action.payload;
     },
+    userNotificationsRecieved: (state, action) => {
+      state.loading = "idle";
+      state.results = action.payload;
+    },
     userCreateRecieved: (state, action) => {
       state.loading = "idle";
       state.results = action.payload;
@@ -58,6 +62,7 @@ export const {
   usersReceived,
   userLoading,
   userUpdateRecieved,
+  userNotificationsRecieved,
   userCreateRecieved,
   userDeleteRecieved,
   userError,
@@ -122,6 +127,16 @@ export const deleteUser = userId => async dispatch => {
     dispatch(userError("Failed to delete the user"));
   }
 };
+// export const fetchUserNotification = userId => async dispatch => {
+//   dispatch(userLoading());
+//   try {
+//     // WILL BE API CALL
+//     const res = await axiosConfig.post();
+//     dispatch(userNotificationsRecieved(res.data));
+//   } catch (error) {
+//     dispatch(userError("Failed to delete the user"));
+//   }
+// };
 
 export const UpdateUser = (id, email, phone) => async dispatch => {
   dispatch(userLoading());
@@ -132,7 +147,7 @@ export const UpdateUser = (id, email, phone) => async dispatch => {
       Mobile: phone,
     });
     if (data.success) alert(data.message);
-    setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
+    setTimeout(() => dispatch(userUpdateRecieved(data)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
   }

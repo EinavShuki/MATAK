@@ -23,7 +23,7 @@ const columns = [
     field: "routeDetails",
     headerName: "Route Details",
     description: "Click on square for more information",
-    width: 250,
+    width: 510,
   },
 ];
 
@@ -104,21 +104,8 @@ const rows = [
 
 const Notifications = () => {
   const [selectedRows, setSelectedRows] = useState([]);
-
   useEffect(() => {
-    const fetchNoti = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      try {
-        const res = await axios.post(
-          "https://www.hitprojectscenter.com/matakapinew/"
-        );
-      } catch (err) {}
-    };
-    fetchNoti();
+    //do async axios request-redux is not necessery here
   }, []);
 
   // const deleteClickHandler=()=>{
@@ -152,10 +139,14 @@ const Notifications = () => {
           width: "90%",
         }}
       >
-        <IconButton style={{ display: "block", marginLeft: "auto" }}>
-          <RiDeleteBin5Fill style={{ color: "#f44336" }} />
-        </IconButton>
+        <span style={{ display: "flex" }}>
+          <h1>Notifications</h1>
+          <IconButton style={{ marginLeft: "auto", paddingBottom: 0 }}>
+            <RiDeleteBin5Fill style={{ color: "#f44336" }} />
+          </IconButton>
+        </span>
         <DataGrid
+          className="table_notification"
           onRowSelected={rowSelectedHandler}
           onCellClick={CellClickHandler}
           rows={rows}
