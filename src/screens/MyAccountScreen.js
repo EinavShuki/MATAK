@@ -34,12 +34,9 @@ function MyAccountScreen() {
   }, []);
 
   const updateHandler = () => {
-    validateMobile();
-    validateEmail();
-    console.log(validmobile);
-
-    if (validemail === "" && validmobile === "")
+    if (validemail === "" && validmobile === "") {
       dispatch(UpdateUser(currentUser._id, email, mobile));
+    }
   };
 
   const initialsFun = () => {
@@ -47,11 +44,11 @@ function MyAccountScreen() {
     return First_Name[0].toUpperCase() + Last_Name[0].toUpperCase();
   };
 
-  const validateEmail = e => {
+  const validateEmail = () => {
     if (!emailRegex.test(email)) setValidEmail("Email is not valid");
     else setValidEmail("");
   };
-  const validateMobile = e => {
+  const validateMobile = () => {
     if (!mobileRegex.test(mobile)) setValidMobile("Mobile is not valid");
     else setValidMobile("");
   };
@@ -95,7 +92,10 @@ function MyAccountScreen() {
                   type="email"
                   autoComplete="off"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                    validateEmail();
+                  }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -128,6 +128,7 @@ function MyAccountScreen() {
                   autoComplete="off"
                   onChange={e => {
                     setMobile(e.target.value);
+                    validateMobile();
                   }}
                   InputProps={{
                     startAdornment: (
