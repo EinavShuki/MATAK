@@ -1,4 +1,4 @@
-export const CURRENT_USER = {id: '123456'} 
+export const CURRENT_USER = { id: "123456" };
 
 export const USERS = [
   {
@@ -86,6 +86,16 @@ export const USERS = [
     lastName: "Roxie",
     firstName: "Harvey",
     username: "username",
+    email: "email@gmail.com",
+    mobile: "0500008877",
+    usertype: "Matak",
+    organization: "matak",
+  },
+  {
+    id: 10,
+    lastName: "admin",
+    firstName: "admin",
+    username: "admin",
     email: "email@gmail.com",
     mobile: "0500008877",
     usertype: "Matak",
