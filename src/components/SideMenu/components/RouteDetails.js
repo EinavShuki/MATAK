@@ -4,7 +4,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TextField from "@material-ui/core/TextField";
-import { ROUTE_ADDITIONAL_DETAILS } from "../../../constants/pageConstants";
+import { SET_STARTING_AND_ENDING } from "../../../constants/pageConstants";
 import { Switch } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,12 +14,15 @@ import {
   editAvailableOn,
   editAvailableOff,
   removeLastPoint,
-  addToStartingPosition,
-  addToEndingPosition,
+  addPositionToCurrent,
+  setIsDoneMainRouteOn,
 } from "../../../redux/createdRoute";
 import { toggleIsHidden } from "../../../redux/userRoutes";
 
 function RouteDetails({ setPage }) {
+  const [lngPosition, setLngPosition] = useState("");
+  const [latPosition, setLatPosition] = useState("");
+
   const [isBeingCreated, setIsBeingCreated] = useState(false);
 
   //are we willing to add a new route. in order to clear the "selection" of route type
@@ -27,19 +30,9 @@ function RouteDetails({ setPage }) {
 
   const [canAddAnotherRoute, setCanAddAnotherRoute] = useState(false);
 
-  const [startingLngPosition, setStartingLngPosition] = useState("");
-  const [startingLatPosition, setStartingLatPosition] = useState("");
-  const [endingLngPosition, setEndingLngPosition] = useState("");
-  const [endingLatPosition, setEndingLatPosition] = useState("");
-
   const dispatch = useDispatch();
 
-  const {
-    currentCreatedRoute,
-    isPermanent,
-    startingPosition,
-    endingPosition,
-  } = useSelector(state => {
+  const { currentCreatedRoute, isPermanent } = useSelector(state => {
     return state.createdRoute;
   });
 
@@ -52,9 +45,8 @@ function RouteDetails({ setPage }) {
   });
 
   const handleNext = () => {
-    dispatch(editAvailableOff());
-
-    setPage({ open: ROUTE_ADDITIONAL_DETAILS });
+    dispatch(setIsDoneMainRouteOn());
+    setPage({ open: SET_STARTING_AND_ENDING });
   };
 
   const handleRouteType = type => {
@@ -111,6 +103,11 @@ function RouteDetails({ setPage }) {
     }
   }, [currentCreatedRoute]);
 
+  const handleAddManually = () => {
+    setLatPosition("");
+    setLngPosition("");
+    dispatch(addPositionToCurrent({ lat: latPosition, lng: lngPosition }));
+  };
   return (
     <>
       <h1>Create a New Route</h1>
@@ -140,114 +137,6 @@ function RouteDetails({ setPage }) {
           />
         </div>
       )}
-      <h4>Starting Position:</h4>
-      <div>
-        <TextField
-          style={{
-            marginRight: "0.5rem",
-            backgroundColor: "rgba(0, 0, 0, 0.06)",
-          }}
-          color="secondary"
-          id="outlined-number"
-          label="Latitude"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          required
-          variant="outlined"
-          value={startingLatPosition}
-          onChange={e => setStartingLatPosition(e.target.value)}
-        />
-
-        <TextField
-          style={{
-            marginRight: "0.5rem",
-            backgroundColor: "rgba(0, 0, 0, 0.06)",
-          }}
-          color="secondary"
-          id="outlined-number"
-          label="Longitude"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          required
-          variant="outlined"
-          value={startingLngPosition}
-          onChange={e => setStartingLngPosition(e.target.value)}
-        />
-        <Button
-          variant={startingPosition ? "contained" : ""}
-          color="secondary"
-          style={{ fontSize: "1.6rem" }}
-          disabled={!startingLatPosition || !startingLngPosition}
-          onClick={() =>
-            dispatch(
-              addToStartingPosition({
-                lat: startingLatPosition,
-                lng: startingLngPosition,
-              })
-            )
-          }
-        >
-          +
-        </Button>
-      </div>
-      <h4>Ending Position:</h4>
-      <div>
-        <TextField
-          style={{
-            marginRight: "0.5rem",
-            backgroundColor: "rgba(0, 0, 0, 0.06)",
-          }}
-          color="secondary"
-          id="outlined-number"
-          label="Latitude"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          required
-          variant="outlined"
-          value={endingLatPosition}
-          onChange={e => setEndingLatPosition(e.target.value)}
-        />
-
-        <TextField
-          style={{
-            marginRight: "0.5rem",
-            backgroundColor: "rgba(0, 0, 0, 0.06)",
-          }}
-          color="secondary"
-          id="outlined-number"
-          label="Longitude"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          required
-          variant="outlined"
-          value={endingLngPosition}
-          onChange={e => setEndingLngPosition(e.target.value)}
-        />
-        <Button
-          variant={endingPosition ? "contained" : ""}
-          color="secondary"
-          style={{ fontSize: "1.6rem" }}
-          disabled={!endingLatPosition || !endingLngPosition}
-          onClick={() =>
-            dispatch(
-              addToEndingPosition({
-                lat: endingLatPosition,
-                lng: endingLngPosition,
-              })
-            )
-          }
-        >
-          +
-        </Button>
-      </div>
       <h4>Route Type:</h4>
       <ButtonGroup color="secondary" aria-label="outlined primary button group">
         <Button
@@ -316,7 +205,12 @@ function RouteDetails({ setPage }) {
       >
         Delete Last Route
       </Button>
-
+      <div
+        style={{
+          borderTop: "1px solid rgba(0, 0, 0, 0.15)",
+          margin: "1.8rem 0 1rem 0",
+        }}
+      ></div>
       <h4 className="pt-5">Add Manually:</h4>
       <div>
         <TextField
@@ -331,7 +225,10 @@ function RouteDetails({ setPage }) {
           InputLabelProps={{
             shrink: true,
           }}
+          required
           variant="outlined"
+          value={latPosition}
+          onChange={e => setLatPosition(e.target.value)}
         />
 
         <TextField
@@ -347,11 +244,17 @@ function RouteDetails({ setPage }) {
             shrink: true,
           }}
           variant="outlined"
+          value={lngPosition}
+          onChange={e => setLngPosition(e.target.value)}
         />
         <Button
+          disabled={
+            !latPosition || !lngPosition || !currentCreatedRoute[0]?.routeType
+          }
           variant="contained"
           color="secondary"
           style={{ fontSize: "1.6rem" }}
+          onClick={handleAddManually}
         >
           +
         </Button>
@@ -365,11 +268,7 @@ function RouteDetails({ setPage }) {
           margin: "2rem 0 1rem 0",
         }}
         onClick={handleNext}
-        disabled={
-          !currentCreatedRoute[0]?.positions.length ||
-          !startingPosition ||
-          !endingPosition
-        }
+        disabled={!currentCreatedRoute[0]?.positions.length}
       >
         Next
       </Button>

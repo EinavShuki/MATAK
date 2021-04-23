@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  isPermanent: false,
+  isEditAvailable: false,
+  isDoneMainRoute: true,
+  currentCreatedRoute: [],
+  isSelectingStart: false,
+  isSelectingEnd: false,
+  startingPosition: null,
+  endingPosition: null,
+};
 export const createdRouteSlice = createSlice({
   name: "createdRoute",
-  initialState: {
-    isPermanent: false,
-    isEditAvailable: false,
-    currentCreatedRoute: [],
-    startingPosition: null,
-    endingPosition: null,
-  },
+  initialState,
   reducers: {
     editAvailableOn: state => {
       state.isEditAvailable = true;
@@ -39,18 +43,34 @@ export const createdRouteSlice = createSlice({
     removeLastPoint: state => {
       state.currentCreatedRoute[0].positions.pop();
     },
-    resetRoute: state => {
-      state.isPermanent = false;
-      state.isEditAvailable = false;
-      state.currentCreatedRoute = [];
+    resetRoute: state => initialState,
+    resetStartAndEnd: state => {
       state.startingPosition = null;
       state.endingPosition = null;
+    },
+    setSelectingStartOn: state => {
+      state.isSelectingStart = true;
+      state.isSelectingEnd = false;
+    },
+    setSelectingEndOn: state => {
+      state.isSelectingStart = false;
+      state.isSelectingEnd = true;
     },
     setStartingPosition: (state, { payload }) => {
       state.startingPosition = payload;
     },
     setEndingPosition: (state, { payload }) => {
       state.endingPosition = payload;
+    },
+    setStartAndEnd: (state, { payload }) => {
+      state.startingPosition = payload.start;
+      state.endingPosition = payload.end;
+    },
+    setIsDoneMainRouteOff: state => {
+      state.isDoneMainRoute = false;
+    },
+    setIsDoneMainRouteOn: state => {
+      state.isDoneMainRoute = true;
     },
   },
 });
@@ -64,8 +84,14 @@ export const {
   editAvailableOff,
   removeLastPoint,
   resetRoute,
+  setSelectingStartOn,
+  setSelectingEndOn,
   setStartingPosition,
   setEndingPosition,
+  setStartAndEnd,
+  resetStartAndEnd,
+  setIsDoneMainRouteOff,
+  setIsDoneMainRouteOn,
 } = createdRouteSlice.actions;
 
 export default createdRouteSlice.reducer;
@@ -84,4 +110,8 @@ export const addToStartingPosition = position => dispatch => {
 
 export const addToEndingPosition = position => dispatch => {
   dispatch(setEndingPosition(position));
+};
+
+export const displayStartAndEnding = (start, end) => dispatch => {
+  dispatch(setStartAndEnd({ start, end }));
 };

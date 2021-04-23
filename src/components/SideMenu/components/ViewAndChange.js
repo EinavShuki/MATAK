@@ -6,10 +6,11 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
+  Switch,
   TextField,
 } from "@material-ui/core";
 import { FaLock } from "react-icons/fa";
@@ -18,7 +19,13 @@ import { STATUSES } from "../../../constants/statusConstants";
 import axiosConfig from "../../../config/axiosConfig";
 import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
 import DatePicker from "../../DatePicker";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  toggleIsHidden,
+  showfilteredRoutes,
+  turnOffIsHidden,
+} from "../../../redux/userRoutes";
+import { resetStartAndEnd } from "../../../redux/createdRoute";
 
 function ViewAndChange({ selectedRoute, setSideMenu }) {
   const {
@@ -30,13 +37,23 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     _id,
     Start_Date,
     End_Date,
+    Driver_Name,
+    Car_Liecene_Number,
+    Terms_Text,
   } = selectedRoute;
+
+  const dispatch = useDispatch();
 
   const {
     currentUser: { isAdminOrMatakUser },
   } = useSelector(state => state.users);
+
+  const { isHidden } = useSelector(state => {
+    return state.userRoutes;
+  });
   const { fetchRoutesData } = useDispatchRoutes();
   const [status, setStatus] = useState(Status_Name);
+  const [terms, setTerms] = useState(Terms_Text);
 
   const [startingDate, setStartingDate] = useState(
     new Date(Start_Date ? Start_Date : null)
@@ -75,6 +92,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
       // Terms_Text: "???????",
       // Reason_Text: reason,
       // Remarks: remarks ? remarks : "hello world",
+      Terms_Text: terms,
       Start_Date: startingDate,
       End_Date: endingDate,
       _id,
@@ -85,6 +103,8 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
 
       fetchRoutesData();
       setSideMenu(false);
+      dispatch(turnOffIsHidden());
+      dispatch(resetStartAndEnd());
     } catch (error) {
       console.log(error);
     }
@@ -98,6 +118,9 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
       await axiosConfig.delete("/path", send);
       setOpen(false);
       fetchRoutesData();
+      dispatch(turnOffIsHidden());
+      dispatch(resetStartAndEnd());
+
       setSideMenu(false);
     } catch (error) {
       console.log(error);
@@ -111,9 +134,25 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     setStartingDate,
   };
 
+  const handleHideOtherRoutes = () => {
+    dispatch(toggleIsHidden());
+    dispatch(showfilteredRoutes(selectedRoute));
+  };
   return (
     <>
       <h1>View Route</h1>
+
+      <FormControlLabel
+        control={
+          <Switch
+            checked={isHidden}
+            onChange={handleHideOtherRoutes}
+            name="hide-routes"
+            color="secondary"
+          />
+        }
+        label="Hide Other Routes"
+      />
       <span style={{ fontSize: "20px" }}>
         {Path_Name}{" "}
         {Is_Permanent ? (
@@ -131,18 +170,46 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         {...dateController}
         isDisabled={Status_Name !== "Changes-Required"}
       />
-
+      <TextField
+        disabled={!isAdminOrMatakUser}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
+        color="secondary"
+        label="Terms"
+        multiline
+        rows={2}
+        variant="outlined"
+        value={terms}
+        onChange={e => setTerms(e.target.value)}
+      />
       <TextField
         disabled
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", marginTop: "1rem" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
         color="secondary"
         label="Reason"
         variant="outlined"
         value={Reason_Text}
       />
+
       <TextField
         disabled
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", marginTop: "1rem" }}
+        color="secondary"
+        style={{ margin: "0.8rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+        label="Driver's Full Name"
+        variant="outlined"
+        value={Driver_Name}
+      />
+
+      <TextField
+        disabled
+        color="secondary"
+        style={{ margin: "0.8rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+        label="Car Number"
+        variant="outlined"
+        value={Car_Liecene_Number}
+      />
+      <TextField
+        disabled
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
         color="secondary"
         label="Remarks"
         multiline
@@ -152,7 +219,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
       />
 
       {!Is_Permanent && (
-        <FormControl style={{ margin: "1rem 0" }} color="secondary">
+        <FormControl style={{ margin: "0.8rem 0" }} color="secondary">
           <InputLabel id="route-status">Route Status</InputLabel>
           <Select
             labelId="route-status"
@@ -180,7 +247,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
               variant="contained"
               color="secondary"
               style={{
-                margin: "1rem 0",
+                margin: "0.8rem 0",
                 width: "100%",
               }}
               onClick={handleClickOpen}
@@ -224,7 +291,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         style={{
           alignSelf: "flex-end",
           padding: "0.5rem 2rem",
-          margin: "1rem 0",
+          margin: "0.8rem 0",
         }}
         onClick={handleSubmitRoute}
       >

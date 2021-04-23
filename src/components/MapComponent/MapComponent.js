@@ -16,13 +16,20 @@ import { STATUSES } from "../../constants/statusConstants";
 //note:opacity: 0.2, pointerEvents: "none"
 import { useDispatch, useSelector } from "react-redux";
 
-import { addPositionToCurrent } from "../../redux/createdRoute";
+import {
+  addPositionToCurrent,
+  setStartingPosition,
+  setEndingPosition,
+  displayStartAndEnding,
+} from "../../redux/createdRoute";
+
 import { CSSTransition } from "react-transition-group";
 import SideMenu from "../SideMenu";
 
 import axiosConfig from "../../config/axiosConfig";
 import startFlag from "../../images/start.svg";
 import finishFlag from "../../images/finish.svg";
+
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -40,13 +47,16 @@ function MapComponent({ setMainSideMenu }) {
     currentCreatedRoute,
     isEditAvailable,
     isPermanent,
+    isSelectingStart,
+    isSelectingEnd,
     startingPosition,
     endingPosition,
+    isDoneMainRoute,
   } = useSelector(state => {
     return state.createdRoute;
   });
 
-  const { routes, isHidden } = useSelector(state => {
+  const { routes, isHidden, filteredRoutes } = useSelector(state => {
     return state.userRoutes;
   });
 
@@ -60,14 +70,22 @@ function MapComponent({ setMainSideMenu }) {
     iconAnchor: [10, 50],
   });
 
+  //handle creating a route
   const handleMapClick = e => {
     if (isEditAvailable) {
       const pos = e.latlng;
       const { lat, lng } = pos;
-      dispatch(addPositionToCurrent({ lat, lng }));
+      if (isSelectingStart) {
+        dispatch(setStartingPosition([lat, lng]));
+      } else if (isSelectingEnd) {
+        dispatch(setEndingPosition([lat, lng]));
+      } else if (!isDoneMainRoute) {
+        dispatch(addPositionToCurrent({ lat, lng }));
+      }
     }
   };
 
+  //handle click on routes
   const whenClicked = async route => {
     if (!isEditAvailable) {
       setRouteDetailsMenu(false);
@@ -79,7 +97,14 @@ function MapComponent({ setMainSideMenu }) {
 
       try {
         const { data } = await axiosConfig.get("/path", send);
-        setSelectedRoute(data.data[0]);
+        const selectedRoute = data.data[0];
+        dispatch(
+          displayStartAndEnding(
+            selectedRoute.Start_Point,
+            selectedRoute.End_Point
+          )
+        );
+        setSelectedRoute(selectedRoute);
         setRouteDetailsMenu(true);
       } catch (error) {
         console.log(error);
@@ -181,7 +206,7 @@ function MapComponent({ setMainSideMenu }) {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
         <ZoomControl position="topright" />
-
+        //all routes
         {routes &&
           !isHidden &&
           routes.map((route, i) => {
@@ -200,12 +225,28 @@ function MapComponent({ setMainSideMenu }) {
               />
             );
           })}
+        //filtered route
+        {filteredRoutes.map((route, i) => {
+          return (
+            <GeoJSON
+              color={
+                route.Is_Permanent
+                  ? STATUSES?.Permanent?.color
+                  : STATUSES[route["Status_Name"]]?.color
+              }
+              //key is like a dependency to render the geoJson
+              key={route._id + isEditAvailable}
+              data={route["Array_Of_Points"]}
+              onEachFeature={handleClickOnRoute}
+              // pointToLayer={stam}
+            />
+          );
+        })}
+        //while being created
         {renderRoutes()}
-
         {startingPosition && (
           <Marker position={startingPosition} icon={startIcon} />
         )}
-
         {endingPosition && (
           <Marker position={endingPosition} icon={finishIcon} />
         )}

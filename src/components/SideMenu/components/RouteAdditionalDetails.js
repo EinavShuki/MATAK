@@ -20,7 +20,12 @@ import generate from "project-name-generator";
 
 function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
-  const { currentCreatedRoute, isPermanent } = useSelector(state => {
+  const {
+    currentCreatedRoute,
+    isPermanent,
+    startingPosition,
+    endingPosition,
+  } = useSelector(state => {
     return state.createdRoute;
   });
   const {
@@ -76,12 +81,15 @@ function RouteAdditionalDetails({ setSideMenu }) {
         day: "numeric",
         month: "numeric",
         year: "2-digit",
-      })}\n 
-      ${remarks}`,
-
-      Terms_Text: "???????",
+      })}\n${remarks}`,
+      Driver_Name: driversName,
+      Driver_Cellphone: `${phonePrefix}-${phonePostfix}`,
+      Car_Liecene_Number: vehicleID,
+      Start_Point: startingPosition,
+      End_Point: endingPosition,
       Involved_Organ_Array: ["stam"],
       Escort_Organ_Array: ["stam"],
+      Terms_Text: "",
     };
 
     try {
@@ -126,7 +134,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
       <TextField
         color="secondary"
         style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        label="Car Number"
+        label="Car's Liecene Number"
         variant="outlined"
         value={vehicleID}
         onChange={e => setVehicle(e.target.value)}
