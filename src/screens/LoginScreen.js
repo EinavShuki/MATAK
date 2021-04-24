@@ -43,22 +43,24 @@ const passwordRegex = /^(?=.{1,15}$)[a-zA-Z]+[a-zA-Z0-9]*/;
 export default function LoginScreen({ history }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [isUsernameValid, setIsUsernameValid] = useState(false);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [usernameLength, setUsernameLength] = useState(0);
-  const [passwordLength, setPasswordLength] = useState(0);
   const [modalText, setModalText] = useState("");
-
   const [showModal, setShowModal] = useState(false);
-  const handleClick = () => {
-    if (isPasswordValid && isUsernameValid) {
+  const [userNameHelperText, setUserNameHelperText] = useState("");
+  const [passwordHelperText, setPasswordHelperText] = useState("");
+
+
+    const handleClick = () => {
+    if (isPasswordValid() && isUserNameValid()) {
       handleLogIn();
-    } else if (!isUsernameValid) {
-      openModal("User name is not valid");
-    } else if (!isPasswordValid) {
-      openModal("Password is not valid");
+    } else {
+      if (!userNameHelperText.length) {
+          setUserNameHelperText("Please enter username");
+      }
+      if (!passwordHelperText.length) {
+          setPasswordHelperText("Please enter password");
+      }
     }
   };
 
@@ -72,21 +74,8 @@ export default function LoginScreen({ history }) {
 
       dispatch(fetchCurrentUser(data.id, goHome));
     } catch (error) {
-      openModal("Failed to log in");
+      openModal("Login failed");
     }
-    // axiosConfig
-    //   .post("/users/login", body)
-    //   .catch(data => openModal("Failed to log in"))
-    //   .then(response => {
-    //     if (response) {
-    //       const { data } = response;
-    //       console.log(data);
-    //       if (data.success) {
-    //         // here you can dispatch if user admin
-    //         history.push("/home");
-    //       }
-    //     }
-    //   });
   };
 
   const openModal = text => {
@@ -95,16 +84,26 @@ export default function LoginScreen({ history }) {
   };
 
   const validateUsername = event => {
-    const inputText = event.target.value;
-    setIsUsernameValid(usernameRegex.test(inputText));
-    setUsernameLength(inputText.length);
-    setUserName(inputText);
+      const inputText = event.target.value;
+      if (!inputText.length) {
+          setUserNameHelperText("Please enter username");
+      } else if (!isUserNameValid(inputText)) {
+          setUserNameHelperText("Username is not valid");
+      } else if (userNameHelperText.length) {
+          setUserNameHelperText("")
+      }
+      setUserName(inputText);
   };
 
   const validatePassword = event => {
     const inputText = event.target.value;
-    setIsPasswordValid(passwordRegex.test(inputText));
-    setPasswordLength(inputText.length);
+    if (!inputText.length) {
+        setPasswordHelperText("Please enter password");
+    } else if (!isPasswordValid(inputText)) {
+        setPasswordHelperText("Password is not valid");
+    }  else if (passwordHelperText.length) {
+        setPasswordHelperText("")
+    }
     setPassword(inputText);
   };
 
@@ -113,7 +112,23 @@ export default function LoginScreen({ history }) {
     if(code === 13) { //13 is the enter keycode
       handleClick();
     }
-  }
+  };
+
+  const getUsernameHelperText = () => {
+      return userNameHelperText.length ? userNameHelperText : "";
+  };
+
+    const getPasswordHelperText = () => {
+        return passwordHelperText.length ? passwordHelperText : "";
+    };
+
+    const isPasswordValid = (inputText = password) => {
+       return passwordRegex.test(inputText);
+    };
+
+    const isUserNameValid = (inputText = username) => {
+        return usernameRegex.test(inputText);
+    };
 
   return (
     <Container
@@ -136,12 +151,13 @@ export default function LoginScreen({ history }) {
             margin="normal"
             required
             fullWidth
+            helperText={getUsernameHelperText()}
             id="username"
             label="Username"
             name="username"
             autoComplete="username"
             autoFocus
-            error={!!(!isUsernameValid && usernameLength)}
+            error={userNameHelperText.length}
             onChange={validateUsername.bind(this)}
             onKeyPress={enterPressed}
           />
@@ -149,9 +165,10 @@ export default function LoginScreen({ history }) {
             variant="outlined"
             margin="normal"
             required
-            error={!!(!isPasswordValid && passwordLength)}
+            error={passwordHelperText.length}
             onChange={validatePassword}
             fullWidth
+            helperText={getPasswordHelperText()}
             name="password"
             label="Password"
             type="password"

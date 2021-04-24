@@ -10,13 +10,13 @@ import {RiFileExcel2Fill} from "react-icons/all";
 
 const useStyles = makeStyles(theme => ({
   container: {
-    backgroundColor: "rgba(245, 245, 245)",
     // width: "100vw",
-    height: "93vh",
+    height: "80vh",
     width: "100%",
+    paddingTop: "25px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     position: "relative"
   },
@@ -69,16 +69,22 @@ export default function RoutesManagement() {
   return (
     <>
       <ButtonAppBar />
-      <div>
+      <div style={{backgroundColor: "#f5f5f5", width: "100vw", height: "100vh"}}>
         <div id={"table-container"} className={classes.container}>
-          <div
-            style={{
-              backgroundColor: "#ffffff",
-              height: "60vh",
-              width: "80vw",
-              boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
-            }}
-          >
+            <div style={{ alignSelf: "center", marginTop: 20, width: "94vw", height: "60px", top: 0, right: 0, display: "flex", justifyContent: "space-between"}}>
+                <div style={{ width: "70vw", height: "60px", fontWeight: 500, textTransform: "capitalize", letterSpacing: "0.0075em", display: "flex", justifyContent: "center", alignContent: "center", flexDirection: "column"}}>
+                    <p style={{fontSize: "1.9em"}}>Routes Management</p>
+                </div>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ width: "60px", height: "60px"}}
+                    onClick={() => exportRoutes()}
+                >
+                    <RiFileExcel2Fill size={"1x"}/>
+                </Button>
+            </div>
+          <div style={{ backgroundColor: "#ffffff", height: "70vh", width: "94vw", boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)"}}>
             <DataGrid
               sortingOrder={["desc", "asc"]}
               rows={routes}
@@ -86,14 +92,6 @@ export default function RoutesManagement() {
               pageSize={10}
             />
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ alignSelf: "center", marginTop: 20, marginRight: 20, width: "60px", height: "60px" , position: "absolute", top: 0, right: 0}}
-            onClick={() => exportRoutes()}
-          >
-            <RiFileExcel2Fill size={"1x"}/>
-          </Button>
         </div>
       </div>
     </>
