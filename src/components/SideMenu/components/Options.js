@@ -1,18 +1,27 @@
 import React from "react";
 import { FaSearch, FaMapMarked, FaHistory, FaSuitcase } from "react-icons/fa";
-import { ROUTE_DETAILS_PAGE } from "../../../constants/pageConstants";
-import { REPORTING_PAGE } from "../../../constants/pageConstants";
+import {
+  ROUTE_DETAILS_PAGE,
+  REPORTING_PAGE,
+} from "../../../constants/pageConstants";
+
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setIsDoneMainRouteOff } from "../../../redux/createdRoute";
+
+const handleCreateRoute = () => {};
 
 function Options({ setPage }) {
+  const dispatch = useDispatch();
   return (
     <ul style={{ listStyleType: "none", padding: 0 }}>
       <div
-        onClick={() =>
+        onClick={() => {
           setPage({
             open: ROUTE_DETAILS_PAGE,
-          })
-        }
+          });
+          dispatch(setIsDoneMainRouteOff());
+        }}
         className="list-item"
       >
         <FaMapMarked />

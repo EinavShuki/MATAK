@@ -123,9 +123,17 @@ a {
 }
 
 /* .table_notification .MuiDataGrid-colCell:nth-child(1) {
+/* .table_notification .MuiDataGrid-row {
+  /* background-color: rgba(241, 9, 9, 0.541); */
+/* } * */
+
+.table_notification .MuiDataGrid-viewport {
   background-color: white;
-} */
-.table_notification .MuiDataGrid-cell {
+}
+.table_notification .MuiDataGrid-colCell:nth-child(1) {
+  background-color: white;
+}
+*/ .table_notification .MuiDataGrid-cell {
   font-size: 1rem;
   font-weight: bold;
 }

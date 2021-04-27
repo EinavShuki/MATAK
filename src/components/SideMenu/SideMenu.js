@@ -7,6 +7,7 @@ import {
   REPORTING_PAGE,
   ROUTE_ADDITIONAL_DETAILS,
   VIEW_AND_CHANGE,
+  SET_STARTING_AND_ENDING,
 } from "../../constants/pageConstants";
 
 //INITIAL COMPONENTS
@@ -14,6 +15,7 @@ import Options from "./components/Options";
 import RouteDetails from "./components/RouteDetails";
 import Reporting from "./components/Reporting";
 import RouteAdditionalDetails from "./components/RouteAdditionalDetails";
+import SetStartingAndEnding from "./components/SetStartingAndEnding";
 import { useDispatch } from "react-redux";
 import { resetRoute } from "../../redux/createdRoute";
 import { turnOffIsHidden } from "../../redux/userRoutes";
@@ -28,8 +30,8 @@ function SideMenu({ setSideMenu, selectedRoute = null }) {
 
   const handleClose = () => {
     setSideMenu(false);
-    dispatch(resetRoute());
     dispatch(turnOffIsHidden());
+    dispatch(resetRoute());
   };
 
   return (
@@ -46,6 +48,9 @@ function SideMenu({ setSideMenu, selectedRoute = null }) {
         {page.open === REPORTING_PAGE && <Reporting />}
         {page.open === ROUTE_ADDITIONAL_DETAILS && (
           <RouteAdditionalDetails setSideMenu={setSideMenu} />
+        )}
+        {page.open === SET_STARTING_AND_ENDING && (
+          <SetStartingAndEnding setPage={setPage} />
         )}
         {page.open === VIEW_AND_CHANGE && (
           <ViewAndChange
