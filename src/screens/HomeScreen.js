@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import { MdRefresh } from "react-icons/md";
 import useDispatchRoutes from "../customHooks/useDispatchRoutes";
+import DropDownNoti from "../components/DropDownNoti/DropDownNoti";
 
 function HomeScreen() {
   const [sideMenu, setSideMenu] = useState(false);
@@ -49,6 +50,8 @@ function HomeScreen() {
       >
         <MdRefresh />
       </Avatar>
+      <DropDownNoti />
+
       <CSSTransition
         in={sideMenu}
         timeout={230}

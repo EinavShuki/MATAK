@@ -116,6 +116,13 @@ a {
   font-size: 1.1rem;
   font-weight: bold;
 }
+.table_notification .MuiDataGrid-colCellWrapper {
+  background-color: rgba(45, 97, 238, 0.308);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* .table_notification .MuiDataGrid-colCell:nth-child(1) {
 /* .table_notification .MuiDataGrid-row {
   /* background-color: rgba(241, 9, 9, 0.541); */
 /* } * */
@@ -126,7 +133,7 @@ a {
 .table_notification .MuiDataGrid-colCell:nth-child(1) {
   background-color: white;
 }
-.table_notification .MuiDataGrid-cell {
+*/ .table_notification .MuiDataGrid-cell {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -188,6 +195,14 @@ a {
 .failure {
   color: red;
 }
+#notification-icon {
+  position: fixed;
+  z-index: 5001;
+  top: 25px;
+  right: 170px;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: all 0.1ms ease;
+}
 
 #refresh-icon {
   position: fixed;
@@ -198,7 +213,8 @@ a {
   transition: all 0.1ms ease;
 }
 
-#refresh-icon:hover {
+#refresh-icon:hover,
+#notification-icon:hover {
   background-color: rgba(0, 0, 0, 1);
   cursor: pointer;
   transform: scale(1.1);

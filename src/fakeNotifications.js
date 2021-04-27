@@ -21,7 +21,7 @@ export let notifications = [
   },
   {
     id: 3,
-    isRead: false,
+    isRead: true,
     type: "Status Update",
     date: "17:25",
     sender: "Ramiro the cat",
@@ -31,7 +31,7 @@ export let notifications = [
   },
   {
     id: 4,
-    isRead: false,
+    isRead: true,
     type: "Note",
     date: "17:25",
     sender: "Mul",
@@ -41,7 +41,7 @@ export let notifications = [
   },
   {
     id: 5,
-    isRead: false,
+    isRead: true,
     type: "Note",
     date: "17:25",
     sender: null,
@@ -71,7 +71,7 @@ export let notifications = [
   },
   {
     id: 8,
-    isRead: false,
+    isRead: true,
     type: "Status Update",
     date: "17:25",
     sender: "Galileo galiley",
@@ -81,7 +81,7 @@ export let notifications = [
   },
   {
     id: 9,
-    isRead: false,
+    isRead: true,
     type: "Status Update",
     date: "17:25",
     sender: "God",
