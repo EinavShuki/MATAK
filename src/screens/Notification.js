@@ -3,110 +3,96 @@ import { DataGrid } from "@material-ui/data-grid";
 import NavBar from "../components/NavBar";
 import IconButton from "@material-ui/core/IconButton";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { notifications } from "../fakeNotifications";
 import axios from "axios";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "type", headerName: "Type", width: 160 },
-  { field: "date", headerName: "Date", width: 130, type: "date" },
-  {
-    field: "sender",
-    headerName: "Sender",
-    width: 170,
-  },
-  {
-    field: "notes",
-    headerName: "Notes",
-    width: 350,
-  },
-  {
-    field: "routeDetails",
-    headerName: "Route Details",
-    description: "Click on square for more information",
-    width: 510,
-  },
-];
-
-const rows = [
-  {
-    id: 1,
-    type: "Status Update",
-    date: "17:25",
-    sender: "Einav",
-    notes: "Hello world",
-    routeDetails: "Info1",
-  },
-  {
-    id: 2,
-    type: "Status Update",
-    date: "17:25",
-    sender: "Roberto",
-    notes: "Hello world",
-    routeDetails: "Info34",
-  },
-  {
-    id: 3,
-    type: "Status Update",
-    date: "17:25",
-    sender: "Ramiro the cat",
-    notes: "Hello world",
-    routeDetails: "Info4",
-  },
-  {
-    id: 4,
-    type: "Note",
-    date: "17:25",
-    sender: "Mul",
-    notes: "Hello world",
-    routeDetails: "Info3",
-  },
-  {
-    id: 5,
-    type: "Note",
-    date: "17:25",
-    sender: null,
-    notes: "Hello world",
-    routeDetails: "Info1",
-  },
-  {
-    id: 6,
-    type: "Status Update",
-    date: "17:25",
-    sender: "Eden",
-    notes: "Hello world",
-    routeDetails: "Info56",
-  },
-  {
-    id: 7,
-    type: "Note",
-    date: "17:25",
-    sender: "Asaf",
-    notes: "Hello world",
-    routeDetails: "Info76",
-  },
-  {
-    id: 8,
-    type: "Status Update",
-    date: "17:25",
-    sender: "Galileo galiley",
-    notes: "Hello world",
-    routeDetails: "Info31",
-  },
-  {
-    id: 9,
-    type: "Status Update",
-    date: "17:25",
-    sender: "God",
-    notes: "Hello world",
-    routeDetails: "Info2",
-  },
-];
+import { MdModeEdit } from "react-icons/md";
+import { Button } from "@material-ui/core";
 
 const Notifications = () => {
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [changeStatus, setChangeStatus] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+
+  const columns = [
+    {
+      field: "statusBtn",
+      headerName: "Status Button",
+      width: 150,
+      disableClickEventBubbling: true,
+      renderCell: params => {
+        const onClick = () => {
+          const api = params.api;
+          const fields = api
+            .getAllColumns()
+            .map(c => c.field)
+            .filter(c => c !== "__check__" && !!c);
+          const thisRow = {};
+
+          fields.forEach(f => {
+            thisRow[f] = params.getValue(f);
+          });
+
+          setChangeStatus(prev => !prev);
+          setSelectedRow(thisRow);
+        };
+
+        return (
+          <Button variant="contained" color="primary" onClick={onClick}>
+            Mark as read/unread
+          </Button>
+        );
+      },
+    },
+    { field: "isRead", headerName: "Is Read", width: 120 },
+    { field: "id", headerName: "ID", width: 0 },
+    { field: "type", headerName: "Type", width: 160 },
+    { field: "date", headerName: "Date", width: 130, type: "date" },
+    {
+      field: "sender",
+      headerName: "Sender",
+      width: 170,
+    },
+    {
+      field: "senderEmail",
+      type: "path",
+      headerName: "Sender Email",
+      width: 170,
+      resizable: true,
+    },
+    {
+      field: "notes",
+      headerName: "Notes",
+      width: 200,
+      resizable: true,
+    },
+    {
+      field: "routeDetails",
+      headerName: "Route Details",
+      description: "Click on square for more information",
+      width: 500,
+      resizable: true,
+    },
+  ];
+
+  const rows = notifications;
+
   useEffect(() => {
+    rows.forEach(row => {
+      console.log(row);
+    });
     //do async axios request-redux is not necessery here
   }, []);
+
+  useEffect(() => {
+    // change is read square booleanicly
+    if (selectedRow) {
+      notifications.filter(
+        x => x.id === selectedRow.id
+      )[0].isRead = !notifications.filter(x => x.id === selectedRow.id)[0]
+        .isRead;
+    }
+    //HERE I SEND UPDATE OF NOTIFICATIONS
+  }, [changeStatus]);
 
   // const deleteClickHandler=()=>{
   //   try {
@@ -154,7 +140,13 @@ const Notifications = () => {
           columns={columns}
           pageSize={5}
           checkboxSelection
-        />
+          sortModel={[
+            {
+              field: "date",
+              sort: "asc",
+            },
+          ]}
+        ></DataGrid>
       </div>
     </>
   );

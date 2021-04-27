@@ -68,7 +68,7 @@ const AdminScreen = () => {
           setSelectedRow(thisRow);
         };
 
-        return <Button startIcon={<MdModeEdit />} onClick={onClick}/>;
+        return <Button startIcon={<MdModeEdit />} onClick={onClick} />;
       },
     },
     {
@@ -93,7 +93,7 @@ const AdminScreen = () => {
           setSelectedRow(thisRow);
         };
 
-        return <Button startIcon={<MdDelete />} onClick={onClick}/>;
+        return <Button startIcon={<MdDelete />} onClick={onClick} />;
       },
     },
   ];
