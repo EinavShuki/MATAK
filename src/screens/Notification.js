@@ -37,8 +37,13 @@ const Notifications = () => {
         };
 
         return (
-          <Button variant="contained" color="primary" onClick={onClick}>
-            Mark as read/unread
+          <Button
+            style={{ fontSize: "0.875rem" }}
+            variant="contained"
+            color="primary"
+            onClick={onClick}
+          >
+            read / unread
           </Button>
         );
       },

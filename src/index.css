@@ -195,6 +195,14 @@ a {
 .failure {
   color: red;
 }
+#notification-icon {
+  position: fixed;
+  z-index: 5001;
+  top: 25px;
+  right: 170px;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: all 0.1ms ease;
+}
 
 #refresh-icon {
   position: fixed;
@@ -205,7 +213,8 @@ a {
   transition: all 0.1ms ease;
 }
 
-#refresh-icon:hover {
+#refresh-icon:hover,
+#notification-icon:hover {
   background-color: rgba(0, 0, 0, 1);
   cursor: pointer;
   transform: scale(1.1);
