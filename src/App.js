@@ -6,7 +6,7 @@ import LoginScreen from "./screens/LoginScreen";
 import MyAccountScreen from "./screens/MyAccountScreen";
 import AdminScreen from "./screens/AdminScreen";
 import Notifications from "./screens/Notification";
-import RoutesManagement from "./screens/RoutesManagement";
+import RoutesManagement from "./screens/RoutesManagment/RoutesManagement";
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
