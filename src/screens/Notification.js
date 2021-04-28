@@ -7,6 +7,7 @@ import { notifications } from "../fakeNotifications";
 import axios from "axios";
 import { MdModeEdit } from "react-icons/md";
 import { Button } from "@material-ui/core";
+import { XGrid } from "@material-ui/x-grid";
 
 const Notifications = () => {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -17,7 +18,7 @@ const Notifications = () => {
     {
       field: "statusBtn",
       headerName: "Status Button",
-      width: 150,
+      width: 170,
       disableClickEventBubbling: true,
       renderCell: params => {
         const onClick = () => {
@@ -38,7 +39,7 @@ const Notifications = () => {
 
         return (
           <Button
-            style={{ fontSize: "0.875rem" }}
+            style={{ fontSize: "0.875rem", padding: "0.4rem" }}
             variant="contained"
             color="primary"
             onClick={onClick}
@@ -48,10 +49,16 @@ const Notifications = () => {
         );
       },
     },
-    { field: "isRead", headerName: "Is Read", width: 120 },
-    { field: "id", headerName: "ID", width: 0 },
+    { field: "isRead", type: "boolean", headerName: "Is Read", width: 120 },
+    { field: "id", headerName: "ID", hide: true },
     { field: "type", headerName: "Type", width: 160 },
-    { field: "date", headerName: "Date", width: 130, type: "date" },
+    {
+      field: "date",
+      type: "date",
+      headerName: "Date",
+      width: 210,
+      type: "date",
+    },
     {
       field: "sender",
       headerName: "Sender",
@@ -59,10 +66,9 @@ const Notifications = () => {
     },
     {
       field: "senderEmail",
-      type: "path",
+
       headerName: "Sender Email",
       width: 170,
-      resizable: true,
     },
     {
       field: "notes",
@@ -136,7 +142,7 @@ const Notifications = () => {
             <RiDeleteBin5Fill style={{ color: "#f44336" }} />
           </IconButton>
         </span>
-        <DataGrid
+        <XGrid
           className="table_notification"
           onRowSelected={rowSelectedHandler}
           onCellClick={CellClickHandler}
@@ -151,7 +157,7 @@ const Notifications = () => {
               sort: "asc",
             },
           ]}
-        ></DataGrid>
+        ></XGrid>
       </div>
     </>
   );

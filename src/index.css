@@ -112,12 +112,11 @@ a {
 /*Notifications screen*/
 
 .table_notification .MuiDataGrid-colCell {
-  background-color: rgba(45, 97, 238, 0.308);
+  background-color: rgb(115, 146, 231);
   font-size: 1.1rem;
   font-weight: bold;
 }
 .table_notification .MuiDataGrid-colCellWrapper {
-  background-color: rgba(45, 97, 238, 0.308);
   font-size: 1.1rem;
   font-weight: bold;
 }

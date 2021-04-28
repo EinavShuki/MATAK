@@ -36,7 +36,7 @@ const DropDownNoti = () => {
     <>
       <Avatar
         className={classes.avatar}
-        aria-controls="simple-menu"
+        aria-controls="simple-menu-dd"
         aria-haspopup="true"
         onClick={handleClick}
         id="notification-icon"
@@ -45,7 +45,7 @@ const DropDownNoti = () => {
       </Avatar>
 
       <Menu
-        id="simple-menu"
+        id="simple-menu-dd"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -59,28 +59,14 @@ const DropDownNoti = () => {
                 to={`/notifications`}
               >
                 <MenuItem>
-                  <Avatar
-                    className="avatar_name"
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      fontSize: "0.875rem",
-                    }}
-                  >
+                  <Avatar className="avatar_name" id="name_icon">
                     SE
                   </Avatar>
-                  <div
-                    style={{
-                      width: "500px",
-                      height: "100px",
-                      overflow: "scroll",
-                    }}
-                  >
+                  <div id="dd_square">
                     <ul style={{ listStyle: "none" }}>
                       <li style={{ fontWeight: "bold" }}>{noti.sender}</li>
-                      <li>Notes: {noti.notes}</li>
-                      <li>type: {noti.type}</li>
-                      <li>Route Detaile: {noti.routeDetails}</li>
+                      <li>Type: {noti.type}</li>
+                      <li>Date: {noti.date.slice(3, 25)}</li>
                     </ul>
                   </div>
                 </MenuItem>
