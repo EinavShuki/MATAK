@@ -100,8 +100,11 @@ function MapComponent({ setMainSideMenu }) {
           selectedRoute.End_Point
         )
       );
-      setSelectedRoute(selectedRoute);
-      setRouteDetailsMenu(true);
+      setTimeout(() => {
+        setSelectedRoute(selectedRoute);
+        setRouteDetailsMenu(true);
+      }, 250);
+
       // const send = {
       //   _id: route.properties._id,
       // };
@@ -184,13 +187,6 @@ function MapComponent({ setMainSideMenu }) {
     return routesToRender;
   };
 
-  // const stam = (feature, LatLng) => {
-  //   const icon = new L.Icon({
-  //     iconUrl: finishFlag,
-  //   });
-  //   return L.marker(LatLng, { icon: { icon } }); // Change the icon to a custom icon
-  // };
-
   return (
     <>
       <CSSTransition
@@ -217,7 +213,7 @@ function MapComponent({ setMainSideMenu }) {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
         <ZoomControl position="topright" />
-        //all routes
+
         {routes &&
           !isHidden &&
           routes.map((route, i) => {
@@ -229,14 +225,14 @@ function MapComponent({ setMainSideMenu }) {
                     : STATUSES[route["Status_Name"]]?.color
                 }
                 //key is like a dependency to render the geoJson
-                key={route._id + isEditAvailable}
+                key={route._id + isEditAvailable + route.updatedAt}
                 data={route["Array_Of_Points"]}
                 onEachFeature={handleClickOnRoute}
                 // pointToLayer={stam}
               />
             );
           })}
-        //filtered route
+
         {filteredRoutes.map((route, i) => {
           return (
             <GeoJSON
@@ -253,7 +249,7 @@ function MapComponent({ setMainSideMenu }) {
             />
           );
         })}
-        //while being created
+
         {renderRoutes()}
         {startingPosition && (
           <Marker position={startingPosition} icon={startIcon} />

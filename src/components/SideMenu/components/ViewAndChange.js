@@ -26,6 +26,7 @@ import {
   turnOffIsHidden,
 } from "../../../redux/userRoutes";
 import { resetStartAndEnd } from "../../../redux/createdRoute";
+import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
 
 function ViewAndChange({ selectedRoute, setSideMenu }) {
   const {
@@ -40,6 +41,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     Driver_Name,
     Car_Liecene_Number,
     Terms_Text,
+    Driver_Cellphone,
   } = selectedRoute;
 
   const dispatch = useDispatch();
@@ -53,7 +55,18 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
   });
   const { fetchRoutesData } = useDispatchRoutes();
   const [status, setStatus] = useState(Status_Name);
+
   const [terms, setTerms] = useState(Terms_Text);
+  const [reason, setReason] = useState(Reason_Text);
+  const [driversName, setDriversName] = useState(Driver_Name);
+  const [vehicleID, setVehicle] = useState(Car_Liecene_Number);
+  const [phonePrefix, setPhonePrefix] = useState(
+    Driver_Cellphone.split("-")[0]
+  );
+  const [phonePostfix, setPhonePostfix] = useState(
+    Driver_Cellphone.split("-")[1]
+  );
+  const [remarks, setRemarks] = useState(Remarks);
 
   const [startingDate, setStartingDate] = useState(
     new Date(Start_Date ? Start_Date : null)
@@ -85,13 +98,6 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
 
   const handleSubmitRoute = async () => {
     const send = {
-      // Path_Name: "Try1",
-      // Applicant_User_Id: "123456789",
-      // Array_Of_Points: geoJsonToSend,
-      // Is_Permanent: isPermanent,
-      // Terms_Text: "???????",
-      // Reason_Text: reason,
-      // Remarks: remarks ? remarks : "hello world",
       Terms_Text: terms,
       Start_Date: startingDate,
       End_Date: endingDate,
@@ -134,14 +140,60 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     setStartingDate,
   };
 
+  const RouteInfoDetailsController = {
+    reason,
+    setReason,
+    driversName,
+    setDriversName,
+    vehicleID,
+    setVehicle,
+    phonePrefix,
+    setPhonePrefix,
+    phonePostfix,
+    setPhonePostfix,
+    remarks,
+    setRemarks,
+  };
+
   const handleHideOtherRoutes = () => {
     dispatch(toggleIsHidden());
     dispatch(showfilteredRoutes(selectedRoute));
   };
+
+  const permissions = useMemo(
+    () => ({
+      isDisabled: Status_Name !== "Changes-Required",
+    }),
+    []
+  );
   return (
     <>
-      <h1>View Route</h1>
-
+      <h1>View Route Details</h1>
+      <span
+        style={{
+          fontSize: "22px",
+          alignSelf: "center",
+          textTransform: "capitalize",
+        }}
+      >
+        {Path_Name}
+        {Is_Permanent ? (
+          <>
+            <span
+              style={{
+                fontWeight: "bold",
+                marginRight: "10px",
+              }}
+            >
+              {" "}
+              - Permanent Route
+            </span>
+            <FaLock />
+          </>
+        ) : (
+          ""
+        )}
+      </span>
       <FormControlLabel
         control={
           <Switch
@@ -151,73 +203,11 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
             color="secondary"
           />
         }
-        label="Hide Other Routes"
+        label="Hide Routes"
       />
-      <span style={{ fontSize: "20px" }}>
-        {Path_Name}{" "}
-        {Is_Permanent ? (
-          <>
-            <span style={{ fontWeight: "bold", marginRight: "10px" }}>
-              - Permanent Route
-            </span>
-            <FaLock />
-          </>
-        ) : (
-          ""
-        )}
-      </span>
-      <DatePicker
-        {...dateController}
-        isDisabled={Status_Name !== "Changes-Required"}
-      />
-      <TextField
-        disabled={!isAdminOrMatakUser}
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
-        color="secondary"
-        label="Terms"
-        multiline
-        rows={2}
-        variant="outlined"
-        value={terms}
-        onChange={e => setTerms(e.target.value)}
-      />
-      <TextField
-        disabled
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
-        color="secondary"
-        label="Reason"
-        variant="outlined"
-        value={Reason_Text}
-      />
-
-      <TextField
-        disabled
-        color="secondary"
-        style={{ margin: "0.8rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        label="Driver's Full Name"
-        variant="outlined"
-        value={Driver_Name}
-      />
-
-      <TextField
-        disabled
-        color="secondary"
-        style={{ margin: "0.8rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        label="Car Number"
-        variant="outlined"
-        value={Car_Liecene_Number}
-      />
-      <TextField
-        disabled
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
-        color="secondary"
-        label="Remarks"
-        multiline
-        rows={3}
-        variant="outlined"
-        value={Remarks}
-      />
-
+      {!Is_Permanent && (
+        <DatePicker {...dateController} isDisabled={permissions.isDisabled} />
+      )}
       {!Is_Permanent && (
         <FormControl style={{ margin: "0.8rem 0" }} color="secondary">
           <InputLabel id="route-status">Route Status</InputLabel>
@@ -239,7 +229,24 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
           </Select>
         </FormControl>
       )}
+      <TextField
+        disabled={!isAdminOrMatakUser}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "0.8rem 0" }}
+        color="secondary"
+        label="Terms"
+        multiline
+        rows={2}
+        variant="outlined"
+        value={terms}
+        onChange={e => setTerms(e.target.value)}
+      />
 
+      {!Is_Permanent && (
+        <RoutesInfoDetails
+          {...RouteInfoDetailsController}
+          isDisabled={permissions.isDisabled}
+        />
+      )}
       <div>
         {isAdminOrMatakUser && (
           <>
@@ -265,7 +272,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
               <DialogTitle id="alert-dialog-title">Delete Route</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  Are You Sure You Want To Delete This Route?
+                  Are you sure you want to delete this route?
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -285,18 +292,22 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
           </>
         )}
       </div>
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{
-          alignSelf: "flex-end",
-          padding: "0.5rem 2rem",
-          margin: "0.8rem 0",
-        }}
-        onClick={handleSubmitRoute}
-      >
-        Send
-      </Button>
+      {((isAdminOrMatakUser && !Is_Permanent) ||
+        (!isAdminOrMatakUser && !permissions.isDisabled)) && (
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{
+            alignSelf: "flex-end",
+            padding: "0.5rem 2rem",
+            margin: "0.8rem 0",
+          }}
+          onClick={handleSubmitRoute}
+          disabled={!vehicleID || !phonePostfix || !driversName}
+        >
+          Send
+        </Button>
+      )}
     </>
   );
 }

@@ -61,7 +61,7 @@ function SetStartingAndEnding({ setPage }) {
         }}
       ></div>
       <h3 style={{ marginBottom: 0 }}>Set Manually</h3>
-      <h4>Starting Position:</h4>
+      <h4>Start Position:</h4>
       <div>
         <TextField
           style={{
@@ -112,7 +112,7 @@ function SetStartingAndEnding({ setPage }) {
           +
         </Button>
       </div>
-      <h4>Ending Position:</h4>
+      <h4>End Position:</h4>
       <div>
         <TextField
           style={{
