@@ -3,11 +3,9 @@ import { DataGrid } from "@material-ui/data-grid";
 import NavBar from "../components/NavBar";
 import IconButton from "@material-ui/core/IconButton";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { BiEnvelopeOpen, BiEnvelope } from "react-icons/bi";
 import { notifications } from "../fakeNotifications";
 import axios from "axios";
-import { MdModeEdit } from "react-icons/md";
-import { Button } from "@material-ui/core";
-import { XGrid } from "@material-ui/x-grid";
 
 const Notifications = () => {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -15,40 +13,40 @@ const Notifications = () => {
   const [selectedRows, setSelectedRows] = useState([]);
 
   const columns = [
-    {
-      field: "statusBtn",
-      headerName: "Status Button",
-      width: 170,
-      disableClickEventBubbling: true,
-      renderCell: params => {
-        const onClick = () => {
-          const api = params.api;
-          const fields = api
-            .getAllColumns()
-            .map(c => c.field)
-            .filter(c => c !== "__check__" && !!c);
-          const thisRow = {};
+    // {
+    //   field: "statusBtn",
+    //   headerName: "Status Button",
+    //   width: 170,
+    //   disableClickEventBubbling: true,
+    //   renderCell: params => {
+    //     const onClick = () => {
+    //       const api = params.api;
+    //       const fields = api
+    //         .getAllColumns()
+    //         .map(c => c.field)
+    //         .filter(c => c !== "__check__" && !!c);
+    //       const thisRow = {};
 
-          fields.forEach(f => {
-            thisRow[f] = params.getValue(f);
-          });
+    //       fields.forEach(f => {
+    //         thisRow[f] = params.getValue(f);
+    //       });
 
-          setChangeStatus(prev => !prev);
-          setSelectedRow(thisRow);
-        };
+    //       setChangeStatus(prev => !prev);
+    //       setSelectedRow(thisRow);
+    //     };
 
-        return (
-          <Button
-            style={{ fontSize: "0.875rem", padding: "0.4rem" }}
-            variant="contained"
-            color="primary"
-            onClick={onClick}
-          >
-            read / unread
-          </Button>
-        );
-      },
-    },
+    //     return (
+    //       <Button
+    //         style={{ fontSize: "0.875rem", padding: "0.4rem" }}
+    //         variant="contained"
+    //         color="primary"
+    //         onClick={onClick}
+    //       >
+    //         read / unread
+    //       </Button>
+    //     );
+    //   },
+    // },
     { field: "isRead", type: "boolean", headerName: "Is Read", width: 120 },
     { field: "id", headerName: "ID", hide: true },
     { field: "type", headerName: "Type", width: 160 },
@@ -65,22 +63,16 @@ const Notifications = () => {
       width: 170,
     },
     {
-      field: "senderEmail",
-
-      headerName: "Sender Email",
+      field: "CreatedBy",
+      headerName: "Created By",
       width: 170,
     },
-    {
-      field: "notes",
-      headerName: "Notes",
-      width: 200,
-      resizable: true,
-    },
+
     {
       field: "routeDetails",
       headerName: "Route Details",
       description: "Click on square for more information",
-      width: 500,
+      width: 300,
       resizable: true,
     },
   ];
@@ -139,10 +131,12 @@ const Notifications = () => {
         <span style={{ display: "flex" }}>
           <h1>Notifications</h1>
           <IconButton style={{ marginLeft: "auto", paddingBottom: 0 }}>
+            <BiEnvelopeOpen />
+            <BiEnvelope />
             <RiDeleteBin5Fill style={{ color: "#f44336" }} />
           </IconButton>
         </span>
-        <XGrid
+        <DataGrid
           className="table_notification"
           onRowSelected={rowSelectedHandler}
           onCellClick={CellClickHandler}
@@ -157,7 +151,7 @@ const Notifications = () => {
               sort: "asc",
             },
           ]}
-        ></XGrid>
+        ></DataGrid>
       </div>
     </>
   );
