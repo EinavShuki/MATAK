@@ -54,7 +54,7 @@ const Notifications = () => {
       field: "date",
       type: "date",
       headerName: "Date",
-      width: 210,
+      width: 300,
       type: "date",
     },
     {
@@ -63,9 +63,9 @@ const Notifications = () => {
       width: 170,
     },
     {
-      field: "CreatedBy",
-      headerName: "Created By",
-      width: 170,
+      field: "senderEmail",
+      headerName: "SenderEmails",
+      width: 200,
     },
 
     {
@@ -73,18 +73,17 @@ const Notifications = () => {
       headerName: "Route Details",
       description: "Click on square for more information",
       width: 300,
-      resizable: true,
     },
   ];
 
-  const rows = notifications;
-
+  notifications.forEach(noti => {
+    noti.date = noti.date.slice(0, 25);
+  });
+  let rows = notifications;
   useEffect(() => {
-    rows.forEach(row => {
-      console.log(row);
-    });
-    //do async axios request-redux is not necessery here
-  }, []);
+    rows = notifications;
+    console.log(rows);
+  }, [notifications]);
 
   useEffect(() => {
     // change is read square booleanicly
@@ -96,6 +95,21 @@ const Notifications = () => {
     }
     //HERE I SEND UPDATE OF NOTIFICATIONS
   }, [changeStatus]);
+
+  const signAsRead = () => {
+    selectedRows.forEach(row => {
+      notifications.forEach(noti => {
+        if (row.data.id === noti.id) noti.isRead = true;
+      });
+    });
+  };
+  const signAsUnRead = () => {
+    selectedRows.forEach(row => {
+      notifications.forEach(noti => {
+        if (row.data.id === noti.id) noti.isRead = false;
+      });
+    });
+  };
 
   // const deleteClickHandler=()=>{
   //   try {
@@ -116,6 +130,16 @@ const Notifications = () => {
       setSelectedRows(prev => prev.filter(x => x.data.id !== e.data.id));
     }
   };
+  // const somefun = e => {
+  //   e.selectionModel.forEach(id => {
+  //     notifications.forEach(noti => {
+  //       console.log(id, noti.id);
+  //       if (id === noti.id.toString()) {
+  //         rowSelectedHandler(noti);
+  //       }
+  //     });
+  //   });
+  // };
 
   return (
     <>
@@ -131,8 +155,15 @@ const Notifications = () => {
         <span style={{ display: "flex" }}>
           <h1>Notifications</h1>
           <IconButton style={{ marginLeft: "auto", paddingBottom: 0 }}>
-            <BiEnvelopeOpen />
-            <BiEnvelope />
+            <BiEnvelopeOpen onClick={signAsRead} />
+          </IconButton>
+          <IconButton style={{ paddingBottom: 0 }}>
+            <BiEnvelope
+              style={{ position: "relative", bottom: "-1.6px" }}
+              onClick={signAsUnRead}
+            />
+          </IconButton>
+          <IconButton style={{ paddingBottom: 0 }}>
             <RiDeleteBin5Fill style={{ color: "#f44336" }} />
           </IconButton>
         </span>
