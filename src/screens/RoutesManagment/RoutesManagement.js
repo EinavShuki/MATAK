@@ -9,7 +9,6 @@ import exportFromJSON from "export-from-json";
 import {RiFileExcel2Fill} from "react-icons/all";
 import {MdModeEdit} from "react-icons/md";
 import {RouteFormData} from "./RouteFormData";
-import RouteForm from "../../components/RoutesManagment/RouteForm";
 import MatakModal from "../MatakModal";
 
 const useStyles = makeStyles(theme => ({
@@ -93,7 +92,7 @@ export default function RoutesManagement() {
             <ButtonAppBar/>
             <div style={{backgroundColor: "#f5f5f5", width: "100vw", height: "100vh"}}>
                     <MatakModal text={routeFormData.text} show={routeFormData.show} onClose={() => setRouteFormData(new RouteFormData())}>
-                        <RouteForm routeFormData={routeFormData.clone()} handleFormSubmit={(data) => console.log(data)}/>
+                        {/*<RouteForm routeFormData={routeFormData.clone()} handleFormSubmit={(data) => console.log(data)}/>*/}
                     </MatakModal>
                 <div id={"table-container"} className={classes.container}>
                     <div style={{
