@@ -11,6 +11,7 @@ import { reasonsArray, phonePrefixes } from "../../../constants/infoConstants";
 import DatePicker from "../../DatePicker";
 import generate from "project-name-generator";
 import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
+import axios from "axios";
 
 function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const [phonePrefix, setPhonePrefix] = useState("050");
   const [phonePostfix, setPhonePostfix] = useState("");
   const [remarks, setRemarks] = useState("");
-  const [file, setFile] = useState("");
+  const [files, setFiles] = useState([]);
 
   const { fetchRoutesData } = useDispatchRoutes();
 
@@ -53,10 +54,6 @@ function RouteAdditionalDetails({ setSideMenu }) {
       features,
     };
 
-    console.log("file", file);
-    const formData = new FormData();
-    formData.append("file", file);
-    console.log(formData);
     const send = {
       Array_Of_Points: geoJsonToSend,
       Path_Name: generate().spaced,
@@ -82,12 +79,16 @@ function RouteAdditionalDetails({ setSideMenu }) {
       Involved_Organ_Array: ["stam"],
       Escort_Organ_Array: ["stam"],
       Terms_Text: "",
-      files: formData,
     };
 
+    const formData = new FormData();
+    formData.append("File", files);
+    formData.append("data", JSON.stringify(send));
     try {
-      await axiosConfig.post("/path", {
-        data: JSON.stringify(send),
+      await axiosConfig.post("/path", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
       });
 
       dispatch(resetRoute());
@@ -122,7 +123,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
   };
 
   const onAddFile = e => {
-    setFile(e.target.files[0]);
+    setFiles(prev => [...prev, e.target.files[0]]);
   };
 
   return (

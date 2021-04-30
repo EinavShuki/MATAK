@@ -86,43 +86,28 @@ function MapComponent({ setMainSideMenu }) {
   };
 
   //handle click on routes
-  const whenClicked = async clickedRoute => {
+  const whenClicked = async route => {
     if (!isEditAvailable) {
       setRouteDetailsMenu(false);
       setMainSideMenu(false);
+      const send = {
+        _id: route.properties._id,
+      };
 
-      const [selectedRoute] = routes.filter(
-        route => route._id === clickedRoute.properties._id
-      );
-      dispatch(
-        displayStartAndEnding(
-          selectedRoute.Start_Point,
-          selectedRoute.End_Point
-        )
-      );
-      setTimeout(() => {
+      try {
+        const { data } = await axiosConfig.post("/path/byid", send);
+        const selectedRoute = data.data[0];
+        dispatch(
+          displayStartAndEnding(
+            selectedRoute.Start_Point,
+            selectedRoute.End_Point
+          )
+        );
         setSelectedRoute(selectedRoute);
         setRouteDetailsMenu(true);
-      }, 250);
-
-      // const send = {
-      //   _id: route.properties._id,
-      // };
-
-      // try {
-      //   const { data } = await axiosConfig.get("/path", send);
-      //   const selectedRoute = data.data[0];
-      //   dispatch(
-      //     displayStartAndEnding(
-      //       selectedRoute.Start_Point,
-      //       selectedRoute.End_Point
-      //     )
-      //   );
-      //   setSelectedRoute(selectedRoute);
-      //   setRouteDetailsMenu(true);
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
