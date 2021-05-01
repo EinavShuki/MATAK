@@ -1,11 +1,4 @@
-import {
-  FormControl,
-  Button,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 import React, { useState } from "react";
 import { resetRoute } from "../../../redux/createdRoute";
@@ -14,9 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
 import axiosConfig from "../../../config/axiosConfig";
 import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
-import { reasonsArray, phonePrefixes } from "../../../constants/infoConstants";
+import { reasonsArray } from "../../../constants/infoConstants";
 import DatePicker from "../../DatePicker";
 import generate from "project-name-generator";
+import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
 
 function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
@@ -36,23 +30,17 @@ function RouteAdditionalDetails({ setSideMenu }) {
 
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
+
   const [reason, setReason] = useState(reasonsArray[0]);
   const [driversName, setDriversName] = useState("");
   const [vehicleID, setVehicle] = useState("");
   const [phonePrefix, setPhonePrefix] = useState("050");
   const [phonePostfix, setPhonePostfix] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [files, setFiles] = useState([]);
+  const [filesNames, setFilesNames] = useState([]);
+
   const { fetchRoutesData } = useDispatchRoutes();
-
-  function handlePhoneNumber(e) {
-    const re = /^[0-9\b]+$/;
-
-    // if value is not blank, then test the regex
-
-    if (e.target.value === "" || re.test(e.target.value)) {
-      setPhonePostfix(e.target.value);
-    }
-  }
 
   async function handleSubmitRoute() {
     const features = currentCreatedRoute.map(route => {
@@ -68,7 +56,6 @@ function RouteAdditionalDetails({ setSideMenu }) {
 
     const send = {
       Array_Of_Points: geoJsonToSend,
-
       Path_Name: generate().spaced,
       Start_Date: startingDate,
       End_Date: endingDate,
@@ -82,9 +69,11 @@ function RouteAdditionalDetails({ setSideMenu }) {
         month: "numeric",
         year: "2-digit",
       })}\n${remarks}`,
-      Driver_Name: driversName,
-      Driver_Cellphone: `${phonePrefix}-${phonePostfix}`,
-      Car_Liecene_Number: vehicleID,
+      Driver_Name: isPermanent ? "Permanent" : driversName,
+      Driver_Cellphone: isPermanent
+        ? "Permanent"
+        : `${phonePrefix}-${phonePostfix}`,
+      Car_Liecene_Number: isPermanent ? "Permanent" : vehicleID,
       Start_Point: startingPosition,
       End_Point: endingPosition,
       Involved_Organ_Array: ["stam"],
@@ -92,8 +81,15 @@ function RouteAdditionalDetails({ setSideMenu }) {
       Terms_Text: "",
     };
 
+    const formData = new FormData();
+    formData.append("File", files);
+    formData.append("data", JSON.stringify(send));
     try {
-      await axiosConfig.post("/path", { data: JSON.stringify(send) });
+      await axiosConfig.post("/path", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
 
       dispatch(resetRoute());
       fetchRoutesData();
@@ -110,90 +106,48 @@ function RouteAdditionalDetails({ setSideMenu }) {
     startingDate,
     setStartingDate,
   };
+
+  const RouteInfoDetailsController = {
+    reason,
+    setReason,
+    driversName,
+    setDriversName,
+    vehicleID,
+    setVehicle,
+    phonePrefix,
+    setPhonePrefix,
+    phonePostfix,
+    setPhonePostfix,
+    remarks,
+    setRemarks,
+  };
+
+  const onAddFile = e => {
+    if (files.length + e.target?.files.length < 5 && e.target?.files[0]) {
+      setFiles(prev => [...prev, ...e.target?.files]);
+      setFilesNames(prev => {
+        const filesNames = Array.from(e.target?.files).map(file => file.name);
+        return [...prev, ...filesNames];
+      });
+    }
+  };
+
   return (
     <>
       <h1>Additional Information</h1>
       <DatePicker {...dateController} isDisabled={false} />
-      <FormControl style={{ margin: "1rem 0" }} color="secondary">
-        <InputLabel id="reason-for-coordination">
-          Reason For Coordination
-        </InputLabel>
-        <Select
-          labelId="reason-for-coordination"
-          value={reason}
-          onChange={e => setReason(e.target.value)}
-        >
-          {reasonsArray.map(reason => (
-            <MenuItem key={reason} value={reason}>
-              {reason}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
-      <TextField
-        color="secondary"
-        style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        label="Car's Liecene Number"
-        variant="outlined"
-        value={vehicleID}
-        onChange={e => setVehicle(e.target.value)}
+      {!isPermanent && <RoutesInfoDetails {...RouteInfoDetailsController} />}
+      <input
+        style={{ marginTop: "1rem" }}
+        type="file"
+        multiple
+        accept="image/png, image/jpeg , .pdf, .heic"
+        onChange={onAddFile}
       />
-
-      <TextField
-        color="secondary"
-        style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        label="Driver's Full Name"
-        variant="outlined"
-        value={driversName}
-        onChange={e => setDriversName(e.target.value)}
-      />
-      <InputLabel style={{ margin: "1rem 0 0.5rem 0" }}>
-        Driver's Phone Number
-      </InputLabel>
-      <div style={{ display: "flex", marginBottom: "1rem" }}>
-        <FormControl
-          variant="outlined"
-          color="secondary"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.06)",
-            marginRight: "0.5rem",
-          }}
-        >
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value={phonePrefix}
-            onChange={e => setPhonePrefix(e.target.value)}
-          >
-            {phonePrefixes.map((prefix, i) => (
-              <MenuItem key={prefix + i} value={prefix}>
-                {prefix}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <TextField
-          color="secondary"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", flexGrow: "1" }}
-          variant="outlined"
-          value={phonePostfix}
-          onChange={handlePhoneNumber}
-          inputProps={{ maxLength: 7 }}
-        />
-      </div>
-
-      <TextField
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.06)", marginTop: "1rem" }}
-        color="secondary"
-        label="Remarks"
-        multiline
-        rows={3}
-        variant="outlined"
-        value={remarks}
-        onChange={e => setRemarks(e.target.value)}
-      />
-      <input style={{ marginTop: "1rem" }} type="file" />
+      {filesNames && (
+        <span style={{ wordBreak: "break-word" }}>{filesNames.join(", ")}</span>
+      )}
       <Button
         variant="contained"
         color="secondary"
@@ -203,6 +157,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
           margin: "1rem 0",
         }}
         onClick={handleSubmitRoute}
+        disabled={!vehicleID || !phonePostfix || !driversName}
       >
         Send
       </Button>

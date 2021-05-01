@@ -57,16 +57,17 @@ const DropDownNoti = () => {
               <Link
                 style={{ textDecoration: "none", color: "black" }}
                 to={`/notifications`}
+                key={noti.date + noti.sender}
               >
                 <MenuItem>
                   <Avatar className="avatar_name" id="name_icon">
-                    SE
+                    {noti.sender[0].toUpperCase()}
                   </Avatar>
                   <div id="dd_square">
                     <ul style={{ listStyle: "none" }}>
                       <li style={{ fontWeight: "bold" }}>{noti.sender}</li>
-                      <li>Type: {noti.type}</li>
-                      <li>Date: {noti.date.slice(3, 25)}</li>
+                      <li>{noti.type}</li>
+                      <li>{noti.date.slice(3, 25)}</li>
                     </ul>
                   </div>
                 </MenuItem>

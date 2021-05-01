@@ -29,6 +29,7 @@ import SideMenu from "../SideMenu";
 import axiosConfig from "../../config/axiosConfig";
 import startFlag from "../../images/start.svg";
 import finishFlag from "../../images/finish.svg";
+import axios from "axios";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -86,40 +87,28 @@ function MapComponent({ setMainSideMenu }) {
   };
 
   //handle click on routes
-  const whenClicked = async clickedRoute => {
+  const whenClicked = async route => {
     if (!isEditAvailable) {
       setRouteDetailsMenu(false);
       setMainSideMenu(false);
+      const send = {
+        _id: route.properties._id,
+      };
 
-      const [selectedRoute] = routes.filter(
-        route => route._id === clickedRoute.properties._id
-      );
-      dispatch(
-        displayStartAndEnding(
-          selectedRoute.Start_Point,
-          selectedRoute.End_Point
-        )
-      );
-      setSelectedRoute(selectedRoute);
-      setRouteDetailsMenu(true);
-      // const send = {
-      //   _id: route.properties._id,
-      // };
-
-      // try {
-      //   const { data } = await axiosConfig.get("/path", send);
-      //   const selectedRoute = data.data[0];
-      //   dispatch(
-      //     displayStartAndEnding(
-      //       selectedRoute.Start_Point,
-      //       selectedRoute.End_Point
-      //     )
-      //   );
-      //   setSelectedRoute(selectedRoute);
-      //   setRouteDetailsMenu(true);
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        const { data } = await axiosConfig.post("/path/byid", send);
+        const selectedRoute = data.data[0];
+        dispatch(
+          displayStartAndEnding(
+            selectedRoute.Start_Point,
+            selectedRoute.End_Point
+          )
+        );
+        setSelectedRoute(selectedRoute);
+        setRouteDetailsMenu(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -184,13 +173,6 @@ function MapComponent({ setMainSideMenu }) {
     return routesToRender;
   };
 
-  // const stam = (feature, LatLng) => {
-  //   const icon = new L.Icon({
-  //     iconUrl: finishFlag,
-  //   });
-  //   return L.marker(LatLng, { icon: { icon } }); // Change the icon to a custom icon
-  // };
-
   return (
     <>
       <CSSTransition
@@ -217,7 +199,7 @@ function MapComponent({ setMainSideMenu }) {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         />
         <ZoomControl position="topright" />
-        //all routes
+
         {routes &&
           !isHidden &&
           routes.map((route, i) => {
@@ -229,14 +211,14 @@ function MapComponent({ setMainSideMenu }) {
                     : STATUSES[route["Status_Name"]]?.color
                 }
                 //key is like a dependency to render the geoJson
-                key={route._id + isEditAvailable}
+                key={route._id + isEditAvailable + route.updatedAt}
                 data={route["Array_Of_Points"]}
                 onEachFeature={handleClickOnRoute}
                 // pointToLayer={stam}
               />
             );
           })}
-        //filtered route
+
         {filteredRoutes.map((route, i) => {
           return (
             <GeoJSON
@@ -253,7 +235,7 @@ function MapComponent({ setMainSideMenu }) {
             />
           );
         })}
-        //while being created
+
         {renderRoutes()}
         {startingPosition && (
           <Marker position={startingPosition} icon={startIcon} />

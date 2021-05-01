@@ -6,7 +6,7 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Einav",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
+
     routeDetails: "Info1",
   },
   {
@@ -16,7 +16,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Roberto",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info34",
   },
   {
@@ -26,7 +25,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Ramiro the cat",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info4",
   },
   {
@@ -36,7 +34,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Mul",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info3",
   },
   {
@@ -46,7 +43,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: null,
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info1",
   },
   {
@@ -56,7 +52,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Eden",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info56",
   },
   {
@@ -66,7 +61,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Asaf",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info76",
   },
   {
@@ -76,7 +70,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "Galileo galiley",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info31",
   },
   {
@@ -86,7 +79,6 @@ export let notifications = [
     date: Date().toLocaleString("en-GB", { timeZone: "IST" }),
     sender: "God",
     senderEmail: "lala@lululu.com",
-    notes: "Hello world",
     routeDetails: "Info2",
   },
 ];

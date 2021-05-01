@@ -112,7 +112,7 @@ a {
 /*Notifications screen*/
 
 .table_notification .MuiDataGrid-colCell {
-  background-color: rgb(115, 146, 231);
+  background-color: rgba(188, 201, 238, 0.747);
   font-size: 1.1rem;
   font-weight: bold;
 }
@@ -198,8 +198,8 @@ a {
   position: fixed;
   z-index: 5001;
   top: 25px;
-  right: 170px;
-  background-color: rgba(0, 0, 0, 0.7);
+  right: 125px;
+  background-color: rgba(247, 116, 9, 0.7);
   transition: all 0.1ms ease;
 }
 
@@ -207,7 +207,7 @@ a {
   position: fixed;
   z-index: 5001;
   top: 25px;
-  right: 125px;
+  right: 170px;
   background-color: rgba(0, 0, 0, 0.7);
   transition: all 0.1ms ease;
 }
@@ -217,4 +217,7 @@ a {
   background-color: rgba(0, 0, 0, 1);
   cursor: pointer;
   transform: scale(1.1);
+}
+#notification-icon:hover {
+  background-color: rgba(247, 116, 9, 1);
 }

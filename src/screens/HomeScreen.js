@@ -9,7 +9,7 @@ import SideMenu from "../components/SideMenu";
 import StatusInfo from "../components/StatusInfo/StatusInfo";
 import AvatarIcon from "../components/AvatarIcon";
 import { CSSTransition } from "react-transition-group";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import { MdRefresh } from "react-icons/md";
 import useDispatchRoutes from "../customHooks/useDispatchRoutes";
@@ -17,7 +17,7 @@ import DropDownNoti from "../components/DropDownNoti/DropDownNoti";
 
 function HomeScreen() {
   const [sideMenu, setSideMenu] = useState(false);
-  const dispatch = useDispatch();
+
   const { currentUser } = useSelector(state => {
     return state.users;
   });

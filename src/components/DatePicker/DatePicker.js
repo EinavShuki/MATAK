@@ -5,7 +5,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -24,9 +24,9 @@ function DatePicker({
   isDisabled = true,
 }) {
   const classes = useStyles();
-  const { isPermanent } = useSelector(state => {
-    return state.createdRoute;
-  });
+  // const { isPermanent } = useSelector(state => {
+  //   return state.createdRoute;
+  // });
 
   const handleStartingDate = date => {
     const today = new Date();
@@ -60,90 +60,88 @@ function DatePicker({
 
   return (
     <>
-      {!isPermanent && (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div>
-            <KeyboardDatePicker
-              color="secondary"
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Pick Starting Date"
-              value={startingDate}
-              onChange={handleStartingDate}
-              disabled={isDisabled}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <TextField
-              color="secondary"
-              style={{ marginTop: "16px", width: "100px" }}
-              label="Starting Hour"
-              type="time"
-              value={`${
-                startingDate.getHours() < 10
-                  ? "0" + startingDate.getHours()
-                  : startingDate.getHours()
-              }:${
-                startingDate.getMinutes() < 10
-                  ? "0" + startingDate.getMinutes()
-                  : startingDate.getMinutes()
-              }`}
-              onChange={handleStaringHour}
-              disabled={isDisabled}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 900,
-              }}
-            />
-          </div>
-          <div style={{ marginTop: "1rem" }}>
-            <KeyboardDatePicker
-              color="secondary"
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Pick Ending Date"
-              value={endingDate}
-              onChange={handleEndingDate}
-              disabled={isDisabled}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <TextField
-              color="secondary"
-              style={{ marginTop: "16px", width: "100px" }}
-              label="Ending Hour"
-              type="time"
-              value={`${
-                endingDate.getHours() < 10
-                  ? "0" + endingDate.getHours()
-                  : endingDate.getHours()
-              }:${
-                endingDate.getMinutes() < 10
-                  ? "0" + endingDate.getMinutes()
-                  : endingDate.getMinutes()
-              }`}
-              onChange={handleEndingHour}
-              disabled={isDisabled}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 900,
-              }}
-            />
-          </div>
-        </MuiPickersUtilsProvider>
-      )}
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <div>
+          <KeyboardDatePicker
+            color="secondary"
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            label="Pick Starting Date"
+            value={startingDate}
+            onChange={handleStartingDate}
+            disabled={isDisabled}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          />
+          <TextField
+            color="secondary"
+            style={{ marginTop: "16px", width: "100px" }}
+            label="Starting Hour"
+            type="time"
+            value={`${
+              startingDate.getHours() < 10
+                ? "0" + startingDate.getHours()
+                : startingDate.getHours()
+            }:${
+              startingDate.getMinutes() < 10
+                ? "0" + startingDate.getMinutes()
+                : startingDate.getMinutes()
+            }`}
+            onChange={handleStaringHour}
+            disabled={isDisabled}
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              step: 900,
+            }}
+          />
+        </div>
+        <div style={{ marginTop: "1rem" }}>
+          <KeyboardDatePicker
+            color="secondary"
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            label="Pick Ending Date"
+            value={endingDate}
+            onChange={handleEndingDate}
+            disabled={isDisabled}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          />
+          <TextField
+            color="secondary"
+            style={{ marginTop: "16px", width: "100px" }}
+            label="Ending Hour"
+            type="time"
+            value={`${
+              endingDate.getHours() < 10
+                ? "0" + endingDate.getHours()
+                : endingDate.getHours()
+            }:${
+              endingDate.getMinutes() < 10
+                ? "0" + endingDate.getMinutes()
+                : endingDate.getMinutes()
+            }`}
+            onChange={handleEndingHour}
+            disabled={isDisabled}
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              step: 900,
+            }}
+          />
+        </div>
+      </MuiPickersUtilsProvider>
     </>
   );
 }
