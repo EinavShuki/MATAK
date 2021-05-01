@@ -6,7 +6,7 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { reasonsArray, phonePrefixes } from "../../constants/infoConstants";
 

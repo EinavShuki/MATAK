@@ -29,6 +29,7 @@ import SideMenu from "../SideMenu";
 import axiosConfig from "../../config/axiosConfig";
 import startFlag from "../../images/start.svg";
 import finishFlag from "../../images/finish.svg";
+import axios from "axios";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
