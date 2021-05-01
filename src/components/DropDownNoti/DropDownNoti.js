@@ -61,7 +61,7 @@ const DropDownNoti = () => {
               >
                 <MenuItem>
                   <Avatar className="avatar_name" id="name_icon">
-                    {noti.sender[0].toLocaleUpperCase()}
+                    {noti.sender[0].toUpperCase()}
                   </Avatar>
                   <div id="dd_square">
                     <ul style={{ listStyle: "none" }}>
