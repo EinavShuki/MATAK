@@ -25,7 +25,7 @@ export class RouteFormData {
     }
 
     setType(type) {
-        if (type && ["edit"].find((typeOption) => typeOption === type)) {
+        if (type && ["edit", "view"].find((typeOption) => typeOption === type)) {
             this.type = type;
             this.setFormText();
         } else {
@@ -36,6 +36,9 @@ export class RouteFormData {
 
     setFormText() {
         switch (this.type) {
+            case "view":
+                this.text = "View Route Data";
+                break;
             case "edit":
             default:
                 this.text = "Edit Route";
