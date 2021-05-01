@@ -7,11 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import GeoJsonShape from "../../../classes/GeoJsonShape";
 import axiosConfig from "../../../config/axiosConfig";
 import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
-import { reasonsArray, phonePrefixes } from "../../../constants/infoConstants";
+import { reasonsArray } from "../../../constants/infoConstants";
 import DatePicker from "../../DatePicker";
 import generate from "project-name-generator";
 import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
-import axios from "axios";
 
 function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
@@ -39,6 +38,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const [phonePostfix, setPhonePostfix] = useState("");
   const [remarks, setRemarks] = useState("");
   const [files, setFiles] = useState([]);
+  const [filesNames, setFilesNames] = useState([]);
 
   const { fetchRoutesData } = useDispatchRoutes();
 
@@ -123,7 +123,13 @@ function RouteAdditionalDetails({ setSideMenu }) {
   };
 
   const onAddFile = e => {
-    setFiles(prev => [...prev, e.target.files[0]]);
+    if (files.length + e.target?.files.length < 5 && e.target?.files[0]) {
+      setFiles(prev => [...prev, ...e.target?.files]);
+      setFilesNames(prev => {
+        const filesNames = Array.from(e.target?.files).map(file => file.name);
+        return [...prev, ...filesNames];
+      });
+    }
   };
 
   return (
@@ -139,6 +145,9 @@ function RouteAdditionalDetails({ setSideMenu }) {
         accept="image/png, image/jpeg , .pdf, .heic"
         onChange={onAddFile}
       />
+      {filesNames && (
+        <span style={{ wordBreak: "break-word" }}>{filesNames.join(", ")}</span>
+      )}
       <Button
         variant="contained"
         color="secondary"

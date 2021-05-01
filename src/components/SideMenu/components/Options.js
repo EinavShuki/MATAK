@@ -9,8 +9,6 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setIsDoneMainRouteOff } from "../../../redux/createdRoute";
 
-const handleCreateRoute = () => {};
-
 function Options({ setPage }) {
   const dispatch = useDispatch();
   return (

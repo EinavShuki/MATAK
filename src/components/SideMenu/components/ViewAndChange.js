@@ -94,7 +94,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         return status;
       }
     });
-  }, []);
+  }, [STATUSES]);
 
   const handleSubmitRoute = async () => {
     const send = {
