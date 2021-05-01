@@ -7,6 +7,7 @@ import { BiEnvelopeOpen, BiEnvelope } from "react-icons/bi";
 import { notifications } from "../fakeNotifications";
 import axios from "axios";
 import { set } from "date-fns";
+import { change } from "redux-form";
 
 const Notifications = () => {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -58,16 +59,20 @@ const Notifications = () => {
   //   //HERE I SEND UPDATE OF NOTIFICATIONS
   // }, [changeStatus]);
 
+  useEffect(() => {
+    if (selectedRows) {
+      selectedRows.forEach(row => {
+        row.data.isRead = changeStatus;
+      });
+    }
+    console.log(selectedRows);
+  }, [changeStatus]);
+
   const signAsRead = () => {
-    selectedRows.forEach(row => {
-      row.data.isRead = true;
-      console.log(row);
-    });
+    setChangeStatus(true);
   };
   const signAsUnRead = () => {
-    selectedRows.forEach(row => {
-      row.data.isRead = false;
-    });
+    setChangeStatus(false);
   };
 
   // const deleteClickHandler=()=>{
