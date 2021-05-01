@@ -6,6 +6,8 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BiEnvelopeOpen, BiEnvelope } from "react-icons/bi";
 import { notifications } from "../fakeNotifications";
 import axios from "axios";
+import { set } from "date-fns";
+import { change } from "redux-form";
 
 const Notifications = () => {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -13,40 +15,6 @@ const Notifications = () => {
   const [selectedRows, setSelectedRows] = useState([]);
 
   const columns = [
-    // {
-    //   field: "statusBtn",
-    //   headerName: "Status Button",
-    //   width: 170,
-    //   disableClickEventBubbling: true,
-    //   renderCell: params => {
-    //     const onClick = () => {
-    //       const api = params.api;
-    //       const fields = api
-    //         .getAllColumns()
-    //         .map(c => c.field)
-    //         .filter(c => c !== "__check__" && !!c);
-    //       const thisRow = {};
-
-    //       fields.forEach(f => {
-    //         thisRow[f] = params.getValue(f);
-    //       });
-
-    //       setChangeStatus(prev => !prev);
-    //       setSelectedRow(thisRow);
-    //     };
-
-    //     return (
-    //       <Button
-    //         style={{ fontSize: "0.875rem", padding: "0.4rem" }}
-    //         variant="contained"
-    //         color="primary"
-    //         onClick={onClick}
-    //       >
-    //         read / unread
-    //       </Button>
-    //     );
-    //   },
-    // },
     { field: "isRead", type: "boolean", headerName: "Is Read", width: 120 },
     { field: "id", headerName: "ID", hide: true },
     { field: "type", headerName: "Type", width: 160 },
@@ -79,36 +47,32 @@ const Notifications = () => {
   notifications.forEach(noti => {
     noti.date = noti.date.slice(0, 25);
   });
-  let rows = notifications;
-  useEffect(() => {
-    rows = notifications;
-    console.log(rows);
-  }, [notifications]);
+
+  // useEffect(() => {
+  //   // change is read square booleanicly
+  //   if (selectedRows) {
+  //     notifications.filter(
+  //       x => x.id === selectedRow.id
+  //     )[0].isRead = !notifications.filter(x => x.id === selectedRow.id)[0]
+  //       .isRead;
+  //   }
+  //   //HERE I SEND UPDATE OF NOTIFICATIONS
+  // }, [changeStatus]);
 
   useEffect(() => {
-    // change is read square booleanicly
-    if (selectedRow) {
-      notifications.filter(
-        x => x.id === selectedRow.id
-      )[0].isRead = !notifications.filter(x => x.id === selectedRow.id)[0]
-        .isRead;
+    if (selectedRows) {
+      selectedRows.forEach(row => {
+        row.data.isRead = changeStatus;
+      });
     }
-    //HERE I SEND UPDATE OF NOTIFICATIONS
+    console.log(selectedRows);
   }, [changeStatus]);
 
   const signAsRead = () => {
-    selectedRows.forEach(row => {
-      notifications.forEach(noti => {
-        if (row.data.id === noti.id) noti.isRead = true;
-      });
-    });
+    setChangeStatus(true);
   };
   const signAsUnRead = () => {
-    selectedRows.forEach(row => {
-      notifications.forEach(noti => {
-        if (row.data.id === noti.id) noti.isRead = false;
-      });
-    });
+    setChangeStatus(false);
   };
 
   // const deleteClickHandler=()=>{
@@ -171,7 +135,7 @@ const Notifications = () => {
           className="table_notification"
           onRowSelected={rowSelectedHandler}
           onCellClick={CellClickHandler}
-          rows={rows}
+          rows={notifications}
           rowHeight="63"
           columns={columns}
           pageSize={5}
