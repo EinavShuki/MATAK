@@ -17,7 +17,7 @@ const Notifications = () => {
   const columns = [
     { field: "isRead", type: "boolean", headerName: "Is Read", width: 120 },
     { field: "id", headerName: "ID", hide: true },
-    { field: "type", headerName: "Type", width: 160 },
+    { field: "type", headerName: "Type", width: 180 },
     {
       field: "date",
       type: "date",
@@ -28,7 +28,7 @@ const Notifications = () => {
     {
       field: "sender",
       headerName: "Sender",
-      width: 170,
+      width: 300,
     },
     {
       field: "senderEmail",
