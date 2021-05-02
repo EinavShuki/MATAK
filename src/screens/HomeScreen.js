@@ -16,6 +16,13 @@ import useDispatchRoutes from "../customHooks/useDispatchRoutes";
 import DropDownNoti from "../components/DropDownNoti/DropDownNoti";
 
 function HomeScreen() {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      fetchRoutesData();
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
   const [sideMenu, setSideMenu] = useState(false);
 
   const { currentUser } = useSelector(state => {
