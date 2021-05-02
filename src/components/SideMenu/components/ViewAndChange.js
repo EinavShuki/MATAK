@@ -27,6 +27,9 @@ import {
 } from "../../../redux/userRoutes";
 import { resetStartAndEnd } from "../../../redux/createdRoute";
 import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
+import { FiDownload } from "react-icons/fi";
+import download from "js-file-download";
+import axios from "axios";
 
 function ViewAndChange({ selectedRoute, setSideMenu }) {
   const {
@@ -42,6 +45,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     Car_Liecene_Number,
     Terms_Text,
     Driver_Cellphone,
+    Files_Path_Array,
   } = selectedRoute;
 
   const dispatch = useDispatch();
@@ -166,6 +170,22 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     }),
     []
   );
+
+  const handleDownload = () => {
+    // axios
+    //   .post("https://www.hitprojectscenter.com/matakapinew/api/path/download", {
+    //     fileName: Files_Path_Array[0],
+    //     "Content-Type": "application/pdf",
+    //   })
+    //   .then(response => {
+    //     const url = window.URL.createObjectURL(new Blob([response.data]));
+    //     const link = document.createElement("a");
+    //     link.href = url;
+    //     link.setAttribute("download", "file.pdf");
+    //     document.body.appendChild(link);
+    //     link.click();
+    //   });
+  };
   return (
     <>
       <h1>View Route Details</h1>
@@ -292,6 +312,17 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
           </>
         )}
       </div>
+
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{
+          padding: "0.7rem 0rem",
+        }}
+        onClick={handleDownload}
+      >
+        <FiDownload />
+      </Button>
       {((isAdminOrMatakUser && !Is_Permanent) ||
         (!isAdminOrMatakUser && !permissions.isDisabled)) && (
         <Button
