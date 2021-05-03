@@ -11,6 +11,8 @@ import {MdModeEdit, MdRemoveRedEye} from "react-icons/md";
 import {RouteFormData} from "./RouteFormData";
 import RouteForm from "../../components/RoutesManagment/RouteForm";
 import MatakModal from "../MatakModal";
+import axiosConfig from "../../config/axiosConfig";
+import useDispatchRoutes from "../../customHooks/useDispatchRoutes";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -30,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 export default function RoutesManagement() {
     const classes = useStyles();
     const [routeFormData, setRouteFormData] = useState(new RouteFormData());
+    const { fetchRoutesData } = useDispatchRoutes();
     const exportedFileName = "Routes";
     const exportType = "xls";
 
@@ -106,6 +109,17 @@ export default function RoutesManagement() {
         });
     };
 
+    const handleRouteFormSubmit= async (newRoute) => {
+        try {
+            newRoute.Array_Of_Points && delete newRoute["Array_Of_Points"];
+            await axiosConfig.put("/path", newRoute);
+            fetchRoutesData();
+            closeForm();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const closeForm = () => setRouteFormData(new RouteFormData());
 
     return (
@@ -122,7 +136,7 @@ export default function RoutesManagement() {
                 >
                     <RouteForm
                         routeFormData={routeFormData.clone()}
-                        handleFormSubmit={data => console.log(data)}
+                        handleFormSubmit={handleRouteFormSubmit}
                         onClose={closeForm}
                     />
                 </MatakModal>
