@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, createUser, editUser, deleteUser } from "../redux/users";
+import { fetchUsers, createUser, editUser, deleteUser, clear } from "../redux/users";
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
 import Button from "@material-ui/core/Button";
@@ -22,6 +22,7 @@ const AdminScreen = () => {
 
   const hideModal = () => {
     setShowModal("none");
+    dispatch(clear())
   };
 
   const handleCreateUser = user => {
