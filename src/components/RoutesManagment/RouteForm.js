@@ -6,6 +6,7 @@ import "./RoutesForm.css";
 import {MdClose} from "react-icons/md";
 import DatePicker from "../DatePicker/DatePicker";
 import {useSelector} from "react-redux";
+import RoutesInfoDetails from "../RoutesInfoDetails/RoutesInfoDetails";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,7 +49,8 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
             <MdClose onClick={onClose} style={{position: "absolute", right: 0, top: 0, marginTop: "20px", marginRight: "20px", cursor: "pointer"}} size={24}/>
             <TextField
                 label="Route Name"
-                defaultValue={routeData.Path_Name}
+                value={routeData.Path_Name}
+                onChange={e => setRouteData({...routeData, Path_Name: e.target.value})}
                 disabled={isViewOnly()}
             />
             {!routeData.Is_Permanent && <DatePicker startingDate={new Date(routeData.Start_Date)} setStartingDate={(date) => setRouteData({...routeData, Start_Date: date})}
@@ -56,46 +58,62 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
             />}
             <TextField
                 label="Car Number"
-                defaultValue={routeData.Car_Liecene_Number}
+                value={routeData.Car_Liecene_Number}
+                onChange={e => setRouteData({...routeData, Car_Liecene_Number: e.target.value})}
                 disabled={isViewOnly()}
             />
             <TextField
                 label="Driver's Full Name"
-                defaultValue={routeData.Driver_Name}
+                value={routeData.Driver_Name}
+                onChange={e => setRouteData({...routeData, Driver_Name: e.target.value})}
                 disabled={isViewOnly()}
             />
             <TextField
                 label="Driver's Cellphone"
-                defaultValue={routeData.Driver_Cellphone}
+                value={routeData.Driver_Cellphone}
+                onChange={e => setRouteData({...routeData, Driver_Cellphone: e.target.value})}
                 disabled={isViewOnly()}
-
             />
             <TextField
                 label="Terms"
-                defaultValue={routeData.Terms_Text}
+                value={routeData.Terms_Text}
+                onChange={e => setRouteData({...routeData, Terms_Text: e.target.value})}
                 disabled={isViewOnly() || !isAdminOrMatakUser}
             />
             <TextField
                 label="Reason"
-                defaultValue={routeData.Reason_Text}
+                value={routeData.Reason_Text}
+                onChange={e => setRouteData({...routeData, Reason_Text: e.target.value})}
                 disabled={isViewOnly()}
             />
             <TextField
                 label="Remarks"
-                defaultValue={routeData.Remarks}
+                value={routeData.Remarks}
+                onChange={e => setRouteData({...routeData, Remarks: e.target.value})}
                 disabled={isViewOnly()}
             />
             {!routeData.Is_Permanent && <TextField
                 label="Route Status"
-                defaultValue={routeData.Status_Name}
+                value={routeData.Status_Name}
+                onChange={e => setRouteData({...routeData, Status_Name: e.target.value})}
                 disabled={isViewOnly() || !isAdminOrMatakUser}
             />}
             <TextField
                 label="Permanent"
-                defaultValue={routeData.Is_Permanent}
-                disabled={isViewOnly()}
+                value={routeData.Is_Permanent}
+                onChange={e => setRouteData({...routeData, Is_Permanent: e.target.value})}
+                disabled={isViewOnly() || !isAdminOrMatakUser}
             />
-
+            {!routeData.Is_Permanent && (
+                <RoutesInfoDetails
+                    reson={routeData.Reason_Text} setReason={(val) => setRouteData({...routeData, Reason_Text: val})}
+                    driversName={routeData.Driver_Name} setDriversName={(val) => setRouteData({...routeData, Driver_Name: val})}
+                    vehicleID={routeData.Car_Liecene_Number} setVehicle={(val) => setRouteData({...routeData, Car_Liecene_Number: val})}
+                    phonePrefix={routeData.Driver_Cellphone.split("-")[0]} setPhonePrefix={(val) => setRouteData({...routeData, Driver_Cellphone: [val, routeData.Driver_Cellphone.split("-")[1]].join("-")})}
+                    phonePostfix={routeData.Driver_Cellphone.split("-")[1]} setPhonePostfix={(val) => setRouteData({...routeData, Driver_Cellphone: [ routeData.Driver_Cellphone.split("-")[0], val].join("-")})}
+                    isDisabled={permissions.isDisabled}
+                />
+            )}
             { !isViewOnly() && <Button
                 style={{marginTop: '20px'}}
                 fullWidth
