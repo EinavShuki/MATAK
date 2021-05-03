@@ -61,7 +61,7 @@ function DatePicker({
   return (
     <>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <div>
+        <div id={"starting-date-picker"}>
           <KeyboardDatePicker
             color="secondary"
             disableToolbar
@@ -78,7 +78,7 @@ function DatePicker({
           />
           <TextField
             color="secondary"
-            style={{ marginTop: "16px", width: "100px" }}
+            style={{ marginTop: "16px", width: "105px" }}
             label="Starting Hour"
             type="time"
             value={`${
@@ -101,7 +101,7 @@ function DatePicker({
             }}
           />
         </div>
-        <div style={{ marginTop: "1rem" }}>
+        <div id={"ending-date-picker"} style={{ marginTop: "1rem" }}>
           <KeyboardDatePicker
             color="secondary"
             disableToolbar
@@ -118,7 +118,7 @@ function DatePicker({
           />
           <TextField
             color="secondary"
-            style={{ marginTop: "16px", width: "100px" }}
+            style={{ marginTop: "16px", width: "105px" }}
             label="Ending Hour"
             type="time"
             value={`${

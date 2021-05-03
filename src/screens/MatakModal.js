@@ -16,7 +16,6 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
-        width: 400,
         backgroundColor: theme.palette.background.paper,
         borderRadius: '5px',
         outline: 'none',
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MatakModal({children, text, show, onClose}) {
+export default function MatakModal({children, text, show, onClose, width = 400}) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
 
@@ -37,7 +36,7 @@ export default function MatakModal({children, text, show, onClose}) {
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
             >
-                <div style={modalStyle} className={classes.paper}>
+                <div style={{...modalStyle, width: `${width}px`}} className={classes.paper}>
                     <h3 id="simple-modal-title">{text}</h3>
                     {children}
                 </div>
