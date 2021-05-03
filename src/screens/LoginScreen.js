@@ -5,10 +5,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import MatakIcon from "../images/matak.png";
-import MatakModal from "./MatakModal";
 import axiosConfig from "../config/axiosConfig";
 import { useDispatch } from "react-redux";
 import { fetchCurrentUser } from "../redux/users";
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -45,8 +45,7 @@ export default function LoginScreen({ history }) {
   const dispatch = useDispatch();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [modalText, setModalText] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [loginText, setLoginText] = useState("");
   const [userNameHelperText, setUserNameHelperText] = useState("");
   const [passwordHelperText, setPasswordHelperText] = useState("");
 
@@ -79,8 +78,8 @@ export default function LoginScreen({ history }) {
   };
 
   const openModal = text => {
-    setShowModal(true);
-    setModalText(text);
+      setLoginText(text);
+      setTimeout(() =>setLoginText(""), 5000)
   };
 
   const validateUsername = event => {
@@ -135,10 +134,9 @@ export default function LoginScreen({ history }) {
       id="login"
       component="main"
       maxWidth="xs"
-      onClick={() => showModal && setShowModal(false)}
+      onClick={() => setLoginText("")}
     >
       <div className={classes.paper}>
-        <MatakModal text={modalText} show={showModal} />
         <div className={classes.headline}>
           <Typography component="h1" variant="h3">
             Sign in
@@ -185,6 +183,7 @@ export default function LoginScreen({ history }) {
           >
             Sign In
           </Button>
+            { loginText.length > 0 &&  <Alert severity="error">{loginText}</Alert>}
         </form>
       </div>
     </Container>
