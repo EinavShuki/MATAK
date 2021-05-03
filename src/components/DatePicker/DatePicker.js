@@ -61,7 +61,7 @@ function DatePicker({
   return (
     <>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <div>
+        <div id={"starting-date-date-picker"}>
           <KeyboardDatePicker
             color="secondary"
             disableToolbar
@@ -101,7 +101,7 @@ function DatePicker({
             }}
           />
         </div>
-        <div style={{ marginTop: "1rem" }}>
+        <div id={"ending-date-date-picker"} style={{ marginTop: "1rem" }}>
           <KeyboardDatePicker
             color="secondary"
             disableToolbar
