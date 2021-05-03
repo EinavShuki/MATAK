@@ -118,7 +118,7 @@ export default function RoutesManagement() {
                     text={routeFormData.text}
                     show={routeFormData.show}
                     onClose={closeForm}
-                    width={600}
+                    width={680}
                 >
                     <RouteForm
                         routeFormData={routeFormData.clone()}
