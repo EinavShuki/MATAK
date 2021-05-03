@@ -158,7 +158,9 @@ function RouteAdditionalDetails({ setSideMenu }) {
           margin: "1rem 0",
         }}
         onClick={handleSubmitRoute}
-        disabled={!vehicleID || !phonePostfix || !driversName}
+        disabled={
+          isPermanent ? false : !vehicleID || !phonePostfix || !driversName
+        }
       >
         Send
       </Button>

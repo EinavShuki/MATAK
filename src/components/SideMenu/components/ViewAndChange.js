@@ -225,9 +225,9 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         }
         label="Hide Routes"
       />
-      {!Is_Permanent && (
-        <DatePicker {...dateController} isDisabled={permissions.isDisabled} />
-      )}
+
+      <DatePicker {...dateController} isDisabled={permissions.isDisabled} />
+
       {!Is_Permanent && (
         <FormControl style={{ margin: "0.8rem 0" }} color="secondary">
           <InputLabel id="route-status">Route Status</InputLabel>
