@@ -102,10 +102,15 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
 
   const handleSubmitRoute = async () => {
     const send = {
+      _id,
       Terms_Text: terms,
       Start_Date: startingDate,
       End_Date: endingDate,
-      _id,
+      Reason_Text: reason,
+      Driver_Name: driversName,
+      Driver_Cellphone: `${phonePrefix}-${phonePostfix}`,
+      Car_Liecene_Number: vehicleID,
+      // Remarks: Re+remarks,
       Status_Name: Status_Name === "Changes-Required" ? "Submitted" : status,
     };
     try {
@@ -225,9 +230,9 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         }
         label="Hide Routes"
       />
-      {!Is_Permanent && (
-        <DatePicker {...dateController} isDisabled={permissions.isDisabled} />
-      )}
+
+      <DatePicker {...dateController} isDisabled={permissions.isDisabled} />
+
       {!Is_Permanent && (
         <FormControl style={{ margin: "0.8rem 0" }} color="secondary">
           <InputLabel id="route-status">Route Status</InputLabel>
