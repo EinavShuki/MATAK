@@ -82,7 +82,8 @@ function RouteAdditionalDetails({ setSideMenu }) {
     };
 
     const formData = new FormData();
-    formData.append("File", files);
+    files.forEach(file => formData.append("File", file));
+
     formData.append("data", JSON.stringify(send));
     try {
       await axiosConfig.post("/path", formData, {
@@ -124,7 +125,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
 
   const onAddFile = e => {
     if (files.length + e.target?.files.length < 5 && e.target?.files[0]) {
-      setFiles(prev => [...prev, ...e.target?.files]);
+      setFiles(prev => [...prev, ...e.target.files]);
       setFilesNames(prev => {
         const filesNames = Array.from(e.target?.files).map(file => file.name);
         return [...prev, ...filesNames];
