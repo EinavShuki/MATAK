@@ -102,10 +102,15 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
 
   const handleSubmitRoute = async () => {
     const send = {
+      _id,
       Terms_Text: terms,
       Start_Date: startingDate,
       End_Date: endingDate,
-      _id,
+      Reason_Text: reason,
+      Driver_Name: driversName,
+      Driver_Cellphone: `${phonePrefix}-${phonePostfix}`,
+      Car_Liecene_Number: vehicleID,
+      // Remarks: Re+remarks,
       Status_Name: Status_Name === "Changes-Required" ? "Submitted" : status,
     };
     try {
