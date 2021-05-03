@@ -7,6 +7,7 @@ import {MdClose} from "react-icons/md";
 import DatePicker from "../DatePicker/DatePicker";
 import {useSelector} from "react-redux";
 import {phonePrefixes, reasonsArray} from "../../constants/infoConstants";
+import {STATUSES} from "../../constants/statusConstants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }));
-
 
 export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
     const classes = useStyles();
@@ -35,10 +35,20 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
         []
     );
 
+    const statusesArray = useMemo(() => {
+        return Object.values(STATUSES).filter(status => {
+            if (
+                status.name !== STATUSES.BeingCreated.name &&
+                status.name !== STATUSES.Permanent.name
+            ) {
+                return status;
+            }
+        });
+    }, [STATUSES]);
+
     function handleSubmit(event) {
         event.preventDefault();
-        setRouteData({...routeData, Driver_Cellphone: [String(phonePrefix), String(phoneSuffix)].join("-")});
-        console.log(routeFormData);
+        handleFormSubmit(routeData)
     }
 
     const isViewOnly = () => {
@@ -64,23 +74,35 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                         onChange={e => setRouteData({...routeData, Path_Name: e.target.value})}
                         disabled
                     />
-                    {!routeData.Is_Permanent && <DatePicker startingDate={new Date(routeData.Start_Date)}
-                                                            setStartingDate={(date) => setRouteData({
-                                                                ...routeData,
-                                                                Start_Date: date
-                                                            })}
-                                                            endingDate={new Date(routeData.End_Date)}
-                                                            setEndingDate={(date) => setRouteData({
-                                                                ...routeData,
-                                                                End_Date: date
-                                                            })} isDisabled={isViewOnly() || permissions.isDisabled}
-                    />}
-                    {!routeData.Is_Permanent && <TextField
-                        label="Route Status"
-                        value={routeData.Status_Name}
-                        onChange={e => setRouteData({...routeData, Status_Name: e.target.value})}
-                        disabled={isViewOnly() || !isAdminOrMatakUser}
-                    />}
+                    <DatePicker startingDate={new Date(routeData.Start_Date)}
+                                setStartingDate={(date) => setRouteData({
+                                    ...routeData,
+                                    Start_Date: date
+                                })}
+                                endingDate={new Date(routeData.End_Date)}
+                                setEndingDate={(date) => setRouteData({
+                                    ...routeData,
+                                    End_Date: date
+                                })} isDisabled={isViewOnly() || permissions.isDisabled || routeData.Is_Permanent}
+                    />
+                    <FormControl color="secondary" style={{width: "200px", margin: "8px"}}>
+                        <InputLabel id="route-status">Route Status</InputLabel>
+                        <Select
+                            value={routeData.Status_Name}
+                            onChange={e => setRouteData({...routeData, Status_Name: e.target.value})}
+                            disabled={isViewOnly() || !isAdminOrMatakUser || routeData.Is_Permanent}
+                        >
+                            {statusesArray.map(status => (
+                                <MenuItem
+                                    disabled={status.name === STATUSES.Submitted.name}
+                                    key={status.name}
+                                    value={status.name}
+                                >
+                                    {status.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <TextField
                         label="Permanent"
                         value={routeData.Is_Permanent}
@@ -155,7 +177,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                 label="Terms"
                 value={routeData.Terms_Text}
                 onChange={e => setRouteData({...routeData, Terms_Text: e.target.value})}
-                disabled={isViewOnly() || !isAdminOrMatakUser}
+                disabled={isViewOnly()}
             />
             <TextField
                 style={{width: "95%"}}
