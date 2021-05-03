@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from "react";
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField/TextField";
-import {Button} from "@material-ui/core";
+import {Button, Select} from "@material-ui/core";
 import "./RoutesForm.css";
 import {MdClose} from "react-icons/md";
 import DatePicker from "../DatePicker/DatePicker";
@@ -73,7 +73,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
             <TextField
                 label="Terms"
                 defaultValue={routeData.Terms_Text}
-                disabled={isViewOnly()}
+                disabled={isViewOnly() || !isAdminOrMatakUser}
             />
             <TextField
                 label="Reason"
@@ -86,7 +86,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                 disabled={isViewOnly()}
             />
             {!routeData.Is_Permanent && <TextField
-                label="Status"
+                label="Route Status"
                 defaultValue={routeData.Status_Name}
                 disabled={isViewOnly() || !isAdminOrMatakUser}
             />}
@@ -102,6 +102,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                 type="submit"
                 variant="contained"
                 color="primary"
+                disabled={!routeData.Car_Liecene_Number || !routeData.Driver_Cellphone|| !routeData.Driver_Name}
             >
                 Submit
             </Button>}
