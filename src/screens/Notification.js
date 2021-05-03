@@ -11,7 +11,8 @@ import { change } from "redux-form";
 
 const Notifications = () => {
   const [selectedRow, setSelectedRow] = useState(null);
-  const [changeStatus, setChangeStatus] = useState(false);
+  const [changeStatusUnread, setChangeStatusUnread] = useState(false);
+  const [changeStatusRead, setChangeStatusRead] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
 
   const columns = [
@@ -62,17 +63,25 @@ const Notifications = () => {
   useEffect(() => {
     if (selectedRows) {
       selectedRows.forEach(row => {
-        row.data.isRead = changeStatus;
+        row.data.isRead = false;
       });
     }
-    console.log(selectedRows);
-  }, [changeStatus]);
+    // console.log(selectedRows);
+  }, [changeStatusUnread]);
+  useEffect(() => {
+    if (selectedRows) {
+      selectedRows.forEach(row => {
+        row.data.isRead = true;
+      });
+    }
+    // console.log(selectedRows);
+  }, [changeStatusRead]);
 
   const signAsRead = () => {
-    setChangeStatus(true);
+    setChangeStatusRead(prv => !prv);
   };
   const signAsUnRead = () => {
-    setChangeStatus(false);
+    setChangeStatusUnread(prv => !prv);
   };
 
   // const deleteClickHandler=()=>{
