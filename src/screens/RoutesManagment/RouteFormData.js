@@ -37,7 +37,7 @@ export class RouteFormData {
     setFormText() {
         switch (this.type) {
             case "view":
-                this.text = "View Route Data";
+                this.text = "Route Details";
                 break;
             case "edit":
             default:
