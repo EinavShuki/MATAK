@@ -109,11 +109,12 @@ export default function RoutesManagement() {
         });
     };
 
-    const handleRouteFormSubmit= async (route) => {
+    const handleRouteFormSubmit= async (newRoute) => {
         try {
-            route = {...route, Status_Name: route.Status_Name === "Changes-Required" ? "Submitted" : route.Status_Name};
-            await axiosConfig.put("/path", route);
+            newRoute.Array_Of_Points && delete newRoute["Array_Of_Points"];
+            await axiosConfig.put("/path", newRoute);
             fetchRoutesData();
+            closeForm();
         } catch (error) {
             console.log(error);
         }

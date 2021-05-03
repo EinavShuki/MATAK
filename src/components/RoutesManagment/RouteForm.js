@@ -48,7 +48,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        handleFormSubmit(routeData)
+        handleFormSubmit(routeData);
     }
 
     const isViewOnly = () => {
@@ -103,12 +103,6 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                             ))}
                         </Select>
                     </FormControl>
-                    <TextField
-                        label="Permanent"
-                        value={routeData.Is_Permanent}
-                        onChange={e => setRouteData({...routeData, Is_Permanent: e.target.value})}
-                        disabled={isViewOnly() || !isAdminOrMatakUser}
-                    />
                     <FormControl
                         style={{margin: "8px", width: "200px"}}
                         color="secondary"
@@ -133,17 +127,17 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                         label="Car Number"
                         value={routeData.Car_Liecene_Number}
                         onChange={e => setRouteData({...routeData, Car_Liecene_Number: e.target.value})}
-                        disabled={isViewOnly() || permissions.isDisabled}
+                        disabled={isViewOnly() || permissions.isDisabled || routeData.Is_Permanent}
                     />
                     <TextField
                         label="Driver's Full Name"
                         value={routeData.Driver_Name}
                         onChange={e => setRouteData({...routeData, Driver_Name: e.target.value})}
-                        disabled={isViewOnly() || permissions.isDisabled}
+                        disabled={isViewOnly() || permissions.isDisabled || routeData.Is_Permanent}
                     />
                     <div style={{display: "flex", margin: "8px"}}>
                         <FormControl
-                            disabled={isViewOnly() || permissions.isDisabled}
+                            disabled={isViewOnly() || permissions.isDisabled || routeData.Is_Permanent}
                             variant="outlined"
                             style={{
                                 marginRight: "0.5rem",
@@ -163,7 +157,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                             </Select>
                         </FormControl>
                         <TextField
-                            disabled={isViewOnly() || permissions.isDisabled}
+                            disabled={isViewOnly() || permissions.isDisabled || routeData.Is_Permanent}
                             variant="outlined"
                             value={phoneSuffix}
                             onChange={e => setPhoneSuffix(e.target.value)}
