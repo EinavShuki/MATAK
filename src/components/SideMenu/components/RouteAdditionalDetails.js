@@ -82,7 +82,10 @@ function RouteAdditionalDetails({ setSideMenu }) {
     };
 
     const formData = new FormData();
-    files.forEach(file => formData.append("File", file));
+
+    files.forEach(file =>
+      formData.append("File", file, file.name.replace(/ /g, "_"))
+    );
 
     formData.append("data", JSON.stringify(send));
     try {
