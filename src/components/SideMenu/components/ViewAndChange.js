@@ -29,7 +29,6 @@ import { resetStartAndEnd } from "../../../redux/createdRoute";
 import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
 import { FiDownload } from "react-icons/fi";
 import download from "js-file-download";
-import axios from "axios";
 
 function ViewAndChange({ selectedRoute, setSideMenu }) {
   const {
@@ -166,7 +165,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
 
   const handleHideOtherRoutes = () => {
     dispatch(toggleIsHidden());
-    dispatch(showfilteredRoutes(selectedRoute));
+    dispatch(showfilteredRoutes([selectedRoute]));
   };
 
   const permissions = useMemo(
@@ -176,20 +175,16 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     []
   );
 
-  const handleDownload = () => {
-    // axios
-    //   .post("https://www.hitprojectscenter.com/matakapinew/api/path/download", {
-    //     fileName: Files_Path_Array[0],
-    //     "Content-Type": "application/pdf",
-    //   })
-    //   .then(response => {
-    //     const url = window.URL.createObjectURL(new Blob([response.data]));
-    //     const link = document.createElement("a");
-    //     link.href = url;
-    //     link.setAttribute("download", "file.pdf");
-    //     document.body.appendChild(link);
-    //     link.click();
-    //   });
+  const handleDownload = async file => {
+    const response = await axiosConfig.post(
+      "/path/download",
+      { fileName: file },
+      {
+        responseType: "blob", // important
+      }
+    );
+    const fileName = file.split(" ").reverse()[0];
+    download(response.data, fileName);
   };
   return (
     <>
@@ -318,16 +313,28 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         )}
       </div>
 
-      <Button
-        variant="contained"
-        color="secondary"
+      <div
         style={{
-          padding: "0.7rem 0rem",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
         }}
-        onClick={handleDownload}
       >
-        <FiDownload />
-      </Button>
+        {Files_Path_Array.map(file => (
+          <Button
+            key={file.split(" ").reverse()[0]}
+            variant="contained"
+            color="secondary"
+            style={{
+              padding: "0.2rem 0.5rem",
+              textTransform: "lowercase",
+            }}
+            onClick={() => handleDownload(file)}
+          >
+            {file.split(" ").reverse()[0]} <FiDownload />
+          </Button>
+        ))}
+      </div>
       {((isAdminOrMatakUser && !Is_Permanent) ||
         (!isAdminOrMatakUser && !permissions.isDisabled)) && (
         <Button

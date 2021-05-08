@@ -29,7 +29,6 @@ import SideMenu from "../SideMenu";
 import axiosConfig from "../../config/axiosConfig";
 import startFlag from "../../images/start.svg";
 import finishFlag from "../../images/finish.svg";
-import axios from "axios";
 
 // sets marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -200,8 +199,7 @@ function MapComponent({ setMainSideMenu }) {
         />
         <ZoomControl position="topright" />
 
-        {routes &&
-          !isHidden &&
+        {!isHidden &&
           routes.map((route, i) => {
             return (
               <GeoJSON
@@ -231,7 +229,6 @@ function MapComponent({ setMainSideMenu }) {
               key={route._id + isEditAvailable}
               data={route["Array_Of_Points"]}
               onEachFeature={handleClickOnRoute}
-              // pointToLayer={stam}
             />
           );
         })}

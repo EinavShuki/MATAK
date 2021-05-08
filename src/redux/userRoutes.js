@@ -13,7 +13,7 @@ export const userRoutesSlice = createSlice({
     setRoutes: (state, { payload }) => {
       state.routes = [...payload];
       state.loading = false;
-      state.filteredRoutes = [];
+      // state.filteredRoutes = [];
     },
 
     setFilteredRoutes: (state, { payload }) => {
@@ -21,6 +21,9 @@ export const userRoutesSlice = createSlice({
     },
     toggleIsHidden: state => {
       state.isHidden = !state.isHidden;
+    },
+    turnOnIsHidden: state => {
+      state.isHidden = true;
     },
     turnOffIsHidden: state => {
       state.isHidden = false;
@@ -35,6 +38,7 @@ export const userRoutesSlice = createSlice({
 export const {
   setRoutes,
   toggleIsHidden,
+  turnOnIsHidden,
   turnOffIsHidden,
   loadingOn,
   setFilteredRoutes,
@@ -67,5 +71,5 @@ export const fetchRoutes = () => async dispatch => {
 };
 
 export const showfilteredRoutes = routes => dispatch => {
-  dispatch(setFilteredRoutes([routes]));
+  dispatch(setFilteredRoutes(routes));
 };

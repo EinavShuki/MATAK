@@ -37,11 +37,11 @@ function Options({ setPage }) {
         <FaSearch />
         <li>Search Routes</li>
       </div>
-
+      {/* 
       <div className="list-item">
         <FaHistory />
         <li>Routes History</li>
-      </div>
+      </div> */}
 
       {/* <div className="list-item">
         <ImAppleinc />
