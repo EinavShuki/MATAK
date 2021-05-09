@@ -62,7 +62,7 @@ function RoutesInfoDetails({
         disabled={isDisabled}
         color="secondary"
         style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
-        label="Car's Liecene Number"
+        label="Car's License Number"
         variant="outlined"
         value={vehicleID}
         onChange={e => setVehicle(e.target.value)}
