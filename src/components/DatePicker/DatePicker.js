@@ -10,9 +10,12 @@ import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   textField: {
+    width: "120px",
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+  },
+  datePicker: {
+    width: "200px",
   },
 }));
 
@@ -75,10 +78,11 @@ function DatePicker({
             KeyboardButtonProps={{
               "aria-label": "change date",
             }}
+            className={classes.datePicker}
           />
           <TextField
             color="secondary"
-            style={{ marginTop: "16px", width: "105px" }}
+            style={{ marginTop: "16px" }}
             label="Starting Hour"
             type="time"
             value={`${
@@ -105,6 +109,7 @@ function DatePicker({
           <KeyboardDatePicker
             color="secondary"
             disableToolbar
+            className={classes.datePicker}
             variant="inline"
             format="dd/MM/yyyy"
             margin="normal"
@@ -118,7 +123,7 @@ function DatePicker({
           />
           <TextField
             color="secondary"
-            style={{ marginTop: "16px", width: "105px" }}
+            style={{ marginTop: "16px" }}
             label="Ending Hour"
             type="time"
             value={`${
