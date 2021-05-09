@@ -42,43 +42,42 @@ const Notifications = () => {
     },
   ];
 
+  const source = axios.CancelToken.source();
+  const callNotifications = async () => {
+    try {
+      const { data } = await axiosConfig.get("/notification", {
+        cancelToken: source.token,
+      });
+      // console.log(data.data);
+      data.data.forEach(noti => {
+        noti.createdAt = noti.createdAt.slice(0, 19);
+        noti.createdAt = noti.createdAt.replace("T", " ");
+      });
+      setNotifications(data.data);
+    } catch (err) {
+      console.error("error:", err.message);
+    }
+  };
+
   //get all notificaations
   useEffect(() => {
-    const source = axios.CancelToken.source();
-    const callNotifications = async () => {
-      try {
-        const { data } = await axiosConfig.get("/notification", {
-          cancelToken: source.token,
-        });
-        console.log(data.data);
-        data.data.forEach(noti => {
-          noti.createdAt = noti.createdAt.slice(0, 19);
-          noti.createdAt = noti.createdAt.replace("T", " ");
-        });
-        setNotifications(data.data);
-      } catch (err) {
-        console.error("error:", err.message);
-      }
-    };
     callNotifications();
-    console.log("sent");
 
     return () => {
       source.cancel("Cleanup");
     };
-  }, [changeStatusUnread, changeStatusRead]);
+  }, []);
 
   //update notifications
   const changeStatus = async () => {
     try {
       const { data } = await axiosConfig.put("/notification", {
-        _id: `${selectedRows.map(row => {
-          return row.data.id;
-        })}`,
+        _id: selectedRows.map(row => row.data._id),
       });
     } catch (err) {
       console.error("error:", err.message);
     }
+    callNotifications();
   };
 
   useEffect(() => {
@@ -107,13 +106,16 @@ const Notifications = () => {
     setChangeStatusUnread(prv => !prv);
   };
 
-  // const deleteClickHandler=()=>{
-  //   try {
-  //     const {data}=async axios.delete(selectedRows);
-  //   } catch (error) {
-
-  //   }
-  // }
+  //delete rows
+  const deleteClickHandler = async () => {
+    try {
+      const { data } = await axiosConfig.delete("/notification", {
+        _id: selectedRows.map(row => row.data._id),
+      });
+    } catch (err) {
+      console.error("error:", err.message);
+    }
+  };
 
   const CellClickHandler = e => {
     const tragetRoute = e.row.routeDetails;
@@ -150,7 +152,10 @@ const Notifications = () => {
             />
           </IconButton>
           <IconButton style={{ paddingBottom: 0 }}>
-            <RiDeleteBin5Fill style={{ color: "#f44336" }} />
+            <RiDeleteBin5Fill
+              style={{ color: "#f44336" }}
+              onClick={deleteClickHandler}
+            />
           </IconButton>
         </span>
         <DataGrid
