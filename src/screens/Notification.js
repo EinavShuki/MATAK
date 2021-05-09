@@ -4,77 +4,100 @@ import NavBar from "../components/NavBar";
 import IconButton from "@material-ui/core/IconButton";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BiEnvelopeOpen, BiEnvelope } from "react-icons/bi";
-import { notifications } from "../fakeNotifications";
+import axiosConfig from "../config/axiosConfig";
 import axios from "axios";
-import { set } from "date-fns";
-import { change } from "redux-form";
 
 const Notifications = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [changeStatusUnread, setChangeStatusUnread] = useState(false);
   const [changeStatusRead, setChangeStatusRead] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   const columns = [
-    { field: "isRead", type: "boolean", headerName: "Is Read", width: 120 },
-    { field: "id", headerName: "ID", hide: true },
-    { field: "type", headerName: "Type", width: 180 },
+    { field: "Read", headerName: "Is Read", width: 120 },
+    { field: "_id", headerName: "ID", hide: true },
+    { field: "Notification_Text", headerName: "Type", width: 180 },
     {
-      field: "date",
+      field: "createdAt",
       type: "date",
       headerName: "Date",
       width: 300,
-      type: "date",
     },
     {
-      field: "sender",
+      field: "Sender_Name",
       headerName: "Sender",
       width: 300,
     },
     {
-      field: "senderEmail",
+      field: "Sender_Email",
       headerName: "SenderEmails",
       width: 200,
     },
-
     {
-      field: "routeDetails",
+      field: "Path_Name",
       headerName: "Route Details",
       description: "Click on square for more information",
       width: 300,
     },
   ];
 
-  notifications.forEach(noti => {
-    noti.date = noti.date.slice(0, 25);
-  });
+  //get all notificaations
+  useEffect(() => {
+    const source = axios.CancelToken.source();
+    const callNotifications = async () => {
+      try {
+        const { data } = await axiosConfig.get("/notification", {
+          cancelToken: source.token,
+        });
+        console.log(data.data);
+        data.data.forEach(noti => {
+          noti.createdAt = noti.createdAt.slice(0, 19);
+          noti.createdAt = noti.createdAt.replace("T", " ");
+        });
+        setNotifications(data.data);
+      } catch (err) {
+        console.error("error:", err.message);
+      }
+    };
+    callNotifications();
+    console.log("sent");
 
-  // useEffect(() => {
-  //   // change is read square booleanicly
-  //   if (selectedRows) {
-  //     notifications.filter(
-  //       x => x.id === selectedRow.id
-  //     )[0].isRead = !notifications.filter(x => x.id === selectedRow.id)[0]
-  //       .isRead;
-  //   }
-  //   //HERE I SEND UPDATE OF NOTIFICATIONS
-  // }, [changeStatus]);
+    return () => {
+      source.cancel("Cleanup");
+    };
+  }, [changeStatusUnread, changeStatusRead]);
+
+  //update notifications
+  const changeStatus = async () => {
+    try {
+      const { data } = await axiosConfig.put("/notification", {
+        _id: `${selectedRows.map(row => {
+          return row.data.id;
+        })}`,
+      });
+    } catch (err) {
+      console.error("error:", err.message);
+    }
+  };
 
   useEffect(() => {
     if (selectedRows) {
       selectedRows.forEach(row => {
-        row.data.isRead = false;
+        row.data.Read = false;
       });
     }
-    // console.log(selectedRows);
+    changeStatus();
   }, [changeStatusUnread]);
+
   useEffect(() => {
     if (selectedRows) {
       selectedRows.forEach(row => {
-        row.data.isRead = true;
+        row.data.Read = true;
       });
     }
-    // console.log(selectedRows);
+
+    changeStatus();
   }, [changeStatusRead]);
 
   const signAsRead = () => {
@@ -103,16 +126,6 @@ const Notifications = () => {
       setSelectedRows(prev => prev.filter(x => x.data.id !== e.data.id));
     }
   };
-  // const somefun = e => {
-  //   e.selectionModel.forEach(id => {
-  //     notifications.forEach(noti => {
-  //       console.log(id, noti.id);
-  //       if (id === noti.id.toString()) {
-  //         rowSelectedHandler(noti);
-  //       }
-  //     });
-  //   });
-  // };
 
   return (
     <>
@@ -144,6 +157,7 @@ const Notifications = () => {
           className="table_notification"
           onRowSelected={rowSelectedHandler}
           onCellClick={CellClickHandler}
+          getRowId={row => row._id}
           rows={notifications}
           rowHeight="63"
           columns={columns}
@@ -151,7 +165,7 @@ const Notifications = () => {
           checkboxSelection
           sortModel={[
             {
-              field: "date",
+              field: "createdAt",
               sort: "asc",
             },
           ]}
