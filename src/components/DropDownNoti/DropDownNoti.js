@@ -33,7 +33,7 @@ const DropDownNoti = () => {
         const { data } = await axiosConfig.get("/notification/read", {
           cancelToken: source.token,
         });
-        console.log(data.data);
+        // console.log(data.data);
         data.data.forEach(noti => {
           noti.createdAt = noti.createdAt.slice(0, 19);
           noti.createdAt = noti.createdAt.replace("T", " ");
