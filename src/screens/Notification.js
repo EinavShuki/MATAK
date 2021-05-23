@@ -71,6 +71,7 @@ const Notifications = () => {
   //update notifications
   const changeStatus = async () => {
     try {
+      console.log(selectedRows.map(row => row.data._id));
       const { data } = await axiosConfig.put("/notification", {
         _id: selectedRows.map(row => row.data._id),
       });
@@ -95,7 +96,6 @@ const Notifications = () => {
         row.data.Read = true;
       });
     }
-
     changeStatus();
   }, [changeStatusRead]);
 
@@ -110,11 +110,16 @@ const Notifications = () => {
   const deleteClickHandler = async () => {
     try {
       const { data } = await axiosConfig.delete("/notification", {
-        _id: selectedRows.map(row => row.data._id),
+        data: {
+          _id: selectedRows.map(row => row.data._id),
+        },
       });
+
+      setSelectedRows([]);
     } catch (err) {
       console.error("error:", err.message);
     }
+    callNotifications();
   };
 
   const CellClickHandler = e => {
