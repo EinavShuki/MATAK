@@ -3,7 +3,6 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
-  color: rgb(59, 59, 59);
 }
 
 #matak-icon {
@@ -35,8 +34,8 @@ body {
 }
 
 .frosted {
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 .MuiButton-containedSecondary:hover {
@@ -202,8 +201,19 @@ a {
   transition: all 0.1ms ease;
 }
 
+#satellite-icon {
+  position: fixed;
+  z-index: 5001;
+  top: 25px;
+  right: 215px;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: background-color 0.1ms ease;
+  transition: color 250ms ease;
+}
+
 #refresh-icon:hover,
-#notification-icon:hover {
+#notification-icon:hover,
+#satellite-icon:hover {
   background-color: rgba(0, 0, 0, 1);
   cursor: pointer;
   transform: scale(1.1);
