@@ -9,6 +9,7 @@ import {
   ZoomControl,
   GeoJSON,
 } from "react-leaflet";
+import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 import "leaflet/dist/leaflet.css";
 import "./MapComponent.css";
 import { STATUSES } from "../../constants/statusConstants";
@@ -56,9 +57,11 @@ function MapComponent({ setMainSideMenu }) {
     return state.createdRoute;
   });
 
-  const { routes, isHidden, filteredRoutes } = useSelector(state => {
-    return state.userRoutes;
-  });
+  const { routes, isHidden, filteredRoutes, isSatellite } = useSelector(
+    state => {
+      return state.userRoutes;
+    }
+  );
 
   const startIcon = new L.Icon({
     iconUrl: startFlag,
@@ -192,11 +195,21 @@ function MapComponent({ setMainSideMenu }) {
         center={[31.477632, 34.511871]}
         zoom={10.5}
       >
-        <TileLayer
-          //correct attribution for osm
-          url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
-        />
+        {isSatellite ? (
+          <ReactLeafletGoogleLayer
+            googleMapsLoaderConf={{
+              KEY: "AIzaSyAopCFzsaIZWk9mZT1zxpt8Hf1n9cTY6rs",
+            }}
+            type={"satellite"}
+          />
+        ) : (
+          <TileLayer
+            //correct attribution for osm
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+          />
+        )}
+
         <ZoomControl position="topright" />
 
         {!isHidden &&

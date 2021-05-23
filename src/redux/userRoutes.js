@@ -5,6 +5,8 @@ export const userRoutesSlice = createSlice({
   name: "userRoutes",
   initialState: {
     isHidden: false,
+    isSatellite: false,
+    isHidden: false,
     loading: false,
     routes: [],
     filteredRoutes: [],
@@ -32,6 +34,9 @@ export const userRoutesSlice = createSlice({
     loadingOn: state => {
       state.loading = true;
     },
+    toggleSatellite: state => {
+      state.isSatellite = !state.isSatellite;
+    },
   },
 });
 
@@ -42,6 +47,7 @@ export const {
   turnOffIsHidden,
   loadingOn,
   setFilteredRoutes,
+  toggleSatellite,
 } = userRoutesSlice.actions;
 
 export default userRoutesSlice.reducer;
