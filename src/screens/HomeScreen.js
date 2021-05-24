@@ -14,14 +14,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import { MdRefresh } from "react-icons/md";
 import useDispatchRoutes from "../customHooks/useDispatchRoutes";
+import useDispatchNoty from "../customHooks/fetchNotifications";
 import DropDownNoti from "../components/DropDownNoti/DropDownNoti";
 import { toggleSatellite } from "../redux/userRoutes";
+import axiosConfig from "../config/axiosConfig";
 
 function HomeScreen() {
+  const [notifications, setNotifications] = useState([]);
+
   const dispatch = useDispatch();
   useEffect(() => {
     const timer = setInterval(() => {
       fetchRoutesData();
+      callNotifications();
     }, 60000);
     return () => clearInterval(timer);
   }, []);
@@ -40,11 +45,25 @@ function HomeScreen() {
 
   useEffect(() => {
     fetchRoutesData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    callNotifications();
   }, []);
 
   const updateRoutes = () => {
     fetchRoutesData();
+  };
+
+  const callNotifications = async () => {
+    try {
+      const { data } = await axiosConfig.get("/notification", {});
+      // console.log(data.data);
+      data.data.forEach(noti => {
+        noti.createdAt = noti.createdAt.slice(0, 19);
+        noti.createdAt = noti.createdAt.replace("T", " ");
+      });
+      setNotifications(data.data);
+    } catch (err) {
+      console.error("error:", err.message);
+    }
   };
 
   return (
@@ -55,7 +74,7 @@ function HomeScreen() {
       <AvatarIcon letter={First_Name ? First_Name[0].toUpperCase() : "N/A"} />
       <Avatar
         id="refresh-icon"
-        onClick={updateRoutes}
+        onClick={(updateRoutes, callNotifications)}
         src={loading ? loadingGif : ""}
       >
         <MdRefresh />

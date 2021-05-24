@@ -8,10 +8,9 @@ import axiosConfig from "../config/axiosConfig";
 import axios from "axios";
 
 const Notifications = () => {
-  const [selectedRow, setSelectedRow] = useState(null);
   const [changeStatusUnread, setChangeStatusUnread] = useState(false);
   const [changeStatusRead, setChangeStatusRead] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [allRows, setAllRows] = useState([]);
   const [notifications, setNotifications] = useState([]);
 
   const columns = [
@@ -69,11 +68,13 @@ const Notifications = () => {
   }, []);
 
   //update notifications
-  const changeStatus = async () => {
+  const changeStatus = async (read = true) => {
     try {
-      console.log(selectedRows.map(row => row.data._id));
-      const { data } = await axiosConfig.put("/notification", {
-        _id: selectedRows.map(row => row.data._id),
+      console.log("rows", allRows);
+      let url = read ? "/notification" : "/notification/unread";
+      let rows = allRows.map(row => row);
+      await axiosConfig.put(url, {
+        _id: rows,
       });
     } catch (err) {
       console.error("error:", err.message);
@@ -82,22 +83,11 @@ const Notifications = () => {
   };
 
   useEffect(() => {
-    if (selectedRows) {
-      selectedRows.forEach(row => {
-        row.data.Read = false;
-      });
-    }
-    changeStatus();
-  }, [changeStatusUnread]);
-
-  useEffect(() => {
-    if (selectedRows) {
-      selectedRows.forEach(row => {
-        row.data.Read = true;
-      });
-    }
     changeStatus();
   }, [changeStatusRead]);
+  useEffect(() => {
+    changeStatus(false);
+  }, [changeStatusUnread]);
 
   const signAsRead = () => {
     setChangeStatusRead(prv => !prv);
@@ -109,13 +99,11 @@ const Notifications = () => {
   //delete rows
   const deleteClickHandler = async () => {
     try {
-      const { data } = await axiosConfig.delete("/notification", {
+      await axiosConfig.delete("/notification", {
         data: {
-          _id: selectedRows.map(row => row.data._id),
+          _id: allRows.map(row => row),
         },
       });
-
-      setSelectedRows([]);
     } catch (err) {
       console.error("error:", err.message);
     }
@@ -126,12 +114,9 @@ const Notifications = () => {
     const tragetRoute = e.row.routeDetails;
     console.log(tragetRoute);
   };
-  const rowSelectedHandler = e => {
-    if (e.isSelected) {
-      setSelectedRows(prev => [...prev, e]);
-    } else {
-      setSelectedRows(prev => prev.filter(x => x.data.id !== e.data.id));
-    }
+
+  const fun = e => {
+    setAllRows(e.selectionModel);
   };
 
   return (
@@ -165,12 +150,13 @@ const Notifications = () => {
         </span>
         <DataGrid
           className="table_notification"
-          onRowSelected={rowSelectedHandler}
           onCellClick={CellClickHandler}
+          onSelectionModelChange={e => fun(e)}
           getRowId={row => row._id}
           rows={notifications}
           rowHeight="63"
           columns={columns}
+          S
           pageSize={5}
           checkboxSelection
           sortModel={[

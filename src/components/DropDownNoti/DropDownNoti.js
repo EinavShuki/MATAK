@@ -1,5 +1,4 @@
 import { IoIosNotifications } from "react-icons/io";
-import { notifications } from "../../fakeNotifications";
 
 import "./DropDownNoti.css";
 
@@ -20,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DropDownNoti = () => {
+const DropDownNoti = ({}) => {
   const classes = useStyles();
   const [notifications, setNotifications] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
