@@ -19,34 +19,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DropDownNoti = ({}) => {
+const DropDownNoti = ({ notifications }) => {
   const classes = useStyles();
-  const [notifications, setNotifications] = useState([]);
+  // const [notifications, setNotifications] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   //   const { currentUser } = useSelector(state => state.users);
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
-    const callNotifications = async () => {
-      try {
-        const { data } = await axiosConfig.get("/notification/read", {
-          cancelToken: source.token,
-        });
-        // console.log(data.data);
-        data.data.forEach(noti => {
-          noti.createdAt = noti.createdAt.slice(0, 19);
-          noti.createdAt = noti.createdAt.replace("T", " ");
-        });
-        setNotifications(data.data);
-      } catch (err) {
-        console.error("error:", err.message);
-      }
-    };
-    callNotifications();
-    return () => {
-      source.cancel("Cleanup");
-    };
-  }, []);
+    console.log(notifications, notifications.length);
+  }, [notifications]);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -62,7 +43,7 @@ const DropDownNoti = ({}) => {
         aria-controls="simple-menu-dd"
         aria-haspopup="true"
         onClick={handleClick}
-        id="notification-icon"
+        id={notifications.length !== 0 ? "notempty" : "notification-icon"}
       >
         <IoIosNotifications />
       </Avatar>
@@ -74,29 +55,44 @@ const DropDownNoti = ({}) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {notifications.map(noti => {
-          if (!noti.Read)
-            return (
-              <Link
-                style={{ textDecoration: "none", color: "black" }}
-                to={`/notifications`}
-                key={noti.createdAt + noti.Sender_Name}
-              >
-                <MenuItem>
-                  <Avatar className="avatar_name" id="name_icon">
-                    {noti.Sender_Name && noti.Sender_Name[0].toUpperCase()}
-                  </Avatar>
-                  <div id="dd_square">
+        {notifications.length > 0 ? (
+          notifications.map(noti => {
+            if (!noti.Read)
+              return (
+                <Link
+                  style={{ textDecoration: "none", color: "black" }}
+                  to={`/notifications`}
+                  key={noti.createdAt + noti.Sender_Name}
+                >
+                  <MenuItem>
+                    <Avatar className="avatar_name" id="name_icon">
+                      {noti.Sender_Name && noti.Sender_Name[0].toUpperCase()}
+                    </Avatar>
+
                     <ul style={{ listStyle: "none" }}>
                       <li style={{ fontWeight: "bold" }}>{noti.Sender_Name}</li>
                       <li>{noti.Notification_Text}</li>
                       <li>{noti.createdAt}</li>
                     </ul>
-                  </div>
-                </MenuItem>
-              </Link>
-            );
-        })}
+                  </MenuItem>
+                </Link>
+              );
+          })
+        ) : (
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "black",
+            }}
+            to={`/notifications`}
+          >
+            {" "}
+            <h5>
+              There aren't
+              <br /> new notifications
+            </h5>
+          </Link>
+        )}
       </Menu>
     </>
   );
