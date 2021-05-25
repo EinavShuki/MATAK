@@ -14,14 +14,10 @@ import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
 
 function RouteAdditionalDetails({ setSideMenu }) {
   const dispatch = useDispatch();
-  const {
-    currentCreatedRoute,
-    isPermanent,
-    startingPosition,
-    endingPosition,
-  } = useSelector(state => {
-    return state.createdRoute;
-  });
+  const { currentCreatedRoute, isPermanent, startingPosition, endingPosition } =
+    useSelector(state => {
+      return state.createdRoute;
+    });
   const {
     currentUser: { Username },
   } = useSelector(state => {

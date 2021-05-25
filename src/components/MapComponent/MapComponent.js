@@ -100,6 +100,7 @@ function MapComponent({ setMainSideMenu }) {
       try {
         const { data } = await axiosConfig.post("/path/byid", send);
         const selectedRoute = data.data[0];
+
         dispatch(
           displayStartAndEnding(
             selectedRoute.Start_Point,

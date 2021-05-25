@@ -6,13 +6,16 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BiEnvelopeOpen, BiEnvelope } from "react-icons/bi";
 import axiosConfig from "../config/axiosConfig";
 import axios from "axios";
+import Modal from "./MatakModal";
+import RoutesDetailsNotifications from "../components/RoutesDetailsNotifications/RoutesDetailsNotifications";
 
 const Notifications = () => {
   const [changeStatusUnread, setChangeStatusUnread] = useState(false);
   const [changeStatusRead, setChangeStatusRead] = useState(false);
   const [allRows, setAllRows] = useState([]);
   const [notifications, setNotifications] = useState([]);
-
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedRoute, setSelectedRoute] = useState(null);
   const columns = [
     { field: "Read", headerName: "Is Read", width: 120 },
     { field: "_id", headerName: "ID", hide: true },
@@ -110,13 +113,32 @@ const Notifications = () => {
     callNotifications();
   };
 
-  const CellClickHandler = e => {
-    const tragetRoute = e.row.routeDetails;
+  const CellClickHandler = async e => {
+    setShowDetails(true);
+    const tragetRoute = e.row.Path_Id;
     console.log(tragetRoute);
+    try {
+      const { data } = await axiosConfig.post("/path/byid", {
+        _id: tragetRoute,
+      });
+      setSelectedRoute(data.data[0]);
+      console.log(selectedRoute);
+    } catch (err) {
+      console.error(err.message);
+    }
   };
+  useState(() => {
+    console.log("selectedRoute", selectedRoute);
+    if (selectedRoute) setShowDetails(true);
+  }, [selectedRoute]);
 
   const fun = e => {
     setAllRows(e.selectionModel);
+  };
+
+  const hideModal = () => {
+    setShowDetails(false);
+    setSelectedRoute(null);
   };
 
   return (
@@ -166,6 +188,13 @@ const Notifications = () => {
             },
           ]}
         ></DataGrid>
+        {showDetails && (
+          <Modal show onClose={hideModal}>
+            {selectedRoute && (
+              <RoutesDetailsNotifications selectedRoute={selectedRoute} />
+            )}
+          </Modal>
+        )}
       </div>
     </>
   );
