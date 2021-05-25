@@ -54,8 +54,8 @@ function HomeScreen() {
 
   const callNotifications = async () => {
     try {
-      const { data } = await axiosConfig.get("/notification", {});
-      // console.log(data.data);
+      const { data } = await axiosConfig.get("/notification/read", {});
+      console.log(data.data);
       data.data.forEach(noti => {
         noti.createdAt = noti.createdAt.slice(0, 19);
         noti.createdAt = noti.createdAt.replace("T", " ");
@@ -80,7 +80,7 @@ function HomeScreen() {
         <MdRefresh />
       </Avatar>
 
-      <DropDownNoti />
+      <DropDownNoti notifications={notifications} />
 
       <Avatar
         id="satellite-icon"
