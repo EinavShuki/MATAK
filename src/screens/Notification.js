@@ -24,23 +24,23 @@ const Notifications = () => {
       field: "createdAt",
       type: "date",
       headerName: "Date",
-      width: 300,
+      width: 200,
     },
     {
       field: "Sender_Name",
       headerName: "Sender",
-      width: 300,
+      width: 200,
     },
     {
       field: "Sender_Email",
-      headerName: "SenderEmails",
+      headerName: "Sender Email",
       width: 200,
     },
     {
       field: "Path_Name",
-      headerName: "Route Details",
+      headerName: "Route Name",
       description: "Click on square for more information",
-      width: 300,
+      width: 200,
     },
   ];
 
