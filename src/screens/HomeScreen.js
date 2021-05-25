@@ -74,7 +74,7 @@ function HomeScreen() {
       <AvatarIcon letter={First_Name ? First_Name[0].toUpperCase() : "N/A"} />
       <Avatar
         id="refresh-icon"
-        onClick={(updateRoutes, callNotifications)}
+        onClick={updateRoutes}
         src={loading ? loadingGif : ""}
       >
         <MdRefresh />

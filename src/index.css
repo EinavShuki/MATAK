@@ -188,7 +188,7 @@ a {
   z-index: 5001;
   top: 25px;
   right: 125px;
-  background-color: rgba(247, 116, 9, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 #notempty {
@@ -196,7 +196,7 @@ a {
   z-index: 5001;
   top: 25px;
   right: 125px;
-  background-color: rgba(247, 9, 9, 0.568);
+  background-color: rgba(211, 19, 19, 0.7);
 }
 
 #refresh-icon {
@@ -221,17 +221,13 @@ a {
 #refresh-icon:hover,
 #notification-icon:hover,
 #notempty:hover,
-#satellite-icon:hover {
+#satellite-icon:hover,
+#notification-icon:hover {
   background-color: rgba(0, 0, 0, 1);
   cursor: pointer;
   transform: scale(1.1);
 }
-#notification-icon:hover {
-  background-color: rgba(247, 116, 9, 0.356);
-  transition: background-color 0.3s ease;
-}
 
 #notempty:hover {
-  background-color: rgba(236, 46, 46, 0.356);
-  transition: background-color 0.3s ease;
+  background-color: rgba(211, 19, 19, 1);
 }
