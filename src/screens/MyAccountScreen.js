@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
-  FormControl,
   ListItem,
   List,
   TextField,
@@ -9,14 +8,11 @@ import {
   Button,
   InputAdornment,
 } from "@material-ui/core";
-import { UpdateUser, fetchCurrentUser } from "../redux/users";
+import { UpdateUser } from "../redux/users";
 import { useDispatch, useSelector } from "react-redux";
 
-import MatakIcon from "../images/matak.png";
-
 import NavBar from "../components/NavBar";
-import { MdVpnKey, MdEmail, MdLocalPhone } from "react-icons/md";
-import MatakModal from "./MatakModal";
+import { MdEmail, MdLocalPhone } from "react-icons/md";
 
 function MyAccountScreen() {
   const dispatch = useDispatch();
@@ -26,7 +22,8 @@ function MyAccountScreen() {
   const [validemail, setValidEmail] = useState("");
   const [validmobile, setValidMobile] = useState("");
 
-  const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const emailRegex =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   const mobileRegex = /^\d{10}$/;
   useEffect(() => {
     validateMobile();
@@ -67,7 +64,7 @@ function MyAccountScreen() {
               }}
             >
               <Avatar className="avatar_name">{initialsFun()}</Avatar>
-              <h1 className="name ">
+              <h1 className="name">
                 {`${currentUser.First_Name} ${currentUser.Last_Name}`}
               </h1>
             </span>
@@ -84,7 +81,7 @@ function MyAccountScreen() {
             >
               <ListItem>
                 <TextField
-                  required="true"
+                  required
                   fullWidth
                   margin="dense"
                   name="Mail"

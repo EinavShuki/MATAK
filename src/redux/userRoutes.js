@@ -6,7 +6,6 @@ export const userRoutesSlice = createSlice({
   initialState: {
     isHidden: false,
     isSatellite: false,
-    isHidden: false,
     loading: false,
     routes: [],
     filteredRoutes: [],

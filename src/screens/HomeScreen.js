@@ -14,10 +14,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "@material-ui/core";
 import { MdRefresh } from "react-icons/md";
 import useDispatchRoutes from "../customHooks/useDispatchRoutes";
-import useDispatchNoty from "../customHooks/fetchNotifications";
-import DropDownNoti from "../components/DropDownNoti/DropDownNoti";
-import { toggleSatellite } from "../redux/userRoutes";
+import DropDownNoti from "../components/DropDownNoti/DropDownNotification";
+import { toggleSatellite, turnOffIsHidden } from "../redux/userRoutes";
 import axiosConfig from "../config/axiosConfig";
+import { resetRoute } from "../redux/createdRoute";
 
 function HomeScreen() {
   const [notifications, setNotifications] = useState([]);
@@ -29,6 +29,7 @@ function HomeScreen() {
       callNotifications();
     }, 60000);
     return () => clearInterval(timer);
+    // eslint-disable-next-line
   }, []);
 
   const [sideMenu, setSideMenu] = useState(false);
@@ -44,18 +45,16 @@ function HomeScreen() {
   const { fetchRoutesData } = useDispatchRoutes();
 
   useEffect(() => {
+    dispatch(turnOffIsHidden());
+    dispatch(resetRoute());
     fetchRoutesData();
     callNotifications();
+    // eslint-disable-next-line
   }, []);
-
-  const updateRoutes = () => {
-    fetchRoutesData();
-  };
 
   const callNotifications = async () => {
     try {
-      const { data } = await axiosConfig.get("/notification/read", {});
-      console.log(data.data);
+      const { data } = await axiosConfig.get("/notification/read");
       data.data.forEach(noti => {
         noti.createdAt = noti.createdAt.slice(0, 19);
         noti.createdAt = noti.createdAt.replace("T", " ");
@@ -66,6 +65,11 @@ function HomeScreen() {
     }
   };
 
+  const manualRefreash = () => {
+    fetchRoutesData();
+    callNotifications();
+  };
+
   return (
     <>
       <FiMenu id="add-icon" onClick={() => setSideMenu(true)} />
@@ -74,7 +78,7 @@ function HomeScreen() {
       <AvatarIcon letter={First_Name ? First_Name[0].toUpperCase() : "N/A"} />
       <Avatar
         id="refresh-icon"
-        onClick={updateRoutes}
+        onClick={manualRefreash}
         src={loading ? loadingGif : ""}
       >
         <MdRefresh />

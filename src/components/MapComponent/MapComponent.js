@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import L from "leaflet";
 import {
   Map,
@@ -42,6 +43,14 @@ L.Icon.Default.mergeOptions({
 function MapComponent({ setMainSideMenu }) {
   const [routeDetailsMenu, setRouteDetailsMenu] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const { id, latlng } = useParams();
+  const mapCenter = latlng?.split("-");
+
+  useEffect(() => {
+    if (id) {
+      whenClicked(id);
+    }
+  }, [id]);
 
   const dispatch = useDispatch();
   const {
@@ -94,7 +103,7 @@ function MapComponent({ setMainSideMenu }) {
       setRouteDetailsMenu(false);
       setMainSideMenu(false);
       const send = {
-        _id: route.properties._id,
+        _id: route?.properties?._id || route,
       };
 
       try {
@@ -193,8 +202,8 @@ function MapComponent({ setMainSideMenu }) {
       <Map
         zoomControl={false}
         onclick={handleMapClick}
-        center={[31.477632, 34.511871]}
-        zoom={10.5}
+        center={mapCenter ? mapCenter : [31.477632, 34.511871]}
+        zoom={mapCenter ? 15 : 10.5}
       >
         {isSatellite ? (
           <ReactLeafletGoogleLayer

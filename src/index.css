@@ -88,11 +88,11 @@ a {
 }
 
 .avatar_name {
-  margin-right: 2rem;
   transform: scale(1.2);
 }
 .name {
   text-transform: capitalize;
+  margin-left: 1.5rem;
 }
 .organization-name {
   text-transform: capitalize;
@@ -110,18 +110,13 @@ a {
   font-weight: bold;
 }
 
-/* .table_notification .MuiDataGrid-colCell:nth-child(1) {
-/* .table_notification .MuiDataGrid-row {
-  /* background-color: rgba(241, 9, 9, 0.541); */
-/* } * */
-
 .table_notification .MuiDataGrid-viewport {
   background-color: white;
 }
 .table_notification .MuiDataGrid-colCell:nth-child(1) {
   background-color: white;
 }
-*/ .table_notification .MuiDataGrid-cell {
+.table_notification .MuiDataGrid-cell {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -151,16 +146,6 @@ a {
 .action-buttons {
   display: flex;
   justify-content: flex-end;
-}
-
-.positive-btn {
-  background-color: "#00c853";
-  color: "#fff";
-}
-
-.negative-btn {
-  background-color: "#f44336";
-  color: "#fff";
 }
 
 .form-field {
@@ -230,4 +215,11 @@ a {
 
 #notempty:hover {
   background-color: rgba(211, 19, 19, 1);
+}
+
+.MuiDataGrid-row:nth-child(even) {
+  background-color: rgb(251, 251, 251);
+}
+.goToMap {
+  color: whitesmoke;
 }

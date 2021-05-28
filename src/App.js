@@ -14,7 +14,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/" component={LoginScreen} exact />
-        <PrivateRoute path="/home" component={HomeScreen} />
+        <PrivateRoute path="/home/:id?/:latlng?" component={HomeScreen} />
         <PrivateRoute path="/my-account" component={MyAccountScreen} />
         <PrivateRoute path="/routes-management" component={RoutesManagement} />
         <PrivateRoute path="/admin-panel" component={AdminScreen} />

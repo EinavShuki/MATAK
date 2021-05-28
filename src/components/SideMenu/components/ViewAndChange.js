@@ -97,6 +97,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         return status;
       }
     });
+    // eslint-disable-next-line
   }, [STATUSES]);
 
   const handleSubmitRoute = async () => {
@@ -172,6 +173,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     () => ({
       isDisabled: Status_Name !== "Changes-Required",
     }),
+    // eslint-disable-next-line
     []
   );
 
