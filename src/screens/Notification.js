@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import IconButton from "@material-ui/core/IconButton";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BiEnvelopeOpen, BiEnvelope } from "react-icons/bi";
+import { CgUnavailable } from "react-icons/cg";
 import axiosConfig from "../config/axiosConfig";
 import Modal from "./MatakModal";
 import RoutesDetailsNotifications from "../components/RoutesDetailsNotifications/RoutesDetailsNotifications";
@@ -13,6 +14,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [wasDeleted, setWasDeleted] = useState("");
   const columns = [
     {
       field: "Read",
@@ -107,7 +109,11 @@ const Notifications = () => {
       const { data } = await axiosConfig.post("/path/byid", {
         _id: tragetRoute,
       });
-      setSelectedRoute(data.data[0]);
+      if (data.data[0]) {
+        setSelectedRoute(data.data[0]);
+      } else {
+        setWasDeleted("This route is not longer available ");
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -120,6 +126,7 @@ const Notifications = () => {
   const hideModal = () => {
     setShowDetails(false);
     setSelectedRoute(null);
+    setWasDeleted("");
   };
 
   const updateNotificationStatus = status => {
@@ -173,8 +180,15 @@ const Notifications = () => {
         ></DataGrid>
         {showDetails && (
           <Modal show onClose={hideModal}>
-            {selectedRoute && (
+            {selectedRoute ? (
               <RoutesDetailsNotifications selectedRoute={selectedRoute} />
+            ) : (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "inline-block", fontSize: "26px" }}>
+                  {wasDeleted}
+                  {wasDeleted ? <CgUnavailable fontSize={20} /> : ""}
+                </div>
+              </div>
             )}
           </Modal>
         )}
