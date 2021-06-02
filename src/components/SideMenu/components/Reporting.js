@@ -80,16 +80,17 @@ function Reporting() {
   });
 
   const handleChange = (event, setState) => {
+    const { checked, name } = event.target;
     if (event.target.name === "Check All") {
       setState(prev => {
         return prev.map(status => {
-          return { ...status, checked: event.target.checked };
+          return { ...status, checked: checked };
         });
       });
     } else {
       setState(prev => {
         return prev.map(status => {
-          return status.name === event.target.name
+          return status.name === name
             ? { ...status, checked: !status.checked }
             : { ...status };
         });
@@ -117,7 +118,8 @@ function Reporting() {
 
     const filtered = routes.filter(route => {
       if (
-        requestedStatuses.includes(route.Status_Name) &&
+        (requestedStatuses.includes(route.Status_Name) ||
+          (requestedStatuses.includes("Permanent") && route.Is_Permanent)) &&
         requestedReasons.includes(route.Reason_Text) &&
         new Date(route.Start_Date) >= startingDate &&
         new Date(route.End_Date) <= endingDate
@@ -125,7 +127,6 @@ function Reporting() {
         return route;
       }
     });
-    console.log(filtered);
     dispatch(turnOnIsHidden());
     dispatch(showfilteredRoutes(filtered));
   };
