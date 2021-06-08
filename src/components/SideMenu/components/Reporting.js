@@ -45,6 +45,7 @@ function Reporting() {
     },
   }));
   const classes = useStyles();
+  const [found, setFound] = useState(null);
   const [reasons, setReasons] = useState(() => {
     const array = reasonsArray.map(reason => {
       return { name: reason, checked: true };
@@ -127,6 +128,7 @@ function Reporting() {
         return route;
       }
     });
+    setFound(filtered.length);
     dispatch(turnOnIsHidden());
     dispatch(showfilteredRoutes(filtered));
   };
@@ -213,6 +215,17 @@ function Reporting() {
           </FormGroup>
         </Grid>
       </Grid>
+
+      {found ? (
+        <h3>
+          {found === 1 ? "One route was " : `${found} routes were `} found in
+          this search.
+        </h3>
+      ) : found === 0 ? (
+        <h3>No routes were found, try to modify your search parameters</h3>
+      ) : (
+        ""
+      )}
       <Button
         variant="contained"
         color="secondary"

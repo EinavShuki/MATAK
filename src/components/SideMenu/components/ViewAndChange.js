@@ -328,6 +328,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
             variant="contained"
             color="secondary"
             style={{
+              margin: "0 0.1rem",
               padding: "0.2rem 0.5rem",
               textTransform: "lowercase",
             }}

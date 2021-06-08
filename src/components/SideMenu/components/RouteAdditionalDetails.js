@@ -123,10 +123,11 @@ function RouteAdditionalDetails({ setSideMenu }) {
   };
 
   const onAddFile = e => {
-    if (files.length + e.target?.files.length < 5 && e.target?.files[0]) {
-      setFiles(prev => [...prev, ...e.target.files]);
+    const event = e.target?.files;
+    if (files.length + event.length < 5 && event[0]) {
+      setFiles(prev => [...prev, ...event]);
       setFilesNames(prev => {
-        const filesNames = Array.from(e.target?.files).map(file => file.name);
+        const filesNames = Array.from(event).map(file => file.name);
         return [...prev, ...filesNames];
       });
     }
