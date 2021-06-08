@@ -319,7 +319,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
         }}
       >
         {Files_Path_Array.map(file => (
@@ -328,7 +328,7 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
             variant="contained"
             color="secondary"
             style={{
-              margin: "0 0.1rem",
+              margin: "0.1rem",
               padding: "0.2rem 0.5rem",
               textTransform: "lowercase",
             }}
