@@ -13,6 +13,7 @@ import RouteForm from "../../components/RoutesManagment/RouteForm";
 import MatakModal from "../MatakModal";
 import axiosConfig from "../../config/axiosConfig";
 import useDispatchRoutes from "../../customHooks/useDispatchRoutes";
+import {Subject} from "rxjs";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 export default function RoutesManagement() {
     const classes = useStyles();
     const [routeFormData, setRouteFormData] = useState(new RouteFormData());
+    const formErrorMessage$ = new Subject();
     const { fetchRoutesData } = useDispatchRoutes();
     const exportedFileName = "Routes";
     const exportType = "xls";
@@ -116,12 +118,12 @@ export default function RoutesManagement() {
             fetchRoutesData();
             closeForm();
         } catch (error) {
+            formErrorMessage$.next("Failed to update the route");
             console.log(error);
         }
     };
 
     const closeForm = () => setRouteFormData(new RouteFormData());
-
     return (
         <>
             <ButtonAppBar/>
@@ -135,6 +137,7 @@ export default function RoutesManagement() {
                     width={680}
                 >
                     <RouteForm
+                        errorMessage$={formErrorMessage$}
                         routeFormData={routeFormData.clone()}
                         handleFormSubmit={handleRouteFormSubmit}
                         onClose={closeForm}
