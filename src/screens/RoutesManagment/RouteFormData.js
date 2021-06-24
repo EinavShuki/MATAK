@@ -15,12 +15,10 @@ export class RouteFormData {
         const isObject = new Object(route) === route;
         if (isObject) {
             this.show = isObject;
-            this.route = route;
+            this.route ={...route};
         } else {
             this.show = false;
             this.route = null;
-
-            console.warn('Route is not valid and can not be displayed on form');
         }
     }
 

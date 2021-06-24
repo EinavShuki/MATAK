@@ -14,15 +14,28 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
             width: 200,
+        },
+        '& .MuiFormHelperText-root': {
+            color: "red !important",
+            fontSize: "16px",
+            marginTop: "16px",
+            marginBottom: "-20px"
         }
-    },
+    }
 }));
 
-export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
+export default function RouteForm({routeFormData, handleFormSubmit, onClose, errorMessage$}) {
     const classes = useStyles();
-    const [routeData, setRouteData] = useState(routeFormData.route);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [routeData, setRoute] = useState(routeFormData.route);
     const [phonePrefix, setPhonePrefix] = useState(routeFormData.route?.Driver_Cellphone.split("-")[0]);
     const [phoneSuffix, setPhoneSuffix] = useState(routeFormData.route?.Driver_Cellphone.split("-")[1]);
+    errorMessage$.subscribe(message => setErrorMessage(message));
+
+    const setRouteData = (routeDate) => {
+        setErrorMessage("");
+        setRoute(routeDate);
+    };
 
     const {
         currentUser: {isAdminOrMatakUser},
@@ -178,6 +191,7 @@ export default function RouteForm({routeFormData, handleFormSubmit, onClose}) {
                 label="Remarks"
                 value={routeData.Remarks}
                 onChange={e => setRouteData({...routeData, Remarks: e.target.value})}
+                helperText={errorMessage}
                 disabled={isViewOnly() || permissions.isDisabled}
             />
             {!isViewOnly() && <Button
