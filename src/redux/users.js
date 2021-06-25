@@ -80,7 +80,6 @@ export const fetchCurrentUser = (id, goHome) => async dispatch => {
     dispatch(currentUserReceived({ ...data.data[0], isAdminOrMatakUser }));
     goHome();
   } catch (error) {
-    console.log("oops", error);
     dispatch(userError({ error: "some api error" }));
   }
 };

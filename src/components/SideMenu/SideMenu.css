@@ -4,7 +4,7 @@
   min-width: 27rem;
   height: 100%;
   overflow-y: scroll;
-  max-width: 30rem;
+  max-width: 34rem;
 }
 
 .nav-menu::-webkit-scrollbar {

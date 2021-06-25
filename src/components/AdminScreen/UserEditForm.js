@@ -49,7 +49,7 @@ function UserEditForm({ user, onFormSubmit, formValues, pristine, invalid }) {
     Usert_Type: user?.User_Type || "",
     Organization_Name: user?.Organization_Name || "",
   });
-  console.log("user in form:", userDetails);
+
   const { results, loading, error } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {

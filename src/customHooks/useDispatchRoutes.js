@@ -8,24 +8,12 @@ function useDispatchRoutes() {
     return state.users;
   });
 
-  // const params = currentUser?.isAdminOrMatakUser
-  //   ? {}
-  //   : { Applicant_User_Id: currentUser?._id };
-
   const fetchRoutesData = useCallback(() => {
     if (currentUser) {
       dispatch(fetchRoutes());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
-
-  // useEffect(() => {
-  //   console.log("object");
-  //   if (currentUser) {
-  //     fetchRoutesData();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   return { fetchRoutesData };
 }

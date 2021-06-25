@@ -217,12 +217,12 @@ function Reporting() {
       </Grid>
 
       {found ? (
-        <h3>
+        <h2>
           {found === 1 ? "One route was " : `${found} routes were `} found in
           this search.
-        </h3>
+        </h2>
       ) : found === 0 ? (
-        <h3>No routes were found, try to modify your search parameters</h3>
+        <h2>No routes were found, try to modify your search parameters</h2>
       ) : (
         ""
       )}

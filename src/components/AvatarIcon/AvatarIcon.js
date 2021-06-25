@@ -6,7 +6,6 @@ import {
   MdPowerSettingsNew,
   MdSettings,
   MdAccountCircle,
-  MdPhonelinkSetup,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -63,17 +62,12 @@ function AvatarIcon({ letter }) {
         {currentUser.User_Type === "Admin" && (
           <Link to={`/admin-panel`}>
             <MenuItem>
-              <MdPhonelinkSetup className={classes.icon} />
+              <MdSettings className={classes.icon} />
               Admin Panel
             </MenuItem>
           </Link>
         )}
 
-        {/* check for admin */}
-        <MenuItem onClick={handleClose}>
-          <MdSettings className={classes.icon} />
-          Settings
-        </MenuItem>
         <MenuItem onClick={handleClose}>
           <MdPowerSettingsNew className={classes.icon} />
           Logout
