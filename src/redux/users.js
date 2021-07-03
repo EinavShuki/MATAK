@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axiosConfig from "../config/axiosConfig";
+import React from "react";
 
 export const usersSlice = createSlice({
   name: "users",
@@ -143,7 +144,9 @@ export const UpdateUser = (id, email, phone) => async dispatch => {
       Email: email,
       Mobile: phone,
     });
-    if (data.success) alert(data.message);
+
+    if (data.success) return data;
+    alert(data.message);
     setTimeout(() => dispatch(userUpdateRecieved(data)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));

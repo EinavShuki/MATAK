@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Banner from "react-js-banner";
 
 import {
   ListItem,
@@ -13,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import NavBar from "../components/NavBar";
 import { MdEmail, MdLocalPhone } from "react-icons/md";
+import { set } from "date-fns";
 
 function MyAccountScreen() {
   const dispatch = useDispatch();
@@ -21,6 +23,7 @@ function MyAccountScreen() {
   const [mobile, setMobile] = useState(currentUser.Mobile);
   const [validemail, setValidEmail] = useState("");
   const [validmobile, setValidMobile] = useState("");
+  const [Banner, setBanner] = useState("");
 
   const emailRegex =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -32,7 +35,23 @@ function MyAccountScreen() {
 
   const updateHandler = () => {
     if (validemail === "" && validmobile === "") {
-      dispatch(UpdateUser(currentUser._id, email, mobile));
+      const data = dispatch(UpdateUser(currentUser._id, email, mobile));
+      data.then(result => {
+        if (result.success === true) setBanner("green");
+        setTimeout(() => {
+          setBanner("");
+        }, 3000);
+      });
+    } else if (validemail !== "") {
+      setBanner("email");
+      setTimeout(() => {
+        setBanner("");
+      }, 3000);
+    } else if (validmobile !== "") {
+      setBanner("mobile");
+      setTimeout(() => {
+        setBanner("");
+      }, 3000);
     }
   };
 
@@ -49,12 +68,35 @@ function MyAccountScreen() {
     if (!mobileRegex.test(mobile)) setValidMobile("Mobile is not valid");
     else setValidMobile("");
   };
-
+  const BannerCss = {
+    banner1Css: { color: "#FFF", backgroundColor: "green" },
+    banner2Css: { color: "#000", backgroundColor: "grey", fontFamily: "arial" },
+    banner3Css: { color: "#FFF", backgroundColor: "red", fontSize: 20 },
+  };
   return (
     <>
       <NavBar />
       {currentUser && (
         <div className="my_account_screen">
+          {Banner === "green" && (
+            <div className={"banner1Cs"}>User Updated</div>
+          )}
+          {Banner === "email" && (
+            <div
+              className={"banner1Cs"}
+              style={{ background: "rgba(255, 0, 0, 0.336)" }}
+            >
+              Email Is Not Valid
+            </div>
+          )}
+          {Banner === "mobile" && (
+            <div
+              className={"banner1Cs"}
+              style={{ background: "rgba(255, 0, 0, 0.336)" }}
+            >
+              Mobile Is Not Valid
+            </div>
+          )}
           <div className="frame">
             <span
               style={{
