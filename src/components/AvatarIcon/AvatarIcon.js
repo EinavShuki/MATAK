@@ -34,6 +34,16 @@ function AvatarIcon({ letter }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = async () => {
+    try {
+      // Here should be logout post request
+      // await axiosConfig.post("/logout");
+        window.location.reload(false);
+    } catch (e) {
+        console.log(e);
+    }
+  };
   return (
     <>
       <Avatar
@@ -68,7 +78,7 @@ function AvatarIcon({ letter }) {
           </Link>
         )}
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <MdPowerSettingsNew className={classes.icon} />
           Logout
         </MenuItem>
