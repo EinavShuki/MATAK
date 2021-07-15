@@ -35,6 +35,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const [remarks, setRemarks] = useState("");
   const [files, setFiles] = useState([]);
   const [filesNames, setFilesNames] = useState([]);
+  const [filesSize, setFilesSize] = useState(0);
 
   const { fetchRoutesData } = useDispatchRoutes();
 
@@ -72,8 +73,8 @@ function RouteAdditionalDetails({ setSideMenu }) {
       Car_Liecene_Number: isPermanent ? "Permanent" : vehicleID,
       Start_Point: startingPosition,
       End_Point: endingPosition,
-      Involved_Organ_Array: ["stam"],
-      Escort_Organ_Array: ["stam"],
+      Involved_Organ_Array: [""],
+      Escort_Organ_Array: [""],
       Terms_Text: "",
     };
 
@@ -121,10 +122,23 @@ function RouteAdditionalDetails({ setSideMenu }) {
     remarks,
     setRemarks,
   };
+  const handleClearFiles = () => {
+    setFilesNames([]);
+    setFiles([]);
+  };
 
   const onAddFile = e => {
     const event = e.target?.files;
-    if (files.length + event.length < 5 && event[0]) {
+    const size =
+      Array.from(event).reduce((acc, curr) => (acc += curr.size), 0) +
+      files.reduce((acc, curr) => (acc += curr.size), 0);
+
+    setFilesSize(size);
+    if (size > 15000000) {
+      alert("Files are too big. Upload up to 15MB");
+    }
+
+    if (files.length + event.length < 5 && event[0] && size < 15000000) {
       setFiles(prev => [...prev, ...event]);
       setFilesNames(prev => {
         const filesNames = Array.from(event).map(file => file.name);
@@ -139,15 +153,39 @@ function RouteAdditionalDetails({ setSideMenu }) {
       <DatePicker {...dateController} isDisabled={false} />
 
       {!isPermanent && <RoutesInfoDetails {...RouteInfoDetailsController} />}
+      <span style={{ fontSize: "15px" }}>Up to 5 files and 15MB</span>
       <input
-        style={{ marginTop: "1rem" }}
+        value=""
+        title=" "
+        style={{ marginTop: "1rem", display: "inline-block" }}
         type="file"
         multiple
         accept="image/png, image/jpeg , .pdf, .heic"
         onChange={onAddFile}
       />
-      {filesNames && (
-        <span style={{ wordBreak: "break-word" }}>{filesNames.join(", ")}</span>
+
+      {filesNames.length > 0 && (
+        <>
+          <span
+            style={{
+              wordBreak: "break-word",
+              fontSize: "14px",
+              margin: "5px 0",
+              maxWidth: "350px",
+            }}
+          >
+            {filesNames.join(", ")}, {(filesSize / 1000000).toFixed(2)}MB
+          </span>
+          <Button
+            size="small"
+            onClick={handleClearFiles}
+            variant="contained"
+            color="secondary"
+            style={{ width: "34%", alignSelf: "center" }}
+          >
+            Clear Files
+          </Button>
+        </>
       )}
       <Button
         variant="contained"

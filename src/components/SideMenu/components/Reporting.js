@@ -69,8 +69,13 @@ function Reporting() {
     return start;
   });
   const [endingDate, setEndingDate] = useState(() => {
+    Date.prototype.addDays = function (days) {
+      var date = new Date(this.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
     const end = new Date();
-    end.setHours(23, 59, 59, 999);
+    end.setDate(end.getDate() + 7);
     return end;
   });
 
@@ -120,8 +125,8 @@ function Reporting() {
     const filtered = routes.filter(route => {
       if (
         (requestedStatuses.includes(route.Status_Name) ||
-          (requestedStatuses.includes("Permanent") && route.Is_Permanent)) &&
-        requestedReasons.includes(route.Reason_Text) &&
+          (requestedStatuses.includes("Permanent") && route.Is_Permanent) ||
+          requestedReasons.includes(route.Reason_Text)) &&
         new Date(route.Start_Date) >= startingDate &&
         new Date(route.End_Date) <= endingDate
       ) {
@@ -136,6 +141,7 @@ function Reporting() {
   return (
     <>
       <h1>Find Routes</h1>
+
       <Grid container spacing={3}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid item md={6} xs={12}>
@@ -168,7 +174,7 @@ function Reporting() {
             />
           </Grid>
         </MuiPickersUtilsProvider>
-
+        <span>"OR" condition between these options below</span>
         <Grid item md={6} xs={12}>
           <label>Status</label>
           <FormGroup className={classes.ulStyle}>

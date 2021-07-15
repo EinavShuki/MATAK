@@ -110,8 +110,8 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
       Driver_Name: driversName,
       Driver_Cellphone: `${phonePrefix}-${phonePostfix}`,
       Car_Liecene_Number: vehicleID,
-      // Remarks: Re+remarks,
       Status_Name: Status_Name === "Changes-Required" ? "Submitted" : status,
+      Remarks: remarks,
     };
     try {
       await axiosConfig.put("/path", send);
