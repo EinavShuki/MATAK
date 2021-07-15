@@ -235,7 +235,6 @@ function MapComponent({ setMainSideMenu }) {
                 key={route._id + isEditAvailable + route.updatedAt}
                 data={route["Array_Of_Points"]}
                 onEachFeature={handleClickOnRoute}
-                // pointToLayer={stam}
               />
             );
           })}
