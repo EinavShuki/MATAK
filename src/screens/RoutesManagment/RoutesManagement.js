@@ -100,8 +100,9 @@ export default function RoutesManagement() {
             excelRoute["__v"] !== undefined && delete excelRoute["__v"];
             excelRoute["id"] !== undefined && delete excelRoute["id"];
             excelRoute["_id"] !== undefined && delete excelRoute["_id"];
-            excelRoute["Applicant_User_Id"] !== undefined &&
-            delete excelRoute["Applicant_User_Id"];
+            excelRoute["Applicant_User_Id"] !== undefined && delete excelRoute["Applicant_User_Id"];
+            excelRoute["Involved_Organ_Array"] !== undefined && delete excelRoute["Involved_Organ_Array"];
+            excelRoute["Escort_Organ_Array"] !== undefined && delete excelRoute["Escort_Organ_Array"];
             return excelRoute;
         });
         exportFromJSON({
