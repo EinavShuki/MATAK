@@ -26,7 +26,7 @@ export const usersSlice = createSlice({
     },
     userUpdateRecieved: (state, action) => {
       state.loading = "idle";
-      state.results = action.payload;
+      state.currentUser = action.payload.user;
     },
     userNotificationsRecieved: (state, action) => {
       state.loading = "idle";
@@ -145,8 +145,8 @@ export const UpdateUser = (id, email, phone) => async dispatch => {
       Mobile: phone,
     });
 
-    if (data.success) return data;
-    alert(data.message);
+    // if (data.success) return data;
+    // alert(data.message);
     setTimeout(() => dispatch(userUpdateRecieved(data)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));

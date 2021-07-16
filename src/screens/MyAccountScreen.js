@@ -31,27 +31,27 @@ function MyAccountScreen() {
   useEffect(() => {
     validateMobile();
     validateEmail();
-  }, []);
+  }, [mobile, email]);
 
   const updateHandler = () => {
     if (validemail === "" && validmobile === "") {
       const data = dispatch(UpdateUser(currentUser._id, email, mobile));
-      data.then(result => {
-        if (result.success === true) setBanner("green");
-        setTimeout(() => {
-          setBanner("");
-        }, 3000);
-      });
-    } else if (validemail !== "") {
-      setBanner("email");
-      setTimeout(() => {
-        setBanner("");
-      }, 3000);
-    } else if (validmobile !== "") {
-      setBanner("mobile");
-      setTimeout(() => {
-        setBanner("");
-      }, 3000);
+      // data.then(result => {
+      //   if (result.success === true) setBanner("green");
+      //   setTimeout(() => {
+      //     setBanner("");
+      //   }, 3000);
+      // });
+      // } else if (validemail !== "") {
+      //   setBanner("email");
+      //   setTimeout(() => {
+      //     setBanner("");
+      //   }, 3000);
+      // } else if (validmobile !== "") {
+      //   setBanner("mobile");
+      //   setTimeout(() => {
+      //     setBanner("");
+      //   }, 3000);
     }
   };
 
@@ -65,6 +65,8 @@ function MyAccountScreen() {
     else setValidEmail("");
   };
   const validateMobile = () => {
+    console.log(mobileRegex.test(mobile));
+    console.log("mobile", mobile);
     if (!mobileRegex.test(mobile)) setValidMobile("Mobile is not valid");
     else setValidMobile("");
   };
@@ -133,7 +135,7 @@ function MyAccountScreen() {
                   value={email}
                   onChange={e => {
                     setEmail(e.target.value);
-                    validateEmail();
+                    // validateEmail();
                   }}
                   InputProps={{
                     startAdornment: (
@@ -167,7 +169,7 @@ function MyAccountScreen() {
                   autoComplete="off"
                   onChange={e => {
                     setMobile(e.target.value);
-                    validateMobile();
+                    // validateMobile();
                   }}
                   InputProps={{
                     startAdornment: (
