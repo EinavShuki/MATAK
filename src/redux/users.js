@@ -101,7 +101,7 @@ export const createUser = user => async dispatch => {
     const res = await axiosConfig.post("/users/", user);
     dispatch(userCreateRecieved(res.data.data));
   } catch (error) {
-    dispatch(userError("Failed to create a new user"));
+    dispatch(userError(error.response.data?.error));
   }
 };
 

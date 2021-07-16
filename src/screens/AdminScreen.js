@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, createUser, editUser, deleteUser, clear } from "../redux/users";
+import {
+  fetchUsers,
+  createUser,
+  editUser,
+  deleteUser,
+  clear,
+} from "../redux/users";
 import { DataGrid } from "@material-ui/data-grid";
 import { MdDelete, MdModeEdit, MdAdd } from "react-icons/md";
 import Button from "@material-ui/core/Button";
@@ -8,6 +14,7 @@ import NavBar from "../components/NavBar";
 import Modal from "./MatakModal";
 import ActionButtons from "../components/AdminScreen/ActionButtons";
 import UserEditForm from "../components/AdminScreen/UserEditForm";
+import UserCreateForm from "../components/AdminScreen/UserCreateForm";
 
 const AdminScreen = () => {
   const [showModal, setShowModal] = useState("none");
@@ -18,11 +25,11 @@ const AdminScreen = () => {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, [dispatch, results]);
+  }, [dispatch, results, showModal]);
 
   const hideModal = () => {
     setShowModal("none");
-    dispatch(clear())
+    dispatch(clear());
   };
 
   const handleCreateUser = user => {
@@ -31,6 +38,7 @@ const AdminScreen = () => {
 
   const handleEditUser = user => {
     dispatch(editUser(user));
+    hideModal();
   };
 
   const handleDeleteUser = () => {
@@ -119,7 +127,11 @@ const AdminScreen = () => {
       </div>
       {showModal === "create" && (
         <Modal text={"Create new user"} show onClose={hideModal}>
-          <UserEditForm onFormSubmit={handleCreateUser} onCancel={hideModal} />
+          <UserCreateForm
+            onFormSubmit={handleCreateUser}
+            onCancel={hideModal}
+            hideModal={hideModal}
+          />
         </Modal>
       )}
       {showModal === "edit" && (
@@ -128,6 +140,7 @@ const AdminScreen = () => {
             user={selectedRow}
             onFormSubmit={handleEditUser}
             onCancel={hideModal}
+            hideModal={hideModal}
           />
         </Modal>
       )}

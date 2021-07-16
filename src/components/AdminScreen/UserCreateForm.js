@@ -38,38 +38,17 @@ const renderTextField = ({
   );
 };
 
-function UserEditForm({
-  user,
+function UserCreateForm({
   onFormSubmit,
   formValues,
   pristine,
   invalid,
   hideModal,
 }) {
-  const [userDetails, setUserDetails] = useState({
-    Last_Name: user?.Last_Name || "",
-    First_Name: user?.First_Name || "",
-    Username: user?.Username || "",
-    Email: user?.Email || "",
-    Password: "",
-    Mobile: user?.Mobile || "",
-    Usert_Type: user?.User_Type || "",
-    Organization_Name: user?.Organization_Name || "",
-  });
-
   const { results, loading, error } = useSelector(state => state.users);
 
   const handleFormSubmit = () => {
-    if (user) {
-      const value = { ...formValues, _id: user._id };
-      if (formValues["Password"] === "") {
-        delete value["Password"];
-      }
-      console.log(value);
-      onFormSubmit({ ...formValues, _id: user._id });
-    } else {
-      onFormSubmit(formValues);
-    }
+    onFormSubmit(formValues);
   };
 
   const radioButton = ({ input, ...rest }) => (
@@ -96,7 +75,7 @@ function UserEditForm({
             <Field
               type="text"
               name="First_Name"
-              defaultValue={userDetails.First_Name}
+ 
               component={renderTextField}
               label="First Name"
             />
@@ -106,7 +85,7 @@ function UserEditForm({
           <div className="form-field">
             <Field
               name="Last_Name"
-              defaultValue={userDetails.Last_Name}
+       
               type="text"
               component={renderTextField}
               label="Last Name"
@@ -117,7 +96,7 @@ function UserEditForm({
           <div className="form-field">
             <Field
               name="Username"
-              defaultValue={userDetails.Username}
+        
               type="text"
               component={renderTextField}
               label="Username"
@@ -128,7 +107,7 @@ function UserEditForm({
           <div className="form-field">
             <Field
               name="Email"
-              defaultValue={userDetails.Email}
+ 
               type="text"
               component={renderTextField}
               label="Email"
@@ -141,7 +120,7 @@ function UserEditForm({
             <Field
               name="Password"
               type="password"
-              defaultValue={userDetails.Password}
+        
               component={renderTextField}
               label="Password"
             />
@@ -153,7 +132,7 @@ function UserEditForm({
             <Field
               name="Mobile"
               type="text"
-              defaultValue={userDetails.Mobile}
+       
               component={renderTextField}
               label="Mobile"
             />
@@ -164,7 +143,7 @@ function UserEditForm({
             <Field
               type="text"
               name="Organization_Name"
-              defaultValue={userDetails.Organization_Name}
+           
               component={renderTextField}
               label="Organization Name"
             />
@@ -212,6 +191,7 @@ const validate = values => {
     "First_Name",
     "Last_Name",
     "Email",
+    "Password",
     "Username",
     "Mobile",
     "User_Type",
@@ -239,4 +219,4 @@ const mapStateToProps = ({ form, users }) => ({
 export default reduxForm({
   form: "userForm",
   validate,
-})(connect(mapStateToProps)(UserEditForm));
+})(connect(mapStateToProps)(UserCreateForm));
