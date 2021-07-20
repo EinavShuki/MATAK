@@ -39,11 +39,11 @@ const DropDownNotification = ({ notifications }) => {
         onClose={handleClose}
       >
         {notifications.length > 0 ? (
-          unreadNotifications.map(notification => (
+          unreadNotifications.map((notification, index) => (
             <Link
               style={{ textDecoration: "none", color: "black" }}
               to={`/notifications`}
-              key={notification.createdAt + notification.Sender_Name}
+              key={notification.createdAt + notification.Sender_Name + index}
             >
               <MenuItem>
                 <Avatar className="avatar_name" id="name_icon">
