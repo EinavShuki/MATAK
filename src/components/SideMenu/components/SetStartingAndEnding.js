@@ -14,14 +14,10 @@ import { ROUTE_ADDITIONAL_DETAILS } from "../../../constants/pageConstants";
 function SetStartingAndEnding({ setPage }) {
   const dispatch = useDispatch();
 
-  const {
-    isSelectingStart,
-    isSelectingEnd,
-    startingPosition,
-    endingPosition,
-  } = useSelector(state => {
-    return state.createdRoute;
-  });
+  const { isSelectingStart, isSelectingEnd, startingPosition, endingPosition } =
+    useSelector(state => {
+      return state.createdRoute;
+    });
   const [startingLngPosition, setStartingLngPosition] = useState("");
   const [startingLatPosition, setStartingLatPosition] = useState("");
   const [endingLngPosition, setEndingLngPosition] = useState("");
@@ -72,8 +68,10 @@ function SetStartingAndEnding({ setPage }) {
           id="outlined-number"
           label="Latitude"
           type="number"
-          InputLabelProps={{
-            shrink: true,
+          InputProps={{
+            inputProps: {
+              min: 0,
+            },
           }}
           required
           variant="outlined"
@@ -90,8 +88,10 @@ function SetStartingAndEnding({ setPage }) {
           id="outlined-number"
           label="Longitude"
           type="number"
-          InputLabelProps={{
-            shrink: true,
+          InputProps={{
+            inputProps: {
+              min: 0,
+            },
           }}
           required
           variant="outlined"
@@ -123,8 +123,10 @@ function SetStartingAndEnding({ setPage }) {
           id="outlined-number"
           label="Latitude"
           type="number"
-          InputLabelProps={{
-            shrink: true,
+          InputProps={{
+            inputProps: {
+              min: 0,
+            },
           }}
           required
           variant="outlined"
@@ -141,8 +143,10 @@ function SetStartingAndEnding({ setPage }) {
           id="outlined-number"
           label="Longitude"
           type="number"
-          InputLabelProps={{
-            shrink: true,
+          InputProps={{
+            inputProps: {
+              min: 0,
+            },
           }}
           required
           variant="outlined"

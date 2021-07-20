@@ -222,8 +222,10 @@ function RouteDetails({ setPage }) {
           id="outlined-number"
           label="Latitude"
           type="number"
-          InputLabelProps={{
-            shrink: true,
+          InputProps={{
+            inputProps: {
+              min: 0,
+            },
           }}
           required
           variant="outlined"
@@ -240,8 +242,10 @@ function RouteDetails({ setPage }) {
           id="outlined-number"
           label="Longitude"
           type="number"
-          InputLabelProps={{
-            shrink: true,
+          InputProps={{
+            inputProps: {
+              min: 0,
+            },
           }}
           variant="outlined"
           value={lngPosition}

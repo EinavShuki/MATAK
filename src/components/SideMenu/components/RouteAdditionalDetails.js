@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 
 import React, { useState } from "react";
 import { resetRoute } from "../../../redux/createdRoute";
@@ -27,6 +27,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
   const [startingDate, setStartingDate] = useState(new Date());
   const [endingDate, setEndingDate] = useState(new Date());
 
+  const [name, setName] = useState("");
   const [reason, setReason] = useState(reasonsArray[0]);
   const [driversName, setDriversName] = useState("");
   const [vehicleID, setVehicle] = useState("");
@@ -53,7 +54,7 @@ function RouteAdditionalDetails({ setSideMenu }) {
 
     const send = {
       Array_Of_Points: geoJsonToSend,
-      Path_Name: generate().spaced,
+      Path_Name: name,
       Start_Date: startingDate,
       End_Date: endingDate,
       Reason_Text: reason,
@@ -150,6 +151,16 @@ function RouteAdditionalDetails({ setSideMenu }) {
   return (
     <>
       <h1>Additional Information</h1>
+      <TextField
+        required
+        color="secondary"
+        style={{ margin: "1rem 0", backgroundColor: "rgba(0, 0, 0, 0.06)" }}
+        label="Route's Name"
+        variant="outlined"
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+
       <DatePicker {...dateController} isDisabled={false} />
 
       {!isPermanent && <RoutesInfoDetails {...RouteInfoDetailsController} />}
@@ -197,7 +208,9 @@ function RouteAdditionalDetails({ setSideMenu }) {
         }}
         onClick={handleSubmitRoute}
         disabled={
-          isPermanent ? false : !vehicleID || !phonePostfix || !driversName
+          isPermanent
+            ? !name
+            : !vehicleID || !phonePostfix || !driversName || !name
         }
       >
         Send
