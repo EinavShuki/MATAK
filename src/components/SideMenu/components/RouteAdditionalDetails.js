@@ -9,7 +9,6 @@ import axiosConfig from "../../../config/axiosConfig";
 import useDispatchRoutes from "../../../customHooks/useDispatchRoutes";
 import { reasonsArray } from "../../../constants/infoConstants";
 import DatePicker from "../../DatePicker";
-import generate from "project-name-generator";
 import RoutesInfoDetails from "../../RoutesInfoDetails/RoutesInfoDetails";
 
 function RouteAdditionalDetails({ setSideMenu }) {

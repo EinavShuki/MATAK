@@ -18,6 +18,11 @@ function SetStartingAndEnding({ setPage }) {
     useSelector(state => {
       return state.createdRoute;
     });
+  const StartLat = startingPosition?.[0];
+  const StartLng = startingPosition?.[1];
+  const EndLng = endingPosition?.[0];
+  const EndLat = endingPosition?.[1];
+
   const [startingLngPosition, setStartingLngPosition] = useState("");
   const [startingLatPosition, setStartingLatPosition] = useState("");
   const [endingLngPosition, setEndingLngPosition] = useState("");
@@ -112,6 +117,11 @@ function SetStartingAndEnding({ setPage }) {
           +
         </Button>
       </div>
+      {StartLat && StartLng && (
+        <div>
+          [{StartLat}, {StartLng}]
+        </div>
+      )}
       <h4>End Position:</h4>
       <div>
         <TextField
@@ -168,6 +178,11 @@ function SetStartingAndEnding({ setPage }) {
         </Button>
       </div>
 
+      {EndLng && EndLat && (
+        <div>
+          [{EndLat}, {EndLng}]
+        </div>
+      )}
       <Button
         variant="contained"
         color="secondary"
