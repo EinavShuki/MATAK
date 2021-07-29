@@ -36,6 +36,9 @@ function RouteDetails({ setPage }) {
     return state.createdRoute;
   });
 
+  const lng = currentCreatedRoute?.[0]?.positions?.slice(-1)[0]?.lng || null;
+  const lat = currentCreatedRoute?.[0]?.positions?.slice(-1)[0]?.lat || null;
+
   const {
     currentUser: { isAdminOrMatakUser },
   } = useSelector(state => state.users);
@@ -211,6 +214,11 @@ function RouteDetails({ setPage }) {
           margin: "1.8rem 0 1rem 0",
         }}
       ></div>
+      {lat && lng && (
+        <div>
+          [{lat}, {lng}]
+        </div>
+      )}
       <h4 className="pt-5">Add Manually:</h4>
       <div>
         <TextField

@@ -45,10 +45,16 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
     Terms_Text,
     Driver_Cellphone,
     Files_Path_Array,
+    Start_Point,
+    End_Point,
   } = selectedRoute;
 
   const dispatch = useDispatch();
 
+  const StartLat = Start_Point?.[0];
+  const StartLng = Start_Point?.[1];
+  const EndLng = End_Point?.[0];
+  const EndLat = End_Point?.[1];
   const {
     currentUser: { isAdminOrMatakUser },
   } = useSelector(state => state.users);
@@ -337,6 +343,13 @@ function ViewAndChange({ selectedRoute, setSideMenu }) {
             {file.split(" ").reverse()[0]} <FiDownload />
           </Button>
         ))}
+      </div>
+
+      <div>
+        Start Point: [{StartLat}, {StartLng}]
+      </div>
+      <div>
+        End Point: [{EndLat}, {EndLng}]
       </div>
       {((isAdminOrMatakUser && !Is_Permanent) ||
         (!isAdminOrMatakUser && !permissions.isDisabled)) && (
