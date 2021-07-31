@@ -65,7 +65,6 @@ function UserEditForm({
       if (formValues["Password"] === "") {
         delete value["Password"];
       }
-      console.log(value);
       onFormSubmit({ ...formValues, _id: user._id });
     } else {
       onFormSubmit(formValues);

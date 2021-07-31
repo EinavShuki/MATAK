@@ -20,7 +20,7 @@ const AdminScreen = () => {
   const [showModal, setShowModal] = useState("none");
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { users, loading, results } = useSelector(state => state.users);
+  const { users, loading, results, error } = useSelector(state => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,7 +38,6 @@ const AdminScreen = () => {
 
   const handleEditUser = user => {
     dispatch(editUser(user));
-    hideModal();
   };
 
   const handleDeleteUser = () => {

@@ -27,6 +27,8 @@ export const usersSlice = createSlice({
     userUpdateRecieved: (state, action) => {
       state.loading = "idle";
       state.currentUser = action.payload.user;
+      state.results = action.payload.user;
+      state.error = null;
     },
     userNotificationsRecieved: (state, action) => {
       state.loading = "idle";
@@ -109,7 +111,7 @@ export const editUser = user => async dispatch => {
   dispatch(userLoading());
   try {
     const res = await axiosConfig.put("/users", user);
-    dispatch(userUpdateRecieved(res.data.data));
+    dispatch(userUpdateRecieved(res.data));
   } catch (error) {
     dispatch(userError("Failed to edit the user"));
   }
